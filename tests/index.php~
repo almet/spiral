@@ -1,0 +1,5 @@
+<?php
+require_once('../core/ini.php');
+use Spiral;
+$appFactory = new core\Di\Container();
+?>

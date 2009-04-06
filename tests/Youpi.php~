@@ -1,0 +1,9 @@
+<?php
+namespace Spiral\tests;
+
+class Youpi{
+    public function __construct(){
+        echo "youpi !";
+    }
+}
+?>
