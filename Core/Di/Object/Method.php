@@ -1,7 +1,19 @@
 <?php
 namespace Spiral\Core\Di\Object;
 
+/**
+ * Method
+ * 
+ * Dynamic method of an object
+ * 
+ * @auhtor  Alexis Métaireau    08 Apr. 2009
+ */
 class Method{
+
+    /** 
+     * 
+     *
+     */
     protected $_method;
     protected $_arguments = array();
     

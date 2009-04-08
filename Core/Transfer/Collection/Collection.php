@@ -1,15 +1,35 @@
 <?php
 namespace Spiral\Core\Transfer\Collection;
-
 /**
- * Collection of elements
+ * Default implementation of an elements collection
  *
- * This is a collection where you can put elements and retrieve them.
- * 
+ * @package		spiral
+ * @subpackage	core.utils
  * @author		Frédéric Sureau <frederic.sureau@gmail.com>
+ * @contributor Alexis Metaireau <ametaireau@gmail.com>
  */
-interface Collection
+class Collection implements ICollection
 {
+	/**
+	 * Elements of the collection
+	 *
+	 * @var	array
+	 */
+	private $_elements = array();
+
+	/**
+	 * Constructor
+	 *
+	 * @param	array	$elements	Elements to add at the creation
+	 * @return	void
+	 * 
+	 * @todo	Filter elements
+	 */
+	public function __construct($elements = array())
+	{
+		$this->_elements = $elements;
+	}
+	
 	/**
 	 * Getter
 	 *
@@ -18,7 +38,10 @@ interface Collection
 	 * @param	string	$name	Element name
 	 * @return	mixed
 	 */
-	public function __get($name);
+	public function __get($name)
+	{
+		return $this->getElement($name);
+	}
 	
 	/**
 	 * Isset
@@ -28,7 +51,10 @@ interface Collection
 	 * @param	string	$name	Element name
 	 * @return	bool
 	 */
-	public function __isset($name);
+	public function __isset($name)
+	{
+		return $this->hasElement($name);
+	}
 	
 	/**
 	 * Setter
@@ -39,7 +65,10 @@ interface Collection
 	 * @param	mixed	$value	Element value
 	 * @return	void
 	 */
-	public function __set($name, $value);
+	public function __set($name, $value)
+	{
+		$this->setElement($name, $value);
+	}
 	
 	/**
 	 * Unset
@@ -49,30 +78,45 @@ interface Collection
 	 * @param	string	$name	Element name
 	 * @return	void
 	 */
-	public function __unset($name);
+	public function __unset($name)
+	{
+		$this->removeElement($name);
+	}
 	
 	/**
-	 * Return an element value
+	 * Return element value
 	 *
 	 * @param	string	$name	Element name
 	 * @return	mixed
 	 */
-	public function getElement($name);
+	public function getElement($name)
+	{
+		if(!$this->hasElement($name))
+			return null;
+
+		return $this->_elements[$name];
+	}
 	
 	/**
-	 * Return all elements
+	 * Return elements
 	 *
 	 * @return	array
 	 */
-	public function getElements();
+	public function getElements()
+	{
+		return $this->_elements;
+	}
 	
 	/**
-	 * Return if an element exists
+	 * Return if element exists
 	 *
 	 * @param	string	$name	Element name
 	 * @return	bool
 	 */
-	public function hasElement($name);
+	public function hasElement($name)
+	{
+		return isset($this->_elements[$name]);
+	}
 	
 	/**
 	 * Remove an element
@@ -80,24 +124,33 @@ interface Collection
 	 * @param	string	$name	Element name
 	 * @return	void
 	 */
-	public function removeElement($name);
+	public function removeElement($name)
+	{
+		unset($this->_elements[$name]);
+	}
 	
 	/**
-	 * Set an element value
+	 * Set element value
 	 *
 	 * @param	string	$name	Element name
 	 * @param	mixed	$value	Element value
 	 * @return	void
 	 */
-	public function setElement($name, $value);
+	public function setElement($name, $value)
+	{
+		$this->_elements[$name] = $value;
+	}
 	
 	/**
-	 * Set the values of multiple elements
+	 * Sets the values of multiple elements
 	 *
 	 * @param	array	$elements	Elements
 	 * @return	void
 	 */
-	public function setElements($elements);
+	public function setElements($elements)
+	{
+		$this->_elements = array_merge($this->_elements, $elements);
+	}
 }
 
 ?>
