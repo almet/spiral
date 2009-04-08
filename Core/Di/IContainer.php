@@ -29,6 +29,6 @@ interface IContainer
      * @param   String  $key
      * @return  mixed
      */
-    public function get($key);
+    public function getService($key);
 }
 ?>

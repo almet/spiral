@@ -1,6 +1,7 @@
 TODO:
-- allow to refer to services on the fly
+- allow to refer to services on the fly ($sc->forClass('Test')->onCall('MyMethod')->addServiceArgument('toto');
 - process all FIXME / TODO
 - write tests
 - write doc
+- write a component that doesn't use php 5.3 (namespaces, anonymous functions)
 

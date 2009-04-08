@@ -10,7 +10,7 @@ namespace Spiral\Core\Di;
  * Here is an example of how to use this class:
  * <code>
  * $schema = new Schema();
- * $schema->forObject('myObj','myClass')->call('method')->with(array('parameters'));
+ * $schema->registerService('myObj','myClass')->call('method')->with(array('parameters'));
  * </code>
  * 
  * @package     Spiral\Core\Di
@@ -90,7 +90,7 @@ class Schema implements ISchema{
      * @param   string  $className  classname of the object
      * @return  Object
      */
-    protected function _getDiObject($objectName, $className){
+    protected function _getObject($objectName, $className){
         if ($this->_collection->hasElement($objectName)){
             $object = $this->_collection->getElement($objectName);
         } else {
@@ -118,15 +118,13 @@ class Schema implements ISchema{
     
     /**
      * create and set the active object.
-     * alias of _getObject that support 
-     * fluid interface
      * 
      * @param   string  $key
      * @param   string  $className
      * @return  Schema
      */
-    public function forObject($key, $className){
-        $this->_getDiObject($key, $className);
+    public function registerService($key, $className){
+        $this->_getObject($key, $className);
         return $this;
     }    
     
@@ -136,7 +134,7 @@ class Schema implements ISchema{
      * @param   string  $methodName
      * @return  Schema
      */
-    public function call($methodName){
+    public function onCall($methodName){
         $this->_processActiveObjects(
             function($object) use ($methodName){
                 $object->call($methodName);
@@ -144,7 +142,7 @@ class Schema implements ISchema{
         return $this;
     }
     
-    public function callStatic($className, $methodName){
+    public function onStaticCall($className, $methodName){
         $this->_processActiveObjects(
             function($object) use ($methodName, $className){
                 $object->call($methodName, $className);
@@ -157,8 +155,8 @@ class Schema implements ISchema{
      *
      * @return  Schema
      */
-    public function construct(){
-        $this->call('__construct');
+    public function onConstruct(){
+        $this->onCall('__construct');
         return $this;
     }
     
@@ -167,7 +165,7 @@ class Schema implements ISchema{
      *
      * @return Schema
      */
-    public function with(){
+    public function injectWith(){
         return $this->setArguments(func_get_args());
     }
     

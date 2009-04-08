@@ -40,7 +40,7 @@ class Container implements IContainer
      * Alias of get()
      */
     public function __get($key){
-        return $this->get($key);
+        return $this->getService($key);
     }
     
     /**
@@ -50,7 +50,7 @@ class Container implements IContainer
      * @param   String  $key
      * @return  mixed
      */
-    public function get($key){
+    public function getService($key){
 
         // first, get the registred configuration object
         $diObject = $this->_schema->getElement($key);
