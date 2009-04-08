@@ -11,32 +11,76 @@ namespace Spiral\Core\Di\Object;
 class Method{
 
     /** 
-     * 
+     * Store the name of the method
      *
+     * @var String
      */
-    protected $_method;
+    protected $_methodName;
+    
+    /**
+     * Array containing all arguments
+     * of the method
+     *
+     * @var     Array
+     */
     protected $_arguments = array();
     
-    public function __construct($method){
-        $this->setMethod($method);
+    /**
+     * construct the object and 
+     * set up the method name of the method
+     *
+     * @return  void
+     */
+    public function __construct($methodName){
+        $this->setMethod($methodName);
     }
     
-    public function setMethod($method){
-        $this->_method = $method;
+    /** 
+     * Set the method name of the method
+     * 
+     * @param   String  $name
+     * @return  void
+     */
+    public function setMethod($name){
+        $this->_methodName = $name;
     }
     
+    /**
+     * Return the method name
+     * 
+     * @return String
+     */
     public function getMethod(){
-        return $this->_method;
+        return $this->_methodName;
     }
     
+    /**
+     * Add an argument to the list of arguments
+     * 
+     * @param   mixed   $argument
+     * @return  void
+     */    
     public function addArgument($argument){
         $this->_arguments[] = $argument;
     }
     
+    /** 
+     * Return the list of arguments
+     * 
+     * return   array
+     */
     public function getArguments(){
         return $this->_arguments;
     }
     
+    /**
+     * Build a list of comma separated arguments
+     * from an array list of args.
+     *
+     * FIXME: Store in another place ?
+     *
+     * @return  String
+     */
     public function buildListOfArgs(){
         // build the list of args
         $args = '';
