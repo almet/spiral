@@ -10,8 +10,8 @@ namespace Spiral\tests;
 
 class Yataa
 {    
-    public static function myStaticMethod(Youpi $obj){
-        echo 'la methode statique à bien été apellée avec l\'objet '.get_class($obj).' en parametre';
+    public static function myStaticMethod(ToInject $obj){
+        echo "la methode statique à bien été apellée avec l'objet ".get_class($obj)." en parametre \n";
     }
 }
 ?>

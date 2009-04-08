@@ -62,8 +62,22 @@ class Container implements IContainer
         $className = $diObject->getClassName();
         
         // build the object
-        $object = new $className($constructor->buildListOfArgs());
+        $args = $constructor->getArguments();
         
+        $params = '';
+         for ($i = 0; $i < count($args); $i++) {
+               $params .= '$args['.$i.'],';
+         }
+         
+         $params = rtrim($params,',');
+         $object = eval("return new $className($params);");
+     
+        /*$object = eval("return new $className($params);");
+
+        // FIXME: Use reflexion ?
+        $rC = new ReflectionClass($className);
+        $object = $rC->newInstanceArgs($constructor->getArguments());
+        */
         // call injected methods
         $diObject->callMethods($object);
         

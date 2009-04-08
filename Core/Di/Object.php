@@ -116,6 +116,19 @@ class Object {
         return $this;
     }
     
+    /**
+     * Call the given method, and check if all is good
+     *
+     * @param   mixed   $class class or object to call
+     * @param   string  $methodName
+     * @param   array   $args 
+     */
+    protected function _callMethod($class, $methodName, $args){
+        if (method_exists($class, $methodName) && is_callable(array($class, $methodName))){
+            call_user_func_array(array($class, $methodName), $args);
+        }
+    }
+    
     /** 
      * Return the given method
      * 
@@ -150,9 +163,7 @@ class Object {
                 continue;
             } else {
                 if (get_class($method) == 'Spiral\Core\Di\Object\Method'){
-                    if (method_exists($object, $className)){
-                        call_user_func_array(array($object, $methodName), $method->getArguments());
-                    }
+                    $this->_callMethod($object, $methodName, $method->getArguments());
                 } elseif (get_class($method) == 'Spiral\Core\Di\Object\MethodStatic'){                    
                     // define the array of arguments
                     $args = array();
@@ -166,12 +177,12 @@ class Object {
                             $args[] = $arg;
                         }
                     }
-                    call_user_func_array(array($method->getClass(), $methodName), $args);
+                    $this->_callMethod($method->getClass(), $methodName, $args);
                 }
             }
         }
         return $object;
-    }  
+    }
 }
 
 ?>

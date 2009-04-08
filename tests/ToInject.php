@@ -5,7 +5,7 @@ class ToInject{
     protected $_dynamicContent;
     
     public function __construct($injectedContent, $dynamicContent){
-        var_dump($injectedContent);
+        echo($injectedContent);
         $this->_dynamicContent = $dynamicContent;
     }
     
