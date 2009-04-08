@@ -7,8 +7,12 @@ class Youpi{
         echo "youpi !";
     }
     
-    public function sayYoupi($a, $b, $c){
+    public function myMethod($a, $b, $c){
         var_dump($a, $b, $c);
+    }
+    
+    public function test(){
+        echo "il semble que ça fonctionne (le callStatic)";
     }
 }
 ?>

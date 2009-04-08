@@ -2,7 +2,7 @@
 namespace Spiral\Core\Di;
 /**
  * DiObject allow to store the state and the configuration of 
- * the representation of object and classes we want to inject
+ * the representation of object and classes we want to call
  *
  * @package     Spiral\Core\Di
  * @author      ametaireau 30 mars 2009
@@ -48,7 +48,7 @@ class Object {
     public function __construct($object, $class){
         $this->_objectName = $object;
         $this->_className  = $class;
-        $this->_methodCollection = new \Spiral\Core\Transfer\Collection\Base();
+        $this->_methodCollection = new \Spiral\Core\Transfer\Collection\Collection();
     }
     
     /** 
@@ -62,37 +62,43 @@ class Object {
     }
     
     /**
-     * Return a Object\Method object.
+     * Return an Object\Method object.
      * If this method already exists, reltreive informations from Collection
      * else, create a new one.
      *
      * @param   String  $method name of the method
+     * @param   String  $class  class name for static methods
      * @return  Object\Method
      */
-    protected function _getMethod($method){
+    protected function _getMethod($method, $class = null){
         if ($this->_methodCollection->hasElement($method)){
             $methodObject = $this->_methodCollection->getElement($method);
         } else {
-            $methodObject = new Object\Method($method);
+            if ($class == null){
+                $methodObject = new Object\Method($method);
+            } else {
+                $methodObject = new Object\MethodStatic($method, $class);
+            }
+            
             $this->_addMethod($method, $methodObject);
         }
         return $methodObject;
     }
     
     /**
-     * Set the method to inject
+     * Set the method to call
      * 
      * @param   string  $method
      * @return  Object
      */
-    public function inject($method){
+    public function call($method, $class = null){
         if (is_array($method)){
             foreach($method as $m){
                 // set it as active object
-                $this->_activeMethods[$m] = $this->_getMethod($m);   
+                $this->_activeMethods[$m] = $this->_getMethod($m, $class);   
             }
         } else {
-             $this->_activeMethods = array($this->_getMethod($method));
+             $this->_activeMethods = array($this->_getMethod($method, $class));
         }
         return $this;
     }
@@ -132,6 +138,8 @@ class Object {
     /**
      * Call all dynamic registered methods 
      *
+     * TODO: Find a better way to check if a method is static or not
+     * 
      * @param   mixed   $object object to act on
      * @return  void
      */
@@ -141,27 +149,31 @@ class Object {
             if ($methodName == '__construct'){
                 continue;
             } else {
-                if (method_exists()){
-                    call_user_func_array(array($object, $methodName), $method->getArguments());
+                if (get_class($method) == 'Spiral\Core\Di\Object\Method'){
+                    if (method_exists($object, $className)){
+                        call_user_func_array(array($object, $methodName), $method->getArguments());
+                    }
+                } elseif (get_class($method) == 'Spiral\Core\Di\Object\MethodStatic'){                    
+                    // define the array of arguments
+                    $args = array();
+                    
+                    // process it in order to find some specific vars
+                    foreach($method->getArguments() as $arg){
+                        // replace them if needed
+                        if ($arg == Schema::SELF){
+                            $args[] = $object;
+                        } else {
+                            $args[] = $arg;
+                        }
+                    }
+                    
+                    call_user_func_array(array($method->getClass(), $methodName), $args);
+                    var_dump($args);
                 }
             }
         }
         return $object;
-    }
-    
-    /**
-     * Call all static registered methods
-     *
-     * @return  void
-     */
-    public function callStaticMethods(){
-        foreach ($this->_staticMethodCollection->getElements() as $method){
-            $methodName = $method->getMethod();
-            $className = $method->getClass();
-            if (method_exists($methodName, $className)){
-                call_user_func_array(array($className, $methodName), $method->getArguments());
-            }            
-    }
+    }  
 }
 
 ?>

@@ -1,10 +1,14 @@
 <?php
+use Spiral\Core\Di\Schema as Schema;
+use Spiral\test\Youpa as Youpa;
 require_once('../Core/ini.php');
-$appFactory = new Spiral\Core\Di\Container();
+$schema = new Schema();
 
-$appFactory->forObject('test', 'Spiral\\tests\\Youpi')
+$schema->forObject('youpi', 'Spiral\\tests\\Youpi')
     ->construct()->with('constructor of Youpi..')
-    ->inject('sayYoupi')->with('youpi', 'youpa', 'youpo');
-
-$appFactory->get('test');
+    ->call('myMethod')->with('youpi', 'youpa', 'youpo')
+    //->callStatic('Spiral\\tests\\Yataa', 'myStaticMethod')->with(Schema::SELF)
+;
+$container = new Spiral\Core\Di\Container($schema);
+Youpa::myStaticMethod();
 ?>

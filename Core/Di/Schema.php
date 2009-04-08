@@ -1,26 +1,41 @@
 <?php
 namespace Spiral\Core\Di;
-use \Spiral\Core\Transfer\Collection\ICollection as ICollection;
 
 /**
  * DI Schema
  *
- * Its the part of the Dependency Injector that represents the mapping between all classes, 
+ * This part of the Dependency callor represents the mapping between all classes, 
  * and their parameters
  *
- * Here is an example of use of the Schema class:
+ * Here is an example of how to use this class:
  * <code>
  * $schema = new Schema();
- * $schema->forObject('myObj','myClass')->inject('method')->with(array('parameters'));
+ * $schema->forObject('myObj','myClass')->call('method')->with(array('parameters'));
  * </code>
  * 
- * @package     spiral
- * @subpackage  DI
- * @author      Alexis Métaireau 30 mars 2009
+ * @package     Spiral\Core\Di
+ * @author      Alexis Métaireau 30 mar. 2009
  */
 class Schema implements ISchema{
+
+    /**
+     * Constants that's represents the current resolved object.
+     * Used in with() method.
+     */
+    const   SELF = 'SPIRAL_DI_SELF_OBJECT';
     
+    /**
+     * Store the collection of all registered classes
+     *
+     * @var ICollection
+     */
     protected $_collection      = null;
+    
+    /**
+     * Array of active objects
+     *
+     * @var Array
+     */
     protected $_activeObjects   = null;
     
     /**
@@ -116,31 +131,39 @@ class Schema implements ISchema{
     }    
     
     /**
-     * Set the method to inject.
+     * Set the method to call.
      *
      * @param   string  $methodName
      * @return  Schema
      */
-    public function inject($methodName){
+    public function call($methodName){
         $this->_processActiveObjects(
             function($object) use ($methodName){
-                $object->inject($methodName);
+                $object->call($methodName);
+            });   
+        return $this;
+    }
+    
+    public function callStatic($className, $methodName){
+        $this->_processActiveObjects(
+            function($object) use ($methodName, $className){
+                $object->call($methodName, $className);
             });   
         return $this;
     }
     
     /**
-     * call 'inject' for a constructor.
+     * call 'call' for a constructor.
      *
      * @return  Schema
      */
     public function construct(){
-        $this->inject('__construct');
+        $this->call('__construct');
         return $this;
     }
     
     /**
-     * Inject all the given parameters to the active Objects
+     * call all the given parameters to the active Objects
      *
      * @return Schema
      */
@@ -149,7 +172,7 @@ class Schema implements ISchema{
     }
     
     /**
-     * Inject all the given parameters to the active Objects
+     * call all the given parameters to the active Objects
      *
      * @param   array  $parameters
      * @return  Container
@@ -162,7 +185,7 @@ class Schema implements ISchema{
     }
     
     /**
-     * Inject the selected method(s) with given parameter
+     * call the selected method(s) with given parameter
      *
      * @param   string  $parameter
      * @return  Container     
@@ -174,62 +197,6 @@ class Schema implements ISchema{
             });   
         return $this;
     }
-    
-    /**
-     * Add a method to call once the object instanciated.
-     * just before returning it.
-     *
-     * @param   string  $method
-     * @param   string  $class     
-     * @return  Schema
-     */
-    public function addMethodCall($method, $key = null){
-        $this->_processActiveObjects(
-            function($object) use ($method, $key){
-                $object->addMethodCall($method, $key);
-            });   
-        return $this;
-    }
-    
-    /**
-     * Add a method to call statically once the object instanciated.
-     * just before returning it.
-     *
-     * @param   string  $class
-     * @param   string  $method
-     * @return  Schema
-     */
-    public function addStaticMethodCall($method, $class = null){
-        $this->_processActiveObjects(
-            function($object) use ($method, $class){
-                $object->addStaticMethodCall($method, $class);
-            });   
-        return $this;
-    }
-    
-    /**
-	 * Getter
-	 *
-	 * Alias of getElement
-	 *
-	 * @param	string	$name	Element name
-	 * @return	mixed
-	 */
-	public function __get($name){
-	    return $this->getElement($name);
-	}
-	
-	/**
-	 * Isset
-	 *
-	 * Alias of hasElement
-	 *
-	 * @param	string	$name	Element name
-	 * @return	bool
-	 */
-	public function __isset($name){
-	    return $this->hasElement($name);
-	}
 	
 	/**
 	 * Return an element value 
@@ -239,25 +206,6 @@ class Schema implements ISchema{
 	 */
 	public function getElement($name){
 	    return $this->_collection->getElement($name);
-	}
-	
-	/**
-	 * Return all elements
-	 *
-	 * @return	array
-	 */
-	public function getElements(){
-	    return $this->_collection->getElements();
-	}
-	
-	/**
-	 * Return if an element exists
-	 *
-	 * @param	string	$name	Element name
-	 * @return	bool
-	 */
-	public function hasElement($name){
-	    return $this->_collection->hasElement($name);
 	}
 }
 ?>

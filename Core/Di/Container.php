@@ -39,7 +39,7 @@ class Container implements IContainer
      *
      * Alias of get()
      */
-    public function __get($name){
+    public function __get($key){
         return $this->get($key);
     }
     
@@ -51,7 +51,7 @@ class Container implements IContainer
      * @return  mixed
      */
     public function get($key){
-        
+
         // first, get the registred configuration object
         $diObject = $this->_schema->getElement($key);
 
@@ -66,7 +66,6 @@ class Container implements IContainer
         
         // call injected methods
         $diObject->callMethods($object);
-        $diObject->callStaticsMethods($object);
         
         return $object;
     }

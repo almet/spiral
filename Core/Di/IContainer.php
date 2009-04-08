@@ -1,4 +1,5 @@
 <?php
+namespace Spiral\Core\Di;
 /**
  * Interface for the Container
  * 
@@ -12,14 +13,14 @@ interface IContainer
      * @param   Ischema $schema
      * @return  void
      */
-    public function  __construct(Schema $schema);
+    public function  __construct(ISchema $schema);
     
     /**
      * Magic method get.
      *
      * Alias of get()
      */
-    public function _get($key);
+    public function __get($key);
     
     /**
      * Resolve all dependencies and return the 
