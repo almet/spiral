@@ -166,9 +166,7 @@ class Object {
                             $args[] = $arg;
                         }
                     }
-                    
                     call_user_func_array(array($method->getClass(), $methodName), $args);
-                    var_dump($args);
                 }
             }
         }

@@ -12,7 +12,7 @@ class Youpi{
     }
     
     public function test(){
-        echo "il semble que ça fonctionne (le callStatic)";
+        echo "le callStatic fonctionne";
     }
 }
 ?>
