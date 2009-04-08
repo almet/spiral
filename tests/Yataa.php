@@ -11,7 +11,7 @@ namespace Spiral\tests;
 class Yataa
 {    
     public static function myStaticMethod(Youpi $obj){
-        $obj->test();
+        echo 'la methode statique à bien été apellée avec l\'objet '.get_class($obj).' en parametre';
     }
 }
 ?>

@@ -2,3 +2,4 @@ Regarder ce qui existe dans la doc php pour:
 - trouver le nom des classes à la volée
 - apeller des methodes statiques
 - comment apeller des methodes statiques avec un namespace
+- trouver une methode de construire les objets avec plusieurs arguments, de taille variable pour tous les types existants.
