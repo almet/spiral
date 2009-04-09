@@ -17,5 +17,9 @@ class ToInject{
         // display now the dynamic content
         echo $this->_dynamicContent;
     }
+    
+    public function serviceNeeded($service){
+        var_dump($service);
+    }
 }
 ?>

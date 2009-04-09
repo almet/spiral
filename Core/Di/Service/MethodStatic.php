@@ -1,5 +1,5 @@
 <?php
-namespace   Spiral\Core\Di\Object;
+namespace   Spiral\Core\Di\Service;
 
 /**
  * MethodStatic

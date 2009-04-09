@@ -1,6 +1,6 @@
 <?php
 namespace Spiral\Core\Di;
-
+use \Spiral\Core\Transfer\Collection\Collection as Collection;
 /**
  * DI Schema
  *
@@ -22,7 +22,7 @@ class Schema implements ISchema{
      * Constants that's represents the current resolved object.
      * Used in with() method.
      */
-    const   SELF = 'SPIRAL_DI_SELF_OBJECT';
+    const   ACTIVE_SERVICE = 'SPIRAL_DI_ACTIVE_SERVICE';
     
     /**
      * Store the collection of all registered classes
@@ -36,7 +36,7 @@ class Schema implements ISchema{
      *
      * @var Array
      */
-    protected $_activeObjects   = null;
+    protected $_activeServices   = null;
     
     /**
      * Set up the Collection used to store 
@@ -45,18 +45,18 @@ class Schema implements ISchema{
      * @return void
      */
     public function __construct(){
-        $this->_collection = new \Spiral\Core\Transfer\Collection\Collection();
+        $this->_collection = new Collection();
     }
     
     /**
-     * Add a object to the schema and set it as the active object
+     * Add a service to the schema and set it as the active one
      *
-     * @param   string  $key    the name of the object to register
-     * @param   string  $object the object
+     * @param   string  $key        the name of the service to register
+     * @param   string  $service    the service itself
      * @return  void
      */
-    protected function _addObject($key, $object){
-        $this->_collection->setElement($key, $object);
+    protected function _addService($key, $service){
+        $this->_collection->setElement($key, $service);
     }
     
     /**
@@ -64,54 +64,54 @@ class Schema implements ISchema{
      *
      * @return  array
      */
-    protected function _getActiveObjects(){
+    protected function _getActiveServices(){
         // if we have a single object to return, build an array with it
-        if (!is_array($this->_activeObjects) && !empty($this->_activeObjects)){
-            $objects = array($this->_activeObjects);
+        if (!is_array($this->_activeServices) && !empty($this->_activeServices)){
+            $services = array($this->_activeServices);
         
         // otherwise, just return the array ..
-        } elseif(is_array($this->_activeObjects)){
-            $objects = $this->_activeObjects;
+        } elseif(is_array($this->_activeServices)){
+            $services = $this->_activeServices;
         
         // or nothin'
         } else {
-            $objects = null;
+            $services = null;
         }
         
-        return $objects;
+        return $services;
     }
     
     /**
-     * Check out if an Object with the given objectName
+     * Check out if a service with the given name
      * is already stored in the collection and return it. 
      * If not, create a new one, store and return it
      *
-     * @param   string  $objectName name of the wanted object
-     * @param   string  $className  classname of the object
+     * @param   string  $key        name of the wanted service
+     * @param   string  $className  classname of the service
      * @return  Object
      */
-    protected function _getObject($objectName, $className){
-        if ($this->_collection->hasElement($objectName)){
-            $object = $this->_collection->getElement($objectName);
+    protected function _getService($key, $className){
+        if ($this->_collection->hasElement($key)){
+            $service = $this->_collection->getElement($key);
         } else {
-            $object = new Object($objectName, $className);
-            $this->_addObject($objectName, $object);
+            $service = new Service($key, $className);
+            $this->_addService($key, $service);
         }
         // set it as active object
-        $this->_activeObjects = $object;
-        return $object;
+        $this->_activeServices = $service;
+        return $service;
     }
     
     /**
-     * Loop on the _activeObject array and process it 
+     * Loop on the array of active services and process it
      * with an anonymous function
      *
      * @param   Closure     $anonymousFunction
      * @return  void
      */
-    protected function _processActiveObjects($anonymousFunction){
-        foreach($this->_getActiveObjects() as $object){
-            $anonymousFunction($object);
+    protected function _processActiveServices($anonymousFunction){
+        foreach($this->_getActiveServices() as $service){
+            $anonymousFunction($service);
         }
     }
     
@@ -124,7 +124,7 @@ class Schema implements ISchema{
      * @return  Schema
      */
     public function registerService($key, $className){
-        $this->_getObject($key, $className);
+        $this->_getService($key, $className);
         return $this;
     }    
     
@@ -135,17 +135,17 @@ class Schema implements ISchema{
      * @return  Schema
      */
     public function onCall($methodName){
-        $this->_processActiveObjects(
-            function($object) use ($methodName){
-                $object->call($methodName);
+        $this->_processActiveServices(
+            function($service) use ($methodName){
+                $service->call($methodName);
             });   
         return $this;
     }
     
     public function onStaticCall($className, $methodName){
-        $this->_processActiveObjects(
-            function($object) use ($methodName, $className){
-                $object->call($methodName, $className);
+        $this->_processActiveServices(
+            function($service) use ($methodName, $className){
+                $service->call($methodName, $className);
             });   
         return $this;
     }
@@ -161,9 +161,10 @@ class Schema implements ISchema{
     }
     
     /**
-     * call all the given parameters to the active Objects
+     * inject all given params to active objects
      *
-     * @return Schema
+     * @param   mixed
+     * @return  Schema
      */
     public function injectWith(){
         return $this->setArguments(func_get_args());
@@ -172,15 +173,18 @@ class Schema implements ISchema{
     /**
      * call all the given parameters to the active Objects
      *
-     * @param   array  $parameters
+     * @param   array   $parameters
+     * @param   Bool    $asService  Specify if the given parameters has to be used as services
      * @return  Container
      */
-    public function setArguments($parameters){
+    public function setArguments($parameters, $asService = false){
         foreach($parameters as $parameter){
-            $this->addArgument($parameter);
+            $this->addArgument($parameter, $asService);
         }
         return $this;
     }
+    
+    
     
     /**
      * call the selected method(s) with given parameter
@@ -188,12 +192,42 @@ class Schema implements ISchema{
      * @param   string  $parameter
      * @return  Container     
      */
-    public function addArgument($parameter){
-        $this->_processActiveObjects(
-            function($object) use ($parameter){
-                $object->addArgument($parameter);
+    public function addArgument($parameter, $asService = false){
+        $this->_processActiveServices(
+            function($service) use ($parameter, $asService){
+                $service->addArgument($parameter, $asService);
             });   
         return $this;
+    }
+    
+    /**
+     * inject all given params to active objects 
+     *
+     * @param   mixed
+     * @return  Schema
+     */
+    public function injectWithServices(){
+        return $this->setArguments(func_get_args(), true);
+    }
+    
+    /**
+     * Alias for setArgument, for services
+     * 
+     * @param   array   $parameters
+     * @return  Schema
+     */
+    public function setArgumentsAsServices($parameters){
+        return $this->setArguments($parameters, true);
+    }
+    
+    /**
+     * Alias for addArgument, for a service
+     * 
+     * @param   string   $parameter
+     * @return  Schema
+     */
+    public function addArgumentAsService($parameter){
+        return $this->addArgument($parameters, true);
     }
 	
 	/**

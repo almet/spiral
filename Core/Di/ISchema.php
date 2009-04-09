@@ -7,13 +7,19 @@ namespace Spiral\Core\Di;
  * @auhtor      Alexis Métaireau 1 Apr. 2009
  */
 interface ISchema{
+    // required methods
     public function registerService($key, $className);
     public function onCall($methodName);
     public function onStaticCall($className, $methodName);
-    public function addArgument($argument);
-    public function setArguments($arguments);
-    public function onConstruct();
-    public function injectWith();
+    public function addArgument($argument, $asService);
+    public function setArguments($arguments, $asServices);
     public function getElement($key);
+    
+    // facilities
+    public function onConstruct();    
+    public function injectWith();    
+    public function injectWithServices();
+    public function addArgumentAsService($argument);
+    public function setArgumentsAsServices($arguments);    
 }
 ?>

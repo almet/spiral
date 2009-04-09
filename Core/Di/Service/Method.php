@@ -1,5 +1,5 @@
 <?php
-namespace Spiral\Core\Di\Object;
+namespace Spiral\Core\Di\Service;
 
 /**
  * Method
@@ -9,6 +9,8 @@ namespace Spiral\Core\Di\Object;
  * @auhtor  Alexis Métaireau    08 Apr. 2009
  */
 class Method{
+
+    const ARG_IS_SERVICE = 'ARG_IS_SERVICE';
 
     /** 
      * Store the name of the method
@@ -60,8 +62,12 @@ class Method{
      * @param   mixed   $argument
      * @return  void
      */    
-    public function addArgument($argument){
-        $this->_arguments[] = $argument;
+    public function addArgument($argument, $asService=false){
+        if ($asService){
+            $this->_arguments[] = array(self::ARG_IS_SERVICE, $argument);
+        } else {
+            $this->_arguments[] = array($argument, null);
+        }
     }
     
     /** 
