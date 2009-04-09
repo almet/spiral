@@ -6,13 +6,13 @@ require_once('../Core/ini.php');
 $schema = new Schema();
 
 $schema
-->registerService('testClass', 'Spiral\\tests\\ToInject')
+->registerService('testClass', 'Spiral\Tests\ToInject')
     ->onConstruct()->injectWith("content injected in youpi constructor \n", 'appel dynamique')
     ->onCall('myMethod')->injectWith('injection', 'de', 'methode dynamique')
-    ->onStaticCall('Spiral\\tests\\Yataa', 'myStaticMethod')->injectWith(Schema::SELF)
+    ->onStaticCall('Spiral\Tests\Yataa', 'myStaticMethod')->injectWith(Schema::SELF)
     //->onCall('serviceNeeded')->injectWithServices('yataa')
 
-->registerService('yataa', 'Spiral\\tests\\Yataa')
+->registerService('yataa', 'Spiral\Tests\Yataa')
 
 ;
 $container = new Container($schema);
