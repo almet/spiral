@@ -1,6 +1,7 @@
-\.orig$
-\.orig\..*$
 \.chg\..*$
 \.rej$
 \.conflict\~$
+www/.htaccess
+\.orig$
+\.orig\..*$
 /.project
