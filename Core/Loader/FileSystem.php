@@ -19,6 +19,9 @@ class FileSystem{
     public static function autoload($className){
         $tab = explode('\\', str_replace('Spiral\\','',$className));
         $path = SITE_PATH.implode(DIRECTORY_SEPARATOR, $tab) . '.php';
+        if (!file_exists($path)){
+            throw new \Spiral\Core\Exception('Unable to load '.$className.' path '.$path.' doesnt exists');
+        }
         require($path);
     }
 }
