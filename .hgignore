@@ -4,4 +4,4 @@
 www/.htaccess
 \.orig$
 \.orig\..*$
-/.project
+.project
