@@ -1,5 +1,4 @@
 DI Component
-    - allow to refer to services on the fly ($sc->forClass('Test')->onCall('MyMethod')->addServiceArgument('toto');
     - process all FIXME / TODO
     - write tests
     - write doc
