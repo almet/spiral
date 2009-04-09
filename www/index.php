@@ -1,7 +1,8 @@
 <?php
 use Spiral\Core\Di\Schema as Schema;
-use Spiral\tests\Youpa as Youpa;
+use Spiral\Core\Di\Container as Container;
 require_once('../Core/ini.php');
+
 $schema = new Schema();
 
 $schema
@@ -9,12 +10,11 @@ $schema
     ->onConstruct()->injectWith("content injected in youpi constructor \n", 'appel dynamique')
     ->onCall('myMethod')->injectWith('injection', 'de', 'methode dynamique')
     ->onStaticCall('Spiral\\tests\\Yataa', 'myStaticMethod')->injectWith(Schema::SELF)
-    ->onCall('serviceNeeded')->injectWithServices('yataa')
+    //->onCall('serviceNeeded')->injectWithServices('yataa')
 
 ->registerService('yataa', 'Spiral\\tests\\Yataa')
 
 ;
-$container = new Spiral\Core\Di\Container($schema);
-$injectedObject = $container->testClass;
-$injectedObject->test();
+$container = new Container($schema);
+$container->testClass->test();
 ?>
