@@ -1,0 +1,4 @@
+<?php
+namespace Spiral\Core\Di\Service;
+
+

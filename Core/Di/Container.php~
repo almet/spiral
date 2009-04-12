@@ -5,7 +5,7 @@ namespace Spiral\Core\Di;
  * 
  *
  */
-interface IContainer
+interface Container
 {
     /**
      * set the schema object given in parameter

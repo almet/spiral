@@ -9,7 +9,7 @@ namespace   Spiral\Core\Di\Service;
  * @author    Alexis Métaireau    8 Apr. 2009
  */
 
-class MethodStatic extends Method
+class Method_Static extends Method_Default
 {    
 
     /** 
