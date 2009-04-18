@@ -1,6 +1,5 @@
 <?php
-namespace Spiral\Core\Di;
-use \Spiral\Core\Transfer\Collection\Collection as Collection;
+namespace spiral\core\di;
 /**
  * DI Schema
  *
@@ -13,51 +12,16 @@ use \Spiral\Core\Transfer\Collection\Collection as Collection;
  * $schema->registerService('myObj','myClass')->call('method')->with(array('parameters'));
  * </code>
  * 
- * @package     Spiral\Core\Di
  * @author      Alexis Métaireau 30 mar. 2009
  */
-class Schema_Default implements Schema{
-
-    /**
-     * Constants that's represents the current resolved object.
-     * Used in with() method.
-     */
-    const   ACTIVE_SERVICE = 'SPIRAL_DI_ACTIVE_SERVICE';
-    
-    /**
-     * Store the collection of all registered classes
-     *
-     * @var ICollection
-     */
-    protected $_collection      = null;
+class SchemaFluent_Default implements SchemaFluent{
     
     /**
      * Array of active objects
      *
      * @var Array
      */
-    protected $_activeServices   = null;
-    
-    /**
-     * Set up the Collection used to store 
-     * classes ojects
-     *
-     * @return void
-     */
-    public function __construct(){
-        $this->_collection = new Collection();
-    }
-    
-    /**
-     * Add a service to the schema and set it as the active one
-     *
-     * @param   string  $key        the name of the service to register
-     * @param   string  $service    the service itself
-     * @return  void
-     */
-    protected function _addService($key, $service){
-        $this->_collection->setElement($key, $service);
-    }
+    protected $_activeServices = null;
     
     /**
      * Return all active objects
@@ -83,7 +47,7 @@ class Schema_Default implements Schema{
     
     /**
      * Check out if a service with the given name
-     * is already stored in the collection and return it. 
+     * is already registred and return it.
      * If not, create a new one, store and return it
      *
      * @param   string  $key        name of the wanted service
@@ -91,8 +55,8 @@ class Schema_Default implements Schema{
      * @return  Object
      */
     protected function _getService($key, $className){
-        if ($this->_collection->hasElement($key)){
-            $service = $this->_collection->getElement($key);
+        if (array_key_exists($key, $this->_registredServices)){
+            $service = $this->_registredServices[$key];
         } else {
             $service = new Service($key, $className);
             $this->_addService($key, $service);
@@ -134,7 +98,7 @@ class Schema_Default implements Schema{
      * @param   string  $methodName
      * @return  Schema
      */
-    public function onCall($methodName){
+    public function call($methodName){
         $this->_processActiveServices(
             function($service) use ($methodName){
                 $service->call($methodName);
@@ -142,7 +106,7 @@ class Schema_Default implements Schema{
         return $this;
     }
     
-    public function onStaticCall($className, $methodName){
+    public function staticCall($className, $methodName){
         $this->_processActiveServices(
             function($service) use ($methodName, $className){
                 $service->call($methodName, $className);
@@ -155,7 +119,7 @@ class Schema_Default implements Schema{
      *
      * @return  Schema
      */
-    public function onConstruct(){
+    public function construct(){
         $this->onCall('__construct');
         return $this;
     }
@@ -237,7 +201,11 @@ class Schema_Default implements Schema{
 	 * @return	mixed
 	 */
 	public function getElement($name){
-	    return $this->_collection->getElement($name);
+        if (array_key_exists($name,$this->_registredServices)){
+            return $this->_registredServices[$name];
+        } else {
+            throw new exception\UnknownService($name);
+        }
 	}
 }
 ?>

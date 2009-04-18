@@ -1,9 +1,9 @@
 <?php
-namespace Spiral\Core\Di;
+namespace spiral\core\di;
 /**
  * Interface for the Container
- * 
  *
+ * @author  Alexis Métaireau    16 apr. 2009
  */
 interface Container
 {

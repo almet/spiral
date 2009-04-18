@@ -1,24 +1,24 @@
 <?php
-use Spiral\Core\Di\Schema as Schema;
-use Spiral\Core\Di\Container as Container;
-require_once('../Core/ini.php');
+use spiral\core\di\Schema as Schema;
+use spiral\core\di\Container as Container;
+require_once('../core/ini.php');
 try{
     
     $schema = new Schema();
 
     $schema
-    ->registerService('testClass', 'Spiral\Tests\ToInject')
+    ->registerService('testClass', 'spiral\tests\ToInject')
         ->onConstruct()->injectWith("content injected in youpi constructor \n", 'appel dynamique')
         ->onCall('myMethod')->injectWith('injection', 'de', 'methode dynamique')
-        ->onStaticCall('Spiral\Tests\Yataa', 'myStaticMethod')->injectWith(Schema::ACTIVE_SERVICE)
+        ->onStaticCall('spiral\tests\yataa', 'myStaticMethod')->injectWith(Schema::ACTIVE_SERVICE)
         ->onCall('serviceNeeded')->injectWithServices('yataa')
 
-    ->registerService('yataa', 'Spiral\Tests\Yataa')
+    ->registerService('yataa', 'spiral\tests\Yataa')
 
     ;
     $container = new Container($schema);
     $container->testClass->test();
-} catch(\Spiral\Core\Exception $e){
+} catch(\spiral\core\Exception $e){
     $e->display();
 }
 ?>

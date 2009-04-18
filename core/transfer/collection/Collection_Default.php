@@ -1,14 +1,13 @@
 <?php
-namespace Spiral\Core\Transfer\Collection;
+namespace spiral\core\transfer\collection;
+
 /**
  * Default implementation of an elements collection
  *
- * @package		spiral
- * @subpackage	core.utils
  * @author		Frédéric Sureau <frederic.sureau@gmail.com>
- * @contributor Alexis Metaireau <ametaireau@gmail.com>
+ * @author      Alexis Metaireau <ametaireau@gmail.com>
  */
-class Collection implements ICollection
+class Collection_Default implements Collection
 {
 	/**
 	 * Elements of the collection

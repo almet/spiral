@@ -1,5 +1,6 @@
 <?php
-namespace Spiral\Core\Di;
+namespace spiral\core\di;
+
 /**
  * Interface for objects that need to have an instance of the Injector
  */

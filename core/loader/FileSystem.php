@@ -17,10 +17,10 @@ class FileSystem{
      * @return  void
      */
     public static function autoload($className){
-        $tab = explode('\\', str_replace('Spiral\\','',$className));
+        $tab = explode('\\', str_replace('spiral\\','',$className));
         $path = SITE_PATH.implode(DIRECTORY_SEPARATOR, $tab) . '.php';
         if (!file_exists($path)){
-            throw new \Spiral\Core\Exception('Unable to load '.$className.' path '.$path.' doesnt exists');
+            throw new \spiral\core\Exception('Unable to load '.$className.' path '.$path.' doesnt exists');
         }
         require($path);
     }

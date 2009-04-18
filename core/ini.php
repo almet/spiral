@@ -15,6 +15,6 @@ define('SITE_PATH', dirname(__FILE__).'/../');
 set_include_path(SITE_PATH);
 
 // register the autoload
-require_once('Core/Loader/FileSystem.php');
+require_once('core/loader/FileSystem.php');
 spl_autoload_register(array('FileSystem', 'autoload'));
 ?>

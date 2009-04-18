@@ -1,6 +1,0 @@
-DI Component
-    - process all FIXME / TODO
-    - write tests
-    - write doc
-    - write a component that doesn't use php 5.3 (namespaces, anonymous functions)
-

@@ -1,6 +1,6 @@
 <?php
-namespace Spiral\Core\Di;
-use spiral\Core\Di\Service\Method as Method;
+namespace spiral\core\di;
+
 /**
  * the container is the class that store all
  * initialized objects, and can call the schema 

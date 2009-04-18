@@ -5,3 +5,6 @@ www/.htaccess
 \.orig$
 \.orig\..*$
 .project
+
+syntax: glob
+*~

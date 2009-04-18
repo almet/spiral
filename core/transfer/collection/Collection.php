@@ -1,5 +1,5 @@
 <?php
-namespace Spiral\Core\Transfer\Collection;
+namespace spiral\core\transfer\collection;
 
 /**
  * Collection of elements
@@ -8,7 +8,7 @@ namespace Spiral\Core\Transfer\Collection;
  * 
  * @author		Frédéric Sureau <frederic.sureau@gmail.com>
  */
-interface ICollection
+interface Collection
 {
 	/**
 	 * Getter
