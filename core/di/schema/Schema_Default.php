@@ -1,13 +1,16 @@
 <?php
-namespace spiral\core\di;
+namespace spiral\core\di\schema;
 
 /**
- * Interface for a Schema class
+ * Default implementation of Schema.
  *
- * @package     Spiral/Core/Di
- * @auhtor      Alexis Métaireau 1 Apr. 2009
+ * See the interface for further information / documentation.
+ * 
+ * @author  	Alexis Métaireau    08 apr. 2009
+ * @copyright	Alexis Metaireau 	2009
+ * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class Schema_Default implements Schema, Traversable, ArrayAccess, Countable{
+class Schema_Default implements Schema{
 
     /**
      * Array containing all registred services
@@ -16,58 +19,89 @@ class Schema_Default implements Schema, Traversable, ArrayAccess, Countable{
      */
     protected $_registredServices = array();
     
-    /**
-     * create and set the active object.
-     * 
-     * @param   string  $key
-     * @param   string  $className
-     * @return  Service
-     */
-    public function setService($key, Service $service){
+    
+    protected $_count = 0;
+    
+    public function registerService(Service $service, $key = null)
+    {
+		if ($key == null)
+		{
+			$key = $service->getName();
+		}
+		
         $this->_registredServices[$key] = $service;
     }
-	
-	/**
-	 * Return a registred service
-	 *
-	 * @param	string	$key
-	 * @return	Service
-     * @throws  UnknownService
-	 */
-	public function getService($key){
-        if (!$this->hasService($key)){
-            throw new Exception\UnknownService($key);
+
+	public function getService($key)
+	{
+        if (!$this->hasService($key))
+        {
+            throw new exception\UnknownService($key);
         }
         
         return $this->_registredServices[$key];
     }
 
-    public function getRegistredServices(){
+    public function getRegistredServices()
+    {
         return $this->_registredServices;
     }
 
-    public function hasService($key){
+    public function hasService($key)
+    {
         return array_key_exists($key, $this->_registredServices);
     }
 
-    public function unsetService($key){
-        unset($this->_registredServices[$key]);
+    public function unsetService($key)
+    {
+        // not implemented
     }
 
-    public function offsetExists($offset){
+    public function offsetExists($offset)
+    {
         return $this->hasService($offset);
     }
 
-    public function offsetGet($offset){
+    public function offsetGet($offset)
+    {
         return $this->getService($offset);
     }
     
-    public function offsetSet($offset, $value){
-        return $this->setService($offset, $value);
+    public function offsetSet($offset, $value)
+    {
+        return $this->registerService($value, $offset);
     }
     
-    public function offsetUnset($offset){
+    public function offsetUnset($offset)
+    {
         $this->unsetService($offset);
     }
+	
+	public function rewind()
+	{
+		reset($this->_registredServices);
+		$this->_count = count($this->_registredServices);
+	}
+
+	public function key()
+	{
+		return key($this->_registredServices);
+	}
+
+	public function current()
+	{
+		return current($this->_registredServices);
+	}
+
+	public function next()
+	{
+		next($this->_registredServices);
+		--$this->_count;
+	}
+
+	public function valid()
+	{
+		return $this->_count > 0;
+	}
 }
 ?>

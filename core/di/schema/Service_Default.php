@@ -1,5 +1,6 @@
 <?php
-namespace Spiral\Core\Di;
+namespace spiral\core\di\schema;
+use \spiral\core\di\schema\exception\UnknownMethod as UnknownMethod;
 
 /**
  * The Service class allow to store the state and the configuration of
@@ -25,6 +26,13 @@ class Service_Default implements Service {
     protected $_className  = null;
     
     /**
+     * internal counter
+     * 
+     * @var 	int
+     */
+    protected $_count = 0;
+    
+    /**
      * the array representing the set of methods avalaible for this Service
      *
      * @var Array
@@ -36,28 +44,88 @@ class Service_Default implements Service {
         $this->_className  = $class;
     }
 
-    public function registerMethod($name, Method $method){
-		$this->_registredMethods[$name] = $method;
+    public function registerMethod(Method $method, $key = null){
+		if ($key == null){
+			$key = $method->getName();
+		}
+		
+		$this->_registredMethods[$key] = $method;
 	}
 
     public function getMethod($name){
 		if (!array_key_exists($name, $this->_registredMethods)){
-			throw new exception\UnknownMethod($name);
+			throw new UnknownMethod($name);
 		}
 		return $this->_registredMethods[$name];
 	}
 
     public function getRegistredMethods(){
-		$this->_registredMethods;
+		return $this->_registredMethods;
 	}
     
     public function getClassName(){
         return $this->_className;
     }
 
-	public function getServiceName(){
+	public function getName(){
 		return $this->_serviceName;
 	}
+
+	public function setName($name){
+		$this->_serviceName = $name;
+	}
+	
+	public function offsetExists($offset)
+    {
+    	try{
+    		$this->getMethod($offset);
+    		return true;
+    	} catch(UnknownMethod $e){
+    		return false;
+    	}
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->getMethod($offset);
+    }
+    
+    public function offsetSet($offset, $value)
+    {
+        return $this->registerMethod($value, $offset);
+    }
+    
+    public function offsetUnset($offset)
+    {
+        // not implemented
+    }
+	
+	public function rewind()
+	{
+		reset($this->_registredMethods);
+		$this->_count = count($this->_registredMethods);
+	}
+
+	public function key()
+	{
+		return key($this->_registredMethods);
+	}
+
+	public function current()
+	{
+		return current($this->_registredMethods);
+	}
+
+	public function next()
+	{
+		next($this->_registredMethods);
+		--$this->_count;
+	}
+
+	public function valid()
+	{
+		return $this->_count > 0;
+	}	
 }
 
 ?>

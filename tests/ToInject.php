@@ -1,5 +1,5 @@
 <?php
-namespace Spiral\tests;
+namespace spiral\tests;
 
 class ToInject{
     protected $_dynamicContent;

@@ -1,5 +1,5 @@
 <?php
-namespace Spiral\tests;
+namespace spiral\tests;
 
 /**
  * Yataa
@@ -8,9 +8,9 @@ namespace Spiral\tests;
  * @author    Alexis Métaireau    8 Apr. 2009
  */
 
-class Yataa
+class StaticClass
 {    
-    public static function myStaticMethod(ToInject $obj){
+    public static function myStaticMethod(Service $obj){
         echo "la methode statique à bien été apellée avec l'objet ".get_class($obj)." en parametre \n";
     }
 }

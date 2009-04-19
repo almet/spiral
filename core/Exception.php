@@ -1,5 +1,5 @@
 <?php
-namespace Spiral\Core;
+namespace spiral\core;
 /**
  * Description of Exception
  *

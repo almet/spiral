@@ -4,9 +4,26 @@ namespace spiral\core\di\schema;
 /**
  * Service interface
  *
- * @author  Alexis Métaireau    16 apr. 2009
+ * A service represents a way to instanciate a class, so it's composed of
+ * - a service name
+ * - a class name
+ * - some methods objects
+ *
+ * It's just a container useful to describe how a service must be build
+ * 
+ * Here's an exemple of use:
+ *
+ * <code>
+ * $service = new Service('serviceName', 'className');
+ * // supposing that $method is a Method instance
+ * $service->registerMethod($method);
+ * </code>
+ *
+ * @author  	Alexis Métaireau    16 apr. 2009
+ * @copyright	Alexis Metaireau 	2009
+ * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface Service {
+interface Service extends \Iterator, \ArrayAccess{
 
 	/**
 	 * Register a new service
@@ -14,16 +31,16 @@ interface Service {
 	 * @param	string	$serviceName
 	 * @param	string	$className
 	 */
-	public function __construct($serviceName, $className);
+	public function __construct($service, $className);
 
     /**
      * Set the method to call
      * 
-     * @param   string  $name
      * @param   Method  $method
+	 * @param	$key
      * @return  void
      */
-    public function registerMethod($name, Method $method);
+    public function registerMethod(Method $method, $key = null);
 
     /**
      * Return the method corresponding to the name
@@ -53,6 +70,13 @@ interface Service {
 	 * 
 	 * @return	string
 	 */
-	public function getServiceName();
+	public function getName();
+
+	/**
+	 * Set the service name
+	 * 
+	 * @param	string	$name
+	 */
+	public function setName($name);
 }
 ?>
