@@ -4,7 +4,7 @@ namespace spiral\core\di\schema;
 /**
  * Default implementation of Schema.
  *
- * See the interface for further information / documentation.
+ * See the interface for further information.
  * 
  * @author  	Alexis Métaireau    08 apr. 2009
  * @copyright	Alexis Metaireau 	2009

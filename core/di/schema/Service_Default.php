@@ -6,7 +6,11 @@ use \spiral\core\di\schema\exception\UnknownMethod as UnknownMethod;
  * The Service class allow to store the state and the configuration of
  * the representation of Service and classes we want to call
  *
- * @author      ametaireau 30 mars 2009
+ * See the interface for further information.
+ *
+ * @author  	Alexis Métaireau    30 mar. 2009
+ * @copyright	Alexis Metaireau 	2009
+ * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
 
 class Service_Default implements Service {

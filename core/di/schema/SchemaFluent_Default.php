@@ -6,6 +6,8 @@ namespace spiral\core\di;
  * This part of the Dependency callor represents the mapping between all classes, 
  * and their parameters
  *
+ * See the interface for further information. 
+ *
  * Here is an example of how to use this class:
  * <code>
  * $schema = new Schema();
