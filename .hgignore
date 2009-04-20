@@ -5,7 +5,12 @@ www/.htaccess
 \.orig$
 \.orig\..*$
 .project
+
 syntax: glob
 *~
 nbproject/*
 tests/*
+
+syntax: regexp
+^tests$
+^nbproject$
