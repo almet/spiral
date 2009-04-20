@@ -5,6 +5,6 @@ www/.htaccess
 \.orig$
 \.orig\..*$
 .project
-tests\*
+\tests\
 syntax: glob
 *~
