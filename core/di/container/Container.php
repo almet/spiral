@@ -20,44 +20,45 @@ use \spiral\core\di\schema\Schema,
  * $serv = $container->serviceName;
  * </code>
  * 
- * @author  	Alexis Métaireau    16 apr. 2009
- * @copyright	Alexis Metaireau 	2009
+ * @author		Alexis Métaireau	16 apr. 2009
+ * @copyright	Alexis Metaireau	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
 interface Container
 {
- /**
-     * set the schema object given in parameter
-     *
-     * @param   Schema 	$schema
-     * @param	Loader	$loader
-     * @return  void
-     */
-    public function __construct(Schema $schema, Loader $loader = null);
-    
-    /**
-     * Call all dynamic registered methods
-     *
-     * @param   array   $methods    methods to call
-     * @param   mixed   $object object to act on
-     * @return  void
-     */
-    public function injectMethods($methods, $object);
-    
-    /**
-     * Resolve all dependencies and return the 
-     * injected service object
-     *
-     * @param   string  $key
-     * @return  mixed
-     */
-    public function getService($key);
+	
+	/**
+	 * set the schema object given in parameter
+	 *
+	 * @param	Schema	$schema
+	 * @param	Loader	$loader
+	 * @return	void
+	 */
+	public function __construct(Schema $schema, Loader $loader = null);
+	
+	/**
+	 * Call all dynamic registered methods
+	 *
+	 * @param	array	$methods	methods to call
+	 * @param	mixed	$object 	object to act on
+	 * @return	void
+	 */
+	public function injectMethods($methods, $object);
+	
+	/**
+	 * Resolve all dependencies and return the 
+	 * injected service object
+	 *
+	 * @param	string	$key
+	 * @return	mixed
+	 */
+	public function getService($key);
 
 	/**
-     * Magic method get.
-     *
-     * Alias of getService()
-     */
-    public function __get($key);
+	 * Magic method get.
+	 *
+	 * Alias of getService()
+	 */
+	public function __get($key);
 }
 ?>

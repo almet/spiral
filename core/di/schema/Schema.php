@@ -27,24 +27,24 @@ namespace spiral\core\di\schema;
  * }
  * </code>
  *
- * @author  	Alexis Métaireau    01 apr. 2009
+ * @author  	Alexis Métaireau	01 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
 interface Schema extends \Iterator, \ArrayAccess{
-    /**
-     * Constants that's represents the current resolved object.
-     */
-    const   ACTIVE_SERVICE = 'SPIRAL_DI_ACTIVE_SERVICE';
+	/**
+	 * Constants that's represents the current resolved object.
+	 */
+	const   ACTIVE_SERVICE = 'SPIRAL_DI_ACTIVE_SERVICE';
 
-    /**
-     * create and set the active object.
-     *
+	/**
+	 * create and set the active object.
+	 *
 	 * @param	Service	$service
-     * @param   string  $key
-     * @return  void
-     */
-    public function registerService(Service $service, $key = null);
+	 * @param   string  $key
+	 * @return  void
+	 */
+	public function registerService(Service $service, $key = null);
 	
 	/**
 	 * Return a registred service
@@ -54,11 +54,11 @@ interface Schema extends \Iterator, \ArrayAccess{
 	 */
 	public function getService($key);
 
-    /**
-     * Return an array of all registred services
-     *
-     * @return  Array
-     */
-    public function getRegistredServices();
+	/**
+	 * Return an array of all registred services
+	 *
+	 * @return  Array
+	 */
+	public function getRegistredServices();
 }
 ?>

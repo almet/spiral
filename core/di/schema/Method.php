@@ -31,7 +31,7 @@ namespace spiral\core\di\schema;
  * }
  * </code>
  *
- * @author  	Alexis Métaireau    16 apr. 2009
+ * @author  	Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
@@ -51,28 +51,28 @@ interface Method extends \Iterator, \ArrayAccess{
 	 */
 	public function __construct($methodName, $className=null);
 	
-    /** 
-     * Set the method name of the method
-     * 
-     * @param   String  $name
-     * @return  void
-     */
-    public function setName($name);
-    
-    /**
-     * Return the method name
-     * 
-     * @return string
-     */
-    public function getName();
-    
-    /**
-     * Add an argument to the list of arguments
-     * 
-     * @param   mixed   $argument
-     * @return  void
-     */    
-    public function addArgument($argument, $asService=false);
+	/** 
+	 * Set the method name of the method
+	 * 
+	 * @param   String  $name
+	 * @return  void
+	 */
+	public function setName($name);
+	
+	/**
+	 * Return the method name
+	 * 
+	 * @return string
+	 */
+	public function getName();
+	
+	/**
+	 * Add an argument to the list of arguments
+	 * 
+	 * @param   mixed   $argument
+	 * @return  void
+	 */	
+	public function addArgument($argument, $asService=false);
 
 	/**
 	 * Return the complete list of arguments, formated like this:
@@ -86,22 +86,22 @@ interface Method extends \Iterator, \ArrayAccess{
 	 *
 	 * @param	array
 	 */
-    public function getArguments();
+	public function getArguments();
 
 	/**
-     * Set the name of the class
-     *
-     * @param   String  $className
-     * @return  void
-     */
-    public function setClass($className);
+	 * Set the name of the class
+	 *
+	 * @param   String  $className
+	 * @return  void
+	 */
+	public function setClass($className);
 
-    /**
-     * Returns the name of the class
-     *
-     * @return  String
-     */
-    public function getClass();
+	/**
+	 * Returns the name of the class
+	 *
+	 * @return  String
+	 */
+	public function getClass();
 	
 	/**
 	 * Return the argument thanks to the key (ie. arg number)
