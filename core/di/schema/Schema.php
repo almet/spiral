@@ -31,7 +31,8 @@ namespace spiral\core\di\schema;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface Schema extends \Iterator, \ArrayAccess{
+interface Schema extends \Iterator, \ArrayAccess
+{
 	/**
 	 * Constants that's represents the current resolved object.
 	 */

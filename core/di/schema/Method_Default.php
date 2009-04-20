@@ -11,7 +11,8 @@ use exception\UnknownArgument;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class Method_Default implements Method{
+class Method_Default implements Method
+{
 	
 	/** 
 	 * Store the name of the method
@@ -42,71 +43,89 @@ class Method_Default implements Method{
 	 */
 	protected $_isStatic = false;
 	
-	public function __construct($methodName, $className=null){
+	public function __construct($methodName, $className=null)
+	{
 		$this->setName($methodName);
-		if ($className != null){
+		if ($className != null)
+		{
 			$this->setClass($className);
 		}
 	}
 	
-	public function setName($name){
+	public function setName($name)
+	{
 		$this->_methodName = $name;
 	}
 	
-	public function getName(){
+	public function getName()
+	{
 		return $this->_methodName;
 	}
   
-	public function addArgument($argument, $asService=false){
-		if ($asService){
+	public function addArgument($argument, $asService=false)
+	{
+		if ($asService)
+		{
 			$this->_arguments[] = array($argument, Method::ARG_IS_SERVICE);
-		} else {
+		} else 
+		{
 			$this->_arguments[] = array($argument, Method::ARG_IS_NOT_SERVICE);
 		}
 	}
 
-	public function getArguments(){
+	public function getArguments()
+	{
 		return $this->_arguments;
 	}
 	
-	public function getArgument($key){
-		if (!array_key_exists($key, $this->_arguments)){
+	public function getArgument($key)
+	{
+		if (!array_key_exists($key, $this->_arguments))
+		{
 			throw new UnknownArgument($key);
 		}
 		return $this->_arguments[$key];
 	}
 
-	public function isStatic(){
+	public function isStatic()
+	{
 		return $this->_isStatic;
 	}
 
-	public function setClass($className){
+	public function setClass($className)
+	{
 		$this->_isStatic = true;
 		$this->_className = $className;
 	}
 
-	public function getClass(){
+	public function getClass()
+	{
 		return $this->_className;
 	}
 
-	public function offsetExists($offset){
+	public function offsetExists($offset)
+	{
 		try{
 			$this->getArgument($offset);
 			return true;
-		} catch (UnknownArgument $e){
+		} catch (UnknownArgument $e)
+		{
 			return false;
 		}
 	}
 
-	public function offsetGet($offset){
+	public function offsetGet($offset)
+	{
 		return $this->getArgument($offset);
 	}
 	
-	public function offsetSet($offset, $value){
+	public function offsetSet($offset, $value)
+	{
 		// not implemented
 	}
 	
-	public function offsetUnset($offset){
+	public function offsetUnset($offset)
+	{
 		// not implemented
 	}
 	

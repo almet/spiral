@@ -1,15 +1,42 @@
 <?php
-namespace spiral\core\di;
+namespace spiral\core\di\schema;
 
 /**
- * Facade for the schema that support fluent interface
+ * Facade for the schema supporting fluent interface
+ * 
+ * So, you can view it as a facility to manipulate the schema classes. 
  *
- * @package	 Spiral/Core/Di
- * @auhtor	  Alexis Métaireau 16 apr. 2009
+ * <code>
+ * $schema
+ * ->registerService('test', 'spiral\tests\ToInject')
+ * ->registerService('test2', 'spiral\tests\ToInject')
+ *		->construct()->with('arg1', 'arg2');
+ *		->call('method')->withService('service')
+ *		->etc.
+ * </code>
+ *
+ * And, when the schema is complete, you can retreive it by calling the 
+ * getSchema() method.
+ *
+ * @author  	Alexis Métaireau	20 apr. 2009
+ * @copyright	Alexis Metaireau 	2009
+ * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface SchemaFluent{
+interface SchemaFluent
+{
+
 	/**
-	 * create and set the active object.
+	 * By default the constructor depends on a SchemaResolver implementation, 
+	 * that is useful to tell us what implementation of schema classes will be
+	 * used
+	 *
+	 * @param	SchemaResolver	$resolver
+	 * @return	void
+	 */
+	public function __construct(SchemaResolver $resolver);
+
+	/**
+	 * Register a service, set it as the active object
 	 * 
 	 * @param   string  $key
 	 * @param   string  $className
@@ -18,22 +45,22 @@ interface SchemaFluent{
 	public function registerService($key, $className);
 	
 	/**
-	 * Set the method to call.
+	 * Create a new method to call, add it to the schema
+	 * and add it to the active methods
 	 *
 	 * @param   string  $methodName
 	 * @return  SchemaFuent
 	 */
 	public function call($methodName);
 	
-	
 	/**
-	 * Set a static method to call
+	 * Set a static method call
 	 *
 	 * @param   string  $className
 	 * @param   string  $methodName
 	 * @return  SchemaFluent
 	 */
-	public function staticCall($className, $methodName);
+	public function callStatic($className, $methodName);
 	
 	/**
 	 * alias for 'call' for a constructor.
@@ -43,15 +70,15 @@ interface SchemaFluent{
 	public function construct();
 	
 	/**
-	 * inject all given params to active objects
+	 * use all given params as param for active method objects
 	 *
 	 * @param   mixed
 	 * @return  SchemaFluent
 	 */
-	public function injectWith();
+	public function with();
 	
 	/**
-	 * call all the given parameters to the active Objects
+	 * use array $parameters as param for active method objects
 	 *
 	 * @param   array   $parameters
 	 * @param   Bool	$asService  Specify if the given parameters has to be used as services
@@ -69,15 +96,15 @@ interface SchemaFluent{
 	public function addArgument($parameter, $asService);
 	
 	/**
-	 * inject all given params to active objects 
+	 * same as with, for services.
 	 *
 	 * @param   mixed
 	 * @return  SchemaFluent
 	 */
-	public function injectWithServices();
+	public function withServices();
 	
 	/**
-	 * Alias for setArgument, for services
+	 * same as setArguments, for services
 	 * 
 	 * @param   array   $parameters
 	 * @return  SchemaFluent
@@ -85,7 +112,7 @@ interface SchemaFluent{
 	public function setArgumentsAsServices($parameters);
 	
 	/**
-	 * Alias for addArgument, for a service
+	 * same as addArgument, for services
 	 * 
 	 * @param   string   $parameter
 	 * @return  SchemaFluent

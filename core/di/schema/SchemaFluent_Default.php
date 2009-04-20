@@ -1,38 +1,83 @@
 <?php
-namespace spiral\core\di;
+namespace spiral\core\di\schema;
 /**
- * DI Schema
- *
- * This part of the Dependency callor represents the mapping between all classes, 
- * and their parameters
+ * Default implementation of SchemaFluent interface
  *
  * See the interface for further information. 
- *
- * Here is an example of how to use this class:
- * <code>
- * $schema = new Schema();
- * $schema->registerService('myObj','myClass')->call('method')->with(array('parameters'));
- * </code>
  * 
- * @author	  Alexis Métaireau 30 mar. 2009
+ * @author  	Alexis Métaireau	20 apr. 2009
+ * @copyright	Alexis Metaireau 	2009
+ * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class SchemaFluent_Default implements SchemaFluent{
-	
+class SchemaFluent_Default implements SchemaFluent
+{
 	/**
-	 * Array of active objects
+	 * Array of active services
 	 *
 	 * @var Array
 	 */
-	protected $_activeServices = null;
+	protected $_activeServices = array();
 	
 	/**
-	 * Return all active objects
-	 *
-	 * @return  array
+	 * Array of active method
+	 * 
+	 * @var array
 	 */
-	protected function _getActiveServices(){
+	protected $_activeMethods = array();
+	
+	/**
+	 * Resolver for the schema classes
+	 *
+	 * @var	SchemaResolver
+	 */
+	protected $_resolver = null;
+	
+	/**
+	 * The schema object
+	 *
+	 * @var	Schema
+	 */
+	protected $_schema = null;
+	
+	/**
+	 * register the last method call type
+	 *
+	 * @var	string
+	 */
+	protected $_lastCall = 'service';
+	
+	/**
+	 * By default, if no resolver is set, the resolver is set to the default 
+	 * SchemaResolver implementation
+	 *
+	 * @param	SchemaResolver	$resolver
+	 * @return	void
+	 */
+	public function __construct(SchemaResolver $resolver = null)
+	{
+		if ($resolver == null)
+		{
+			$resolver = new SchemaResolver_Default();
+		}
+		
+		$this->_resolver = $resolver;
+		
+		// create the schema object and store it
+		$schemaClass = $this->_resolver->resolveSchema();
+		$this->_schema = new $schemaClass();
+	}
+	
+	/**
+	 * Return all active services for now, in an array, or null if no active 
+	 * service is registred
+	 *
+	 * @return  array|null
+	 */
+	protected function _getActiveServices()
+	{
 		// if we have a single object to return, build an array with it
-		if (!is_array($this->_activeServices) && !empty($this->_activeServices)){
+		if (!is_array($this->_activeServices) && !empty($this->_activeServices))
+		{
 			$services = array($this->_activeServices);
 		
 		// otherwise, just return the array ..
@@ -40,7 +85,8 @@ class SchemaFluent_Default implements SchemaFluent{
 			$services = $this->_activeServices;
 		
 		// or nothin'
-		} else {
+		} else 
+		{
 			$services = null;
 		}
 		
@@ -48,23 +94,39 @@ class SchemaFluent_Default implements SchemaFluent{
 	}
 	
 	/**
-	 * Check out if a service with the given name
-	 * is already registred and return it.
-	 * If not, create a new one, store and return it
+	 * Check out if a service with the given name is already registred and 
+	 * return it when possible.
 	 *
-	 * @param   string  $key		name of the wanted service
-	 * @param   string  $className  classname of the service
-	 * @return  Object
+	 * If not, create a new one, store it and return it
+	 *
+	 * @param	string  $key		name of the wanted service
+	 * @param	string  $className  classname of the service
+	 * @return  Service
 	 */
-	protected function _getService($key, $className){
-		if (array_key_exists($key, $this->_registredServices)){
-			$service = $this->_registredServices[$key];
-		} else {
-			$service = new Service($key, $className);
-			$this->_addService($key, $service);
+	protected function _getService($key, $className)
+	{
+		if ($this->_lastCall != 'service')
+		{
+			$this->_activeServices = array();
 		}
-		// set it as active object
-		$this->_activeServices = $service;
+		
+		// if the service is registred, just return the one already registred
+		if (array_key_exists($key, $this->_schema))
+		{
+			$service = $this->_schema->getService($key);
+			
+		// of not, create a new one, and add it to the active object
+		} else 
+		{
+			$serviceClass = $this->_resolver->resolveService();
+			$service = new $serviceClass($key, $className);
+			$this->_schema->registerService($service);
+		}
+		// add it to the active services
+		$this->_activeServices[] = $service;
+		$this->_lastCall = 'service';
+				
+		// and return it
 		return $service;
 	}
 	
@@ -75,139 +137,145 @@ class SchemaFluent_Default implements SchemaFluent{
 	 * @param   Closure	 $anonymousFunction
 	 * @return  void
 	 */
-	protected function _processActiveServices($anonymousFunction){
-		foreach($this->_getActiveServices() as $service){
-			$anonymousFunction($service);
+	protected function _processArray($array, $anonymousFunction)
+	{
+		foreach($array as $element)
+		{
+			$anonymousFunction($element);
 		}
 	}
 	
+	/**
+	 * Register the given method, and add it to the activeMethod list
+	 * 
+	 * @param	Method	$method
+	 * @return	void
+	 */
+	protected function _registerMethod(Method $method)
+	{
+		if ($this->_lastCall != 'method')
+		{
+			$this->_activeMethods = array();
+		}
+		
+		$this->_processArray($this->_activeServices,
+			function($service) use ($method)
+			{
+				$service->registerMethod($method);
+			});
+		$this->_activeMethods[] = $method;
+		$this->_lastCall = 'method';
+	}
 	
 	/**
-	 * create and set the active object.
-	 * 
-	 * @param   string  $key
-	 * @param   string  $className
-	 * @return  Schema
+	 * Register a service (implement the SchemaFluent interface)
 	 */
-	public function registerService($key, $className){
+	public function registerService($key, $className)
+	{
 		$this->_getService($key, $className);
 		return $this;
 	}	
-	
+
 	/**
-	 * Set the method to call.
-	 *
-	 * @param   string  $methodName
-	 * @return  Schema
-	 */
-	public function call($methodName){
-		$this->_processActiveServices(
-			function($service) use ($methodName){
-				$service->call($methodName);
-			});   
-		return $this;
-	}
-	
-	public function staticCall($className, $methodName){
-		$this->_processActiveServices(
-			function($service) use ($methodName, $className){
-				$service->call($methodName, $className);
-			});   
+	 * Set a method to call (implement the SchemaFluent interface)
+	 */	
+	public function call($methodName)
+	{
+		$methodClass = $this->_resolver->resolveMethod();
+		$method = new $methodClass($methodName);
+		$this->_registerMethod($method); 
 		return $this;
 	}
 	
 	/**
-	 * call 'call' for a constructor.
-	 *
-	 * @return  Schema
+	 * Set a static method to call (implements the SchemaFluent interface)
 	 */
-	public function construct(){
-		$this->onCall('__construct');
+	public function callStatic($className, $methodName)
+	{
+		$methodClass = $this->_resolver->resolveMethod();
+		$method = new $methodClass($methodName, $className);
+		$this->_registerMethod($method); 
 		return $this;
 	}
 	
 	/**
-	 * inject all given params to active objects
-	 *
-	 * @param   mixed
-	 * @return  Schema
+	 * set a constructor method (implement the SchemaFluent interface)
+	 */	
+	public function construct()
+	{
+		$this->call('__construct');
+		return $this;
+	}
+	
+	/**
+	 * Use params as parameters for active methods 
+	 * (implement the SchemaFluent interface)
 	 */
-	public function injectWith(){
+	public function with()
+	{
 		return $this->setArguments(func_get_args());
 	}
 	
 	/**
-	 * call all the given parameters to the active Objects
-	 *
-	 * @param   array   $parameters
-	 * @param   Bool	$asService  Specify if the given parameters has to be used as services
-	 * @return  Container
-	 */
-	public function setArguments($parameters, $asService = false){
-		foreach($parameters as $parameter){
+	 * Use params as parameters for active methods 
+	 * (implement the SchemaFluent interface)
+	 */	
+	public function setArguments($parameters, $asService = false)
+	{
+		foreach($parameters as $parameter)
+		{
 			$this->addArgument($parameter, $asService);
 		}
 		return $this;
 	}
 	
-	
-	
 	/**
-	 * call the selected method(s) with given parameter
-	 *
-	 * @param   string  $parameter
-	 * @return  Container	 
-	 */
-	public function addArgument($parameter, $asService = false){
-		$this->_processActiveServices(
-			function($service) use ($parameter, $asService){
-				$service->addArgument($parameter, $asService);
+	 * Add an argument to active methods (implement the SchemaFluent interface)
+	 */	
+	public function addArgument($parameter, $asService = false)
+	{
+		$this->_processArray($this->_activeMethods,
+			function($method) use ($parameter, $asService)
+			{
+				$method->addArgument($parameter, $asService);
 			});   
+		$this->_lastCall = 'argument';
 		return $this;
 	}
-	
+
 	/**
-	 * inject all given params to active objects 
-	 *
-	 * @param   mixed
-	 * @return  Schema
-	 */
-	public function injectWithServices(){
+	 * Use params like services as parameters for active methods 
+	 * (implement the SchemaFluent interface)
+	 */	
+	public function withServices()
+	{
 		return $this->setArguments(func_get_args(), true);
 	}
 	
 	/**
-	 * Alias for setArgument, for services
-	 * 
-	 * @param   array   $parameters
-	 * @return  Schema
-	 */
-	public function setArgumentsAsServices($parameters){
+	 * Use params like services as parameters for active methods 
+	 * (implement the SchemaFluent interface)
+	 */	
+	public function setArgumentsAsServices($parameters)
+	{
 		return $this->setArguments($parameters, true);
 	}
 	
 	/**
-	 * Alias for addArgument, for a service
-	 * 
-	 * @param   string   $parameter
-	 * @return  Schema
-	 */
-	public function addArgumentAsService($parameter){
+	 * Add an argument as service to active methods 
+	 * (implement the SchemaFluent interface)
+	 */		
+	public function addArgumentAsService($parameter)
+	{
 		return $this->addArgument($parameters, true);
 	}
 	
 	/**
-	 * Return an element value 
-	 *
-	 * @param	string	$name	Element name
-	 * @return	mixed
-	 */
-	public function getElement($name){
-		if (array_key_exists($name,$this->_registredServices)){
-			return $this->_registredServices[$name];
-		} else {
-			throw new exception\UnknownService($name);
-		}
+	 * Return the Schema object (implement the SchemaFluent interface)
+	 */	
+	public function getSchema()
+	{
+		return $this->_schema;
 	}
 }
 ?>

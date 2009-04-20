@@ -10,7 +10,8 @@ namespace spiral\core\di\schema;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class Schema_Default implements Schema{
+class Schema_Default implements Schema
+{
 
 	/**
 	 * Array containing all registred services

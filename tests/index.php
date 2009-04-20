@@ -3,11 +3,20 @@ use spiral\core\di\schema\Schema_Default,
 	spiral\core\di\schema\Service_Default,
 	spiral\core\di\schema\Method_Default,
 	spiral\core\di\schema\Method_Static,
-	spiral\core\di\container\Container_Default;
+	spiral\core\di\container\Container_Default,
+	spiral\core\di\schema\SchemaFluent_Default;
 	
 require_once('../core/ini.php');
 try{
 
+	$mode = $_GET['mode'];
+	$mode = (empty($mode))? 'hand' : $mode;
+	
+################################################################################
+#		> Construct schema by hand
+################################################################################
+if ($mode == 'hand')
+{
 	// dynamic method
 	$method = new Method_Default('__construct');
 	$method->addArgument('arg1');
@@ -33,6 +42,25 @@ try{
 	$schema = new Schema_Default();
 	$schema->registerService($service);
 	$schema->registerService($service2);
+}
+################################################################################
+#		> Construct Schema automatically
+################################################################################
+elseif($mode == 'fluent')
+{
+	$fluent = new SchemaFluent_Default();
+	$schema = 
+	$fluent
+		->registerService('test', 'spiral\tests\ToInject')
+		    ->construct()->with('arg1', 'arg2')
+		    ->call('myMethod')->with('arg3', 'arg4', 'arg5')
+		    ->callStatic('spiral\tests\StaticClass', 'myStaticMethod')->withServices('service')
+		->registerService('service', 'spiral\tests\Service')
+		->getSchema();
+}
+################################################################################
+#		> Display
+################################################################################
 
 	echo '<pre>';
 	foreach($schema as $service){
@@ -51,29 +79,7 @@ try{
 	$container = new Container_Default($schema);
 	$container->test;
 	echo '</pre>';
-	// registerService('serviceName', 'className')->forInterface('Interface')->use('Implementation')
-	// ->callPattern('#regex#')->with('arg1', 'arg2');
-	/* is this line of Schema_Fluent:
-	 *
-	 * $schema->registerService('test', 'spiral\tests\ToInject')
-//        ->construct()->with('arg1', 'arg2');
-	 */
-	 
-	 //$container->getService('test');
 
-
-//    $schema
-//    ->registerService('testClass', 'spiral\tests\ToInject')
-//        ->construct()->with("content injected in youpi constructor \n", 'appel dynamique')
-//        ->call('myMethod')->with('injection', 'de', 'methode dynamique')
-//        ->callStatic('spiral\tests\yataa', 'myStaticMethod')->with(Schema::ACTIVE_SERVICE)
-//        ->call('serviceNeeded')->with('yataa')
-//
-//    ->registerService('yataa', 'spiral\tests\Yataa')
-//
-//    ;
-//    $container = new Container($schema);
-//    $container->testClass->test();
 } catch(\spiral\core\Exception $e){
     $e->display();
 }

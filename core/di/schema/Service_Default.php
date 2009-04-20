@@ -13,7 +13,8 @@ use \spiral\core\di\schema\exception\UnknownMethod as UnknownMethod;
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
 
-class Service_Default implements Service {
+class Service_Default implements Service
+{
 
 	/**
 	 * Store the name of the Service (ie. the key)
@@ -43,48 +44,59 @@ class Service_Default implements Service {
 	 */
 	protected $_registredMethods = array();
  
-	public function __construct($service, $class){
+	public function __construct($service, $class)
+	{
 		$this->_serviceName = $service;
 		$this->_className  = $class;
 	}
 
-	public function registerMethod(Method $method, $key = null){
-		if ($key == null){
+	public function registerMethod(Method $method, $key = null)
+	{
+		if ($key == null)
+		{
 			$key = $method->getName();
 		}
 		
 		$this->_registredMethods[$key] = $method;
 	}
 
-	public function getMethod($name){
-		if (!array_key_exists($name, $this->_registredMethods)){
+	public function getMethod($name)
+	{
+		if (!array_key_exists($name, $this->_registredMethods))
+		{
 			throw new UnknownMethod($name);
 		}
 		return $this->_registredMethods[$name];
 	}
 
-	public function getRegistredMethods(){
+	public function getRegistredMethods()
+	{
 		return $this->_registredMethods;
 	}
 	
-	public function getClassName(){
+	public function getClassName()
+	{
 		return $this->_className;
 	}
 
-	public function getName(){
+	public function getName()
+	{
 		return $this->_serviceName;
 	}
 
-	public function setName($name){
+	public function setName($name)
+	{
 		$this->_serviceName = $name;
 	}
 	
 	public function offsetExists($offset)
 	{
-		try{
+		try
+		{
 			$this->getMethod($offset);
 			return true;
-		} catch(UnknownMethod $e){
+		} catch(UnknownMethod $e)
+		{
 			return false;
 		}
 	}

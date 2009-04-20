@@ -35,7 +35,8 @@ namespace spiral\core\di\schema;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface Method extends \Iterator, \ArrayAccess{
+interface Method extends \Iterator, \ArrayAccess
+{
 
 	/**
 	 * Define if an argument is a service
