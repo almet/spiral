@@ -64,6 +64,9 @@ class Method_Default implements Method
   
 	public function addArgument($argument, $asService=false)
 	{
+		if ($argument == Schema::ACTIVE_SERVICE){
+			$asService = true;
+		}
 		if ($asService)
 		{
 			$this->_arguments[] = array($argument, Method::ARG_IS_SERVICE);

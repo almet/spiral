@@ -20,7 +20,6 @@ class Schema_Default implements Schema
 	 */
 	protected $_registredServices = array();
 	
-	
 	protected $_count = 0;
 	
 	public function registerService(Service $service, $key = null)
