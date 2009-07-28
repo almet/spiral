@@ -1,16 +1,16 @@
 <?php
 namespace \Spiral\Framework\DI\Schema\Builder;
-use \Spiral\framework\DI\Schema\Builder\Exception\EmptyXmlSourceException;
-use \Spiral\framework\DI\Schema\DefaultService;
-use \Spiral\framework\DI\Schema\FactoryService;
-use \Spiral\framework\DI\Schema\InheritedService;
-use \Spiral\framework\DI\Schema\DefaultMethod;
-use \Spiral\framework\DI\Schema\ServiceRefArgument;
-use \Spiral\framework\DI\Schema\UseRefArgument;
-use \Spiral\framework\DI\Schema\ActiveServiceArgument;
-use \Spiral\framework\DI\Schema\ContainerArgument;
-use \Spiral\framework\DI\Schema\DefaultArgument;
-use \Spiral\framework\DI\Schema\EmptyValueArgument;
+use \Spiral\Framework\DI\Schema\Builder\Exception\EmptyXmlSourceException;
+use \Spiral\Framework\DI\Schema\DefaultService;
+use \Spiral\Framework\DI\Schema\FactoryService;
+use \Spiral\Framework\DI\Schema\InheritedService;
+use \Spiral\Framework\DI\Schema\DefaultMethod;
+use \Spiral\Framework\DI\Schema\ServiceRefArgument;
+use \Spiral\Framework\DI\Schema\UseRefArgument;
+use \Spiral\Framework\DI\Schema\ActiveServiceArgument;
+use \Spiral\Framework\DI\Schema\ContainerArgument;
+use \Spiral\Framework\DI\Schema\DefaultArgument;
+use \Spiral\Framework\DI\Schema\EmptyValueArgument;
 
 /**
  * This specific builder convert an xml string into an schema object.
