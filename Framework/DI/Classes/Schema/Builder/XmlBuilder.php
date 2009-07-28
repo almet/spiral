@@ -1,16 +1,26 @@
 <?php
+namespace \Spiral\Framework\DI\Schema\Builder;
+use \Spiral\framework\DI\Schema\Builder\Exception\EmptyXmlSourceException;
+use \Spiral\framework\DI\Schema\DefaultService;
+use \Spiral\framework\DI\Schema\FactoryService;
+use \Spiral\framework\DI\Schema\InheritedService;
+use \Spiral\framework\DI\Schema\DefaultMethod;
+use \Spiral\framework\DI\Schema\ServiceRefArgument;
+use \Spiral\framework\DI\Schema\UseRefArgument;
+use \Spiral\framework\DI\Schema\ActiveServiceArgument;
+use \Spiral\framework\DI\Schema\ContainerArgument;
+use \Spiral\framework\DI\Schema\DefaultArgument;
+use \Spiral\framework\DI\Schema\EmptyValueArgument;
 
 /**
  * This specific builder convert an xml string into an schema object.
  *
- * @package     SpiralDi
- * @subpackage  SchemaBuilder  
  * @author  	Alexis Métaireau	23 may 2009
  * @author  	Frédéric Sureau		10 jun. 2009
  * @copyright	Alexis Metaireau, Fredéric Sureau 2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-class SpiralDi_SchemaBuilder_Xml extends SpiralDi_SchemaBuilder_File
+class XmlBuilder extends FileBuilder
 {
 	private $_xmlDoc = null;
 	
@@ -23,7 +33,7 @@ class SpiralDi_SchemaBuilder_Xml extends SpiralDi_SchemaBuilder_File
     {
         if(empty($this->_xmlDoc))
         {
-        	throw new SpiralDi_SchemaBuilder_Xml_Exception_EmptySource();
+        	throw new EmptyXmlSourceException();
         }
         
         $xmlDoc = $this->_xmlDoc;
@@ -43,23 +53,23 @@ class SpiralDi_SchemaBuilder_Xml extends SpiralDi_SchemaBuilder_File
             if ($type == 'factory'){
                 $scope = $this->_getValueOrDefault($xmlService, 'scope', 'prototype', 'string');
                 $singleton = ($scope == "singleton");
-                $service = new SpiralDi_Schema_Service_Factory($name, $class, $singleton);
+                $service = new FactoryService($name, $class, $singleton);
             }
             elseif (!empty($extends))
             {
-                $service = new SpiralDi_Schema_Service_Inherited($schema, $name, $extends, $class, $singleton);
+                $service = new InheritedService($schema, $name, $extends, $class, $singleton);
             }
             else
             {
-                $service = new SpiralDi_Schema_Service_Default($name, $class, $singleton);
+                $service = new DefaultService($name, $class, $singleton);
             }
             
             $schema->addService($service);
 
             if ($containerAware)
             {
-                $setDiContainer = new SpiralDi_Schema_Method_Default('setDiContainer');
-                $container = new SpiralDi_Schema_Argument_Container();
+                $setDiContainer = new DefaultMethod('setDiContainer');
+                $container = new ContainerArgument();
                 $setDiContainer->addArgument($container);
                 $service->addMethod($setDiContainer);
             }
@@ -76,7 +86,7 @@ class SpiralDi_SchemaBuilder_Xml extends SpiralDi_SchemaBuilder_File
 
                 $class = $this->_getValueOrDefault($xmlMethod, 'class', null, 'string');
                 
-                $method = new SpiralDi_Schema_Method_Default($name,$class);
+                $method = new DefaultMethod($name,$class);
                 $service->addMethod($method);
 
 	            foreach($xmlMethod as $xmlArgument)
@@ -88,20 +98,20 @@ class SpiralDi_SchemaBuilder_Xml extends SpiralDi_SchemaBuilder_File
                     // TODO: check if type is in the php default types.
 					if($type == 'service')
 					{
-						$argument = new SpiralDi_Schema_Argument_ServiceRef($value);
+						$argument = new ServiceRefArgument($value);
 					}
                     elseif($type == 'container')
                     {
-                        $argument = new SpiralDi_Schema_Argument_Container();
+                        $argument = new ContainerArgument();
                     }
                     elseif(!empty($ref))
                     {
                         $factoryMethod = $this->_getValueOrDefault($xmlArgument, 'factoryMethod', null);
-                        $argument = new SpiralDi_Schema_Argument_UseRef($ref, $factoryMethod, $value);
+                        $argument = new UseRefArgument($ref, $factoryMethod, $value);
                     }
                     else
                     {
-                        $argument =new SpiralDi_Schema_Argument_Default($value);
+                        $argument = new DefaultArgument($value);
                     }
 					
 					$method->addArgument($argument);

@@ -1,4 +1,5 @@
 <?php
+namespace \Spiral\Framework\DI\Schema;
 
 /**
  * Schema interface
@@ -26,18 +27,12 @@
  * }
  * </code>
  *
- * @package     SpiralDi
- * @subpackage  Schema  
  * @author  	Alexis Métaireau	01 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface SpiralDi_Schema extends Iterator, ArrayAccess
+interface Schema extends Iterator, ArrayAccess
 {
-	/**
-	 * Constants that's represents the current resolved object.
-	 */
-	const   ACTIVE_SERVICE = 'SPIRAL_DI_ACTIVE_SERVICE';
 
 	/**
 	 * create and set the active object.
@@ -46,7 +41,7 @@ interface SpiralDi_Schema extends Iterator, ArrayAccess
 	 * @param   string  $key
 	 * @return  void
 	 */
-	public function addService(SpiralDi_Schema_Service $service, $key = null);
+	public function addService(Service $service, $key = null);
 	
 	/**
 	 * add many services in one time

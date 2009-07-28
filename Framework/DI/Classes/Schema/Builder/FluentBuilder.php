@@ -1,16 +1,19 @@
 <?php
+namespace \Spiral\Framework\DI\Schema\Builder;
+use \Spiral\Framework\DI\Schema\SchemaResolver;
+use \Spiral\Framework\DI\Schema\DefaultSchemaResolver;
+use \Spiral\Framework\DI\Schema\Method;
+
 /**
  * Default implementation of SchemaFluent interface
  *
  * See the interface for further information. 
  * 
- * @package     SpiralDi
- * @subpackage  Schema  
  * @author  	Alexis Métaireau	20 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFluent
+class FluentBuilder implements Builder
 {
 	/**
 	 * Array of active services
@@ -51,14 +54,14 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	 * By default, if no resolver is set, the resolver is set to the default 
 	 * SchemaResolver implementation
 	 *
-	 * @param	SchemaResolver	$resolver
+	 * @param	\Spiral\Framework\DI\Schema\SchemaResolver	$resolver
 	 * @return	void
 	 */
-	public function __construct(SpiralDi_Schema_SchemaResolver $resolver = null)
+	public function __construct(SchemaResolver $resolver = null)
 	{
 		if ($resolver == null)
 		{
-			$resolver = new SpiralDi_Schema_SchemaResolver_Default();
+			$resolver = new DefaultSchemaResolver();
 		}
 		
 		$this->_resolver = $resolver;
@@ -133,27 +136,12 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	}
 	
 	/**
-	 * Loop on the array of active services and process it
-	 * with an anonymous function
-	 *
-	 * @param   Closure	 $anonymousFunction
-	 * @return  void
-	 *
-	protected function _processArray($array, $anonymousFunction)
-	{
-		foreach($array as $element)
-		{
-			$anonymousFunction($element);
-		}
-	}*/
-	
-	/**
 	 * add the given method, and add it to the activeMethod list
 	 * 
-	 * @param	Method	$method
+	 * @param	\Spiral\Framework\DI\Schema\Method	$method
 	 * @return	void
 	 */
-	protected function _addMethod(SpiralDi_Schema_Method $method)
+	protected function _addMethod(Method $method)
 	{
 		if ($this->_lastCall != 'method')
 		{
@@ -175,7 +163,7 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	 * @param   string  $key
 	 * @param   string  $className
      * @param   bool    $isSingleton
-	 * @return  SchemaFluent
+	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
 	public function addService($key, $className, $isSingleton=true)
 	{
@@ -188,7 +176,7 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	 * and add it to the active methods
 	 *
 	 * @param   string  $methodName
-	 * @return  SchemaFuent
+	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
 	public function call($methodName)
 	{
@@ -203,7 +191,7 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	 *
 	 * @param   string  $className
 	 * @param   string  $methodName
-	 * @return  SchemaFluent
+	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
 	public function callStatic($className, $methodName)
 	{
@@ -216,7 +204,7 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	/**
 	 * alias for 'call' for a constructor.
 	 *
-	 * @return  SchemaFluent
+	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
 	public function construct()
 	{
@@ -228,7 +216,7 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	 * use all given params as param for active method objects
 	 *
 	 * @param   mixed
-	 * @return  SchemaFluent
+	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
 	public function with()
 	{
@@ -239,8 +227,8 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	 * use array $parameters as param for active method objects
 	 *
 	 * @param   array   $parameters
-	 * @param   Bool	$asService  Specify if the given parameters has to be used as services
-	 * @return  SchemaFluent
+	 * @param   bool	$asService  Specify if the given parameters has to be used as services
+	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
 	public function setArguments($parameters, $asService = false)
 	{
@@ -255,7 +243,7 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	 * call the selected method(s) with given parameter
 	 *
 	 * @param   string  $parameter
-	 * @return  SchemaFluent
+	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
 	public function addArgument($parameter, $asService = false)
 	{
@@ -272,7 +260,7 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	 * same as with, for services.
 	 *
 	 * @param   mixed
-	 * @return  SchemaFluent
+	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
 	public function withServices()
 	{
@@ -283,7 +271,7 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	 * same as setArguments, for services
 	 *
 	 * @param   array   $parameters
-	 * @return  SchemaFluent
+	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
 	public function setArgumentsAsServices($parameters)
 	{
@@ -294,7 +282,7 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	 * same as addArgument, for services
 	 *
 	 * @param   string   $parameter
-	 * @return  SchemaFluent
+	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
 	public function addArgumentAsService($parameter)
 	{
@@ -304,7 +292,7 @@ class SpiralDi_Schema_SchemaFluent_Default implements SpiralDi_Schema_SchemaFlue
 	/**
 	 * Return the schema object
 	 *
-	 * @return	Schema
+	 * @return	\Spiral\Framework\DI\Schema\Schema
 	 */
 	public function getSchema()
 	{

@@ -1,16 +1,16 @@
 <?php
+namespace \Spiral\Framework\DI\Schema;
+
 /**
  * Resolver for default schema classes
  * 
  * Always provides the default implementation of classes
  *
- * @package     SpiralDi
- * @subpackage  Schema  
  * @author  	Alexis Métaireau	20 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class SpiralDi_Schema_SchemaResolver_Default implements SpiralDi_Schema_SchemaResolver
+class DefaultSchemaResolver implements SchemaResolver
 {	
 	/**
 	 * Implementation name
@@ -18,7 +18,7 @@ class SpiralDi_Schema_SchemaResolver_Default implements SpiralDi_Schema_SchemaRe
 	 * @var	string
 	 */
 	protected $_implementation = 'Default';
-	protected $_namespace = 'SpiralDi_';
+	protected $_namespace = '\Spiral\Framework\DI\Schema';
     
 	/**
 	 * Resolve the schema class to use
@@ -27,7 +27,7 @@ class SpiralDi_Schema_SchemaResolver_Default implements SpiralDi_Schema_SchemaRe
 	 */
 	public function resolveSchema()
 	{
-		return $this->_namespace.'Schema_'.$this->_implementation;
+		return $this->_resolveObject('Schema');
 	}
     
 	/**
@@ -37,7 +37,7 @@ class SpiralDi_Schema_SchemaResolver_Default implements SpiralDi_Schema_SchemaRe
 	 */
 	public function resolveService()
 	{
-		return $this->_namespace.'Schema_Service_'.$this->_implementation;
+		return $this->_resolveObject('Service');
 	}
     
 	/**
@@ -47,8 +47,16 @@ class SpiralDi_Schema_SchemaResolver_Default implements SpiralDi_Schema_SchemaRe
 	 */
 	public function resolveMethod()
 	{
-		return $this->_namespace.'Schema_Method_'.$this->_implementation;
+		return $this->_resolveObject('Method');
 	}
 	
+	/**
+	 * Resolve an object with the default implementation
+	 * @param	string	type of object to resolve
+	 */
+	protected function _resolveObject($objectType)
+	{
+		return $this->_namespace.'\\'.$this->_implementation.$objectType;
+	}
 	
 }

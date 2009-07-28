@@ -1,36 +1,55 @@
 <?php
+namespace \Spiral\Framework\DI\Schema\Builder;
+use \Spiral\Framework\DI\Schema\Builder\File;
+use \Spiral\Framework\DI\Schema\Builder\Exception\PathUnavailableException;
+
 /**
- * Schema builder from a file name
+ * Build a Schema from files
  *
  * This component make it possible to set the file name has a source of building.
  *
- * @package     SpiralDi
- * @subpackage  SchemaBuilder  
  * @author  	Frédéric Sureau		10 jun. 2009
  * @author 		Alexis Métaireau	09 jul. 2009	
  * @copyright	Frédéric Sureau, Alexis Métaireau	 	2009 
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-class SpiralDi_SchemaBuilder_Files extends SpiralDi_SchemaBuilder_Abstract
+class FilesBuilder extends AbstractBuilder
 {
 	private $_schemaBuilder;
 	private $_fileNames = array();
 	
-	public function __construct(SpiralDi_SchemaBuilder_File $schemaBuilder)
+	/**
+	 * Build the FilesSchemaBuilder
+	 *
+	 * @param	\Spiral\Framework\DI\Schema\Builder\File	$file
+	 */
+	public function __construct(File $schemaBuilder)
 	{
 		$this->_schemaBuilder = $schemaBuilder;
 	}
 	
+	/**
+	 * Set the names of files to load
+	 *
+	 * @return	void
+	 */
 	public function setFileNames()
 	{
 		$this->_fileNames = func_get_args();
 	}
 	
+	/**
+	 * Load all files in a directory
+	 *
+	 * @param	string	$dirname
+	 * @param	bool	$recursive
+	 */
 	public function loadDir($dirName, $recursive = true)
 	{
-		$path = /*SITE_PATH.*/$dirName.'/';
-		if (!file_exists($dirName)){
-			throw new SpiralDi_SchemaBuilder_Exception_PathUnavailable($dirName);
+		$path = $dirName.'/';
+		if (!file_exists($dirName))
+		{
+			throw new PathUnavailableException($dirName);
 		}
 		$d = dir($path);
 		
@@ -41,7 +60,7 @@ class SpiralDi_SchemaBuilder_Files extends SpiralDi_SchemaBuilder_Abstract
 				$this->_fileNames[] = $path.$entry;
 			}
 			
-			if($recursive && is_dir($path.$entry) && $entry != '.' && $entry != '..' && $entry != '.svn')
+			if($recursive === true && is_dir($path.$entry) && $entry != '.' && $entry != '..' && $entry != '.svn')
 			{
 				$this->loadDir($dirName.'/'.$entry);
 			}
@@ -49,6 +68,11 @@ class SpiralDi_SchemaBuilder_Files extends SpiralDi_SchemaBuilder_Abstract
 		$d->close();
 	}
 	
+	/**
+	 * Build the Schema and return it
+	 * 
+	 * @return \Spiral\Framework\DI\Schema\Schema
+	 */
 	public function buildSchema()
 	{
 		$schema = $this->_schemaBuilder->getOriginalSchema();

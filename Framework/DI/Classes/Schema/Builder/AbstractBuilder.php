@@ -1,30 +1,31 @@
 <?php
+namespace \Spiral\Framework\DI\Schema\Builder;
+use \Spiral\Framework\DI\Schema\DefaultSchema;
+use \Spiral\Framework\DI\Schema\Schema;
 
 /**
  * Abstract schema builder
  * 
  * This component make it possible to set the original schema to build on.
  *
- * @package     SpiralDi
- * @subpackage  SchemaBuilder  
  * @author  	Frédéric Sureau		10 jun. 2009
  * @copyright	Frédéric sureau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-abstract class SpiralDi_SchemaBuilder_Abstract implements SpiralDi_SchemaBuilder
+abstract class AbstractBuilder implements Builder
 {
 	private $_schema = null;
 
     /**
      * Return the original Schema
      * 
-     * @return SpiralDi_Schema
+     * @return \Spiral\Framework\DI\Schema\Schema
      */
     public function getOriginalSchema()
     {
         if(empty($this->_schema))
         {
-        	$this->_schema = new SpiralDi_Schema_Default();
+        	$this->_schema = new DefaultSchema();
         }
 
         return $this->_schema;
@@ -33,10 +34,10 @@ abstract class SpiralDi_SchemaBuilder_Abstract implements SpiralDi_SchemaBuilder
     /**
      * Set the original Schema
      * 
-     * @param   SpiralDi_Schema $schema
+     * @param   \Spiral\Framework\DI\Schema\Schema	$schema
      * @return  void
      */
-    public function setOriginalSchema(SpiralDi_Schema $schema)
+    public function setOriginalSchema(Schema $schema)
     {
         $this->_schema = $schema;
     }

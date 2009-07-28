@@ -1,15 +1,14 @@
 <?php
+namespace \Spiral\Framework\DI\Schema\Dumper;
 
 /**
  * This specific dumper convert a schema object into text.
  *
- * @package     SpiralDi
- * @subpackage  Dumper  
  * @author  	Alexis Métaireau	22 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class SpiralDi_Dumper_Text extends SpiralDi_Dumper_Abstract
+class TextDumper extends AbstractDumper
 {
 
 	/**

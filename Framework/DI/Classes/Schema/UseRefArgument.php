@@ -1,16 +1,16 @@
 <?php
+namespace \Spiral\Framework\DI\Schema;
+
 /**
  * Default argument, corresponding to a factory.
  *
  * This class represents an agrument to be passed to the Scheme_Method class
  *
- * @package     SpiralDi
- * @subpackage  Schema  
  * @author  	Alexis Métaireau	16 jun. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-class SpiralDi_Schema_Argument_UseRef extends SpiralDi_Schema_Argument_Default{
+class UseRefargument extends DefaultArgument{
     protected
         $_factoryMethod,
         $_ref;

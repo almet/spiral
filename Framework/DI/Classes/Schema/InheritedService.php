@@ -1,32 +1,34 @@
 <?php
+namespace \Spiral\Framework\DI\Schema;
+
 /**
  * Represents an Inherithed Schema Service
- * 
- * @package     SpiralDi
- * @subpackage  Schema  
- * @author  AME 17 juin 2009
+ *
+ * @author  	AME 17 juin 2009 
+ * @copyright	Alexis Metaireau 	2009
+ * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class SpiralDi_Schema_Service_Inherited extends SpiralDi_Schema_Service_Default
+class InheritedService extends DefaultService
 {
 
     /**
      * The inherited service name
      * 
-     * @var     SpiralDi_Schema_Service
+     * @var     \Spiral\Framework\DI\Schema\Service
      */
     protected $_inherit;
 
     /**
      * The schema reference
      *
-     * @var     SpiralDi_Schema
+     * @var     \Spiral\Framework\DI\Schema\Schema
      */
     protected $_schema;
 
     /**
      * Build an inherithed service
      *
-     * @param   SpiralDi_Schema     $schema
+     * @param	\Spiral\Framework\DI\Schema\Schema	$schema
      * @param   string              $service    the service name
      * @param   string              $inherit    the service that is inherited
      * @param   string              $className  the classname, if different than the inherithed one
@@ -44,7 +46,7 @@ class SpiralDi_Schema_Service_Inherited extends SpiralDi_Schema_Service_Default
     /**
      * Return the name of the inherited service
      * 
-     * @return  SpiralDi_Schema_Service
+     * @return  \Spiral\Framework\DI\Schema\Service
      */
     public function getInheritedService(){
         return $this->_schema->getService($this->_inherit);

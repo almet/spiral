@@ -1,4 +1,5 @@
 <?php
+namespace \Spiral\Framework\DI\Schema;
 
 /**
  * Resolver for all schema classes
@@ -8,13 +9,11 @@
  * - Schema
  * - Service
  *
- * @package     SpiralDi
- * @subpackage  Schema  
  * @author  	Alexis Métaireau	20 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface SpiralDi_Schema_SchemaResolver
+interface SchemaResolver
 {
 	/**
 	 * Resolve the schema class to use

@@ -1,16 +1,15 @@
 <?php
+namespace \Spiral\Framework\DI\Schema\Dumper;
 
 /**
  * This specific dumper convert a schema object into an xml string,
  * using the php lib SimpleXml
  *
- * @package     SpiralDi
- * @subpackage  Dumper  
  * @author  	Alexis Métaireau	23 may 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-class SpiralDi_Dumper_Xml extends SpiralDi_Dumper_Abstract
+class XmlDumper extends AbstractDumper
 {
 	/**
 	 * convert the schema object into xml string
@@ -19,7 +18,6 @@ class SpiralDi_Dumper_Xml extends SpiralDi_Dumper_Abstract
 	 */
     public function dump()
     {
-        //FIXME: Add an xsl syntax verification
         $xmlDoc = new SimpleXMLElement("<container></container>");
         
         // process all services
@@ -45,9 +43,9 @@ class SpiralDi_Dumper_Xml extends SpiralDi_Dumper_Abstract
                 $xmlMethod->addAttribute('name', $method->getName());
 
                 // process all arguments
-                foreach($method as $arg)
+                foreach($method as $argument)
                 {
-                    if ($arg[1] == SpiralDi_Schema_Method::ARG_IS_SERVICE)
+                    if (get_class($argument) == '\Spiral\Framework\DI\Schema\ServiceArgument')
                     {
                         $isService = true;
                     } else {

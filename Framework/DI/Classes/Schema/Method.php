@@ -1,4 +1,5 @@
 <?php
+namespace \Spiral\Framework\DI\Schema;
 
 /**
  * Interface for a Schema method
@@ -34,15 +35,8 @@
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface SpiralDi_Schema_Method extends Iterator, ArrayAccess
+interface Method extends Iterator, ArrayAccess
 {
-
-	/**
-	 * Define if an argument is a service
-	 */
-	const ARG_IS_SERVICE = 'ARG_IS_SERVICE';
-	const ARG_IS_NOT_SERVICE = 'ARG_IS_NOT_SERVICE';
-
 	/**
 	 * construct a method and set it's name
 	 * 

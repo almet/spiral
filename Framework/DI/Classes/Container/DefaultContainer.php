@@ -1,4 +1,10 @@
 <?php
+namespace \Spiral\Framework\DI\Container;
+use \Spiral\Framework\DI\Schema\Schema;
+use \Spiral\Framework\Bootstrap\Loader;
+use \Spiral\Framework\DI\Schema\FactoryService;
+use \Spiral\Framework\DI\Schema\Exception\UnknownMethodException;
+use \Spiral\Framework\DI\ContainerAware;
 
 /**
  * Default Container implementation
@@ -8,13 +14,11 @@
  *
  * See the interface for further information / documentation.
  *
- * @package     SpiralDi
- * @subpackage  Container
  * @author  	Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-class SpiralDi_Container_Default implements SpiralDi_Container
+class DefaultContainer implements Container
 {
 
     /**
@@ -41,11 +45,11 @@ class SpiralDi_Container_Default implements SpiralDi_Container
     /**
      * set the schema object given in parameter
      *
-     * @param	SpiralDi_Schema     $schema
-     * @param	SpiralDi_Loader     $loader
+     * @param	Schema     $schema
+     * @param	Loader     $loader
      * @return	void
      */
-    public function __construct(SpiralDi_Schema $schema, SpiralDi_Loader $loader = null){
+    public function __construct(Schema $schema, Loader $loader = null){
         $this->_schema = $schema;
         if ($loader != null){
             $this->_loader = $loader;
@@ -93,24 +97,24 @@ class SpiralDi_Container_Default implements SpiralDi_Container
         
         foreach($arguments as $arg){
             if (!$arg instanceof SpiralDi_Schema_Argument){
-                throw new SpiralDi_Schema_Exception_InvalidArgument(get_class($arg).' must implements the SpiralDi_Schema_Argument interface');
+                throw new SpiralDi_Schema_Exception_InvalidArgument(get_class($arg).' must implements the Spiral\Framework\Di\Schema\Argument interface');
             }
             switch(get_class($arg)){
-                case 'SpiralDi_Schema_Argument_Default':
+                case '\Spiral\Framework\Di\Schema\DefaultArgument':
                      $processedArguments[] = $arg->getValue();
                 break;
                 
-                case 'SpiralDi_Schema_Argument_ActiveService':
+                case '\Spiral\Framework\Di\Schema\ActiveServiceArgument':
                     if ($object != null){
                         $processedArguments[] = $object;
                     }
                 break;
 
-                case 'SpiralDi_Schema_Argument_ServiceRef':
+                case '\Spiral\Framework\Di\Schema\ServiceRefArgument':
                     $processedArguments[] = $this->getService($arg->getValue());
                 break;
 
-                case 'SpiralDi_Schema_Argument_UseRef':
+                case '\Spiral\Framework\Di\Schema\UseRefArgument':
                      $serviceName = $arg->getRef();
                      $service = $this->getService($serviceName);
                      $factoryMethod = $arg->getFactoryMethod();
@@ -123,7 +127,7 @@ class SpiralDi_Container_Default implements SpiralDi_Container
                      }
                 break;
 
-                case 'SpiralDi_Schema_Argument_Container':
+                case '\Spiral\Framework\Di\Schema\ContainerArgument':
                     $processedArguments[] = $this;
                 break;
             }
@@ -179,7 +183,7 @@ class SpiralDi_Container_Default implements SpiralDi_Container
 
         $this->_load($className);
 
-        if ($service instanceOf SpiralDi_Schema_Service_Factory){
+        if ($service instanceOf FactoryService){
             $methods = $service->getMethods();
             $method = array_shift($methods);
             $args = $this->_processMethodArguments($method->getArguments());
@@ -208,14 +212,14 @@ class SpiralDi_Container_Default implements SpiralDi_Container
             $object = eval("return new $className($params);");
 
             // if no constructor is defined in the schema, just build the object
-        } catch(SpiralDi_Schema_Exception_UnknownMethod $e) {
+        } catch(UnknownMethodException $e) {
             $object = new $className();
         }
 
         $this->injectMethods($service->getMethods(), $object);
 
         // For ContainerAware objects
-        if($object instanceof SpiralDi_ContainerAware)
+        if($object instanceof ContainerAware)
         {
             $object->setDiContainer($this);
         }
@@ -249,7 +253,7 @@ class SpiralDi_Container_Default implements SpiralDi_Container
     {
         if (!is_object($service))
         {
-            throw new SpiralDi_Container_Exception('The service '.$key.' must be an object');
+            throw new Exception('Service '.$key.' must be an object');
         }
         $this->_sharedServices[$key] = $service;
     }
@@ -277,4 +281,3 @@ class SpiralDi_Container_Default implements SpiralDi_Container
     	return isset($this->_sharedServices[$key]) || $this->_schema->hasService($key);
     }
 }
-?>

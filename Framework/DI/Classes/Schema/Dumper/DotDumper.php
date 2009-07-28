@@ -1,4 +1,5 @@
 <?php
+namespace \Spiral\Framework\DI\Schema\Dumper;
 
 /**
  * This specific dumper convert a schema object into a dot string.
@@ -7,13 +8,11 @@
  *
  * Thanks to Fabien Potencier for the idea of a dot dumper.
  *
- * @package     SpiralDi
- * @subpackage  Dumper
  * @author  	Alexis Métaireau	22 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class SpiralDi_Dumper_Dot extends SpiralDi_Dumper_Abstract{
+class DotDumper extends AbstractDumper{
 
 	/**
 	 * Default options for generating dot files
@@ -163,8 +162,8 @@ class SpiralDi_Dumper_Dot extends SpiralDi_Dumper_Abstract{
                 // or if theses methods link to other services
 				foreach($method as $arg)
 				{
-					if( $arg[1] == SpiralDi_Schema_Method::ARG_IS_SERVICE &&
-                        $arg[0] != SpiralDi_Schema::ACTIVE_SERVICE)
+					if( $arg[1] == MethodSchema::ARG_IS_SERVICE &&
+                        $arg[0] != MethodSchema::ACTIVE_SERVICE)
 					{
 						$output .= $currentServiceNode.' -> '. 'node_service_'
                             .$arg[0]."\n";
@@ -177,4 +176,3 @@ class SpiralDi_Dumper_Dot extends SpiralDi_Dumper_Abstract{
 		return $output;
 	}
 }
-?>

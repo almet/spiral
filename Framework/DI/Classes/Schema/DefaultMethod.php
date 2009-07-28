@@ -1,17 +1,17 @@
 <?php
+namespace \Spiral\Framework\DI\Schema;
+use \Spiral\Framework\DI\Schema\Exception\UnknownArgumentException;
 
 /**
  * Default implementation of Method
  *
  * See the interface for further information.
  * 
- * @package     SpiralDi
- * @subpackage  Schema  
  * @author  	Alexis Métaireau	08 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class SpiralDi_Schema_Method_Default implements SpiralDi_Schema_Method
+class DefaultMethod implements Method
 {
 	
 	/** 
@@ -87,8 +87,8 @@ class SpiralDi_Schema_Method_Default implements SpiralDi_Schema_Method
 	 */	
 	public function addArgument($arg)
 	{
-        if (! $arg instanceof SpiralDi_Schema_Argument){
-            $arg = new SpiralDi_Schema_Argument_Default($arg);
+        if (! $arg instanceof Argument){
+            $arg = new DefaultArgument($arg);
         }
         
 		$this->_arguments[] = $arg;
@@ -114,7 +114,7 @@ class SpiralDi_Schema_Method_Default implements SpiralDi_Schema_Method
 	{
 		if (!array_key_exists($key, $this->_arguments))
 		{
-			throw new SpiralDi_Schema_Exception_UnknownArgument($key);
+			throw new UnknownArgumentException($key);
 		}
 		return $this->_arguments[$key];
 	}
@@ -157,7 +157,7 @@ class SpiralDi_Schema_Method_Default implements SpiralDi_Schema_Method
 		try{
 			$this->getArgument($offset);
 			return true;
-		} catch (SpiralDi_Schema_Exception_UnknownArgument $e)
+		} catch (UnknownArgumentException $e)
 		{
 			return false;
 		}

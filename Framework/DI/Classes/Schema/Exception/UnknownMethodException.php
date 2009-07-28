@@ -1,4 +1,6 @@
 <?php
+namespace \Spiral\Framework\DI\Schema\Exception;
+use \Spiral\Framework\DI\Schema\Exception as SchemaException;
 
 /**
  * Exception for Unknown Method
@@ -9,4 +11,4 @@
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class SpiralDi_Schema_Exception_UnknownMethod extends SpiralDi_Exception{}
+class UnknownMethodException extends SchemaException{}

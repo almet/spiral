@@ -1,4 +1,5 @@
 <?php
+namespace \Spiral\Framework\DI\Schema;
 
 /**
  * Service interface
@@ -18,22 +19,20 @@
  * $service->addMethod($method);
  * </code>
  *
- * @package     SpiralDi
- * @subpackage  Schema  
  * @author  	Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface SpiralDi_Schema_Service extends Iterator, ArrayAccess
+interface Service extends Iterator, ArrayAccess
 {
 	/**
 	 * Set the method to call
 	 * 
-	 * @param   Method  $method
+	 * @param   \Spiral\Framework\DI\Schema\Method  $method
 	 * @param	$key
 	 * @return  void
 	 */
-	public function addMethod(SpiralDi_Schema_Method $method, $key = null);
+	public function addMethod(Method $method, $key = null);
 
 	/**
 	 * Return the method corresponding to the name

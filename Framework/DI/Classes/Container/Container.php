@@ -1,4 +1,7 @@
 <?php
+namespace \Spiral\Framework\DI\Container;
+use \Spiral\Framework\DI\Schema\Schema;
+use \Spiral\Framework\Bootstrap\Loader;
 
 /**
  * Interface for the Di Container
@@ -17,24 +20,22 @@
  * // or using the magic __get method:
  * $serv = $container->serviceName;
  * </code>
- * 
- * @package     SpiralDi
- * @subpackage  Container  
+ *
  * @author		Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface SpiralDi_Container
+interface Container
 {
 	
 	/**
 	 * set the schema object given in parameter
 	 *
-	 * @param	SpiralDi_Schema     $schema
-	 * @param	SpiralDi_Loader     $loader
+	 * @param	Schema     $schema
+	 * @param	Loader     $loader
 	 * @return	void
 	 */
-	public function __construct(SpiralDi_Schema $schema, SpiralDi_Loader $loader = null);
+	public function __construct(Schema $schema, Loader $loader = null);
 	
 	/**
 	 * Call all dynamic added methods

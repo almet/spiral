@@ -1,17 +1,17 @@
 <?php
+namespace \Spiral\Framework\DI\Schema;
+use \Spiral\Framework\DI\Schema\Service;
 
 /**
  * Default implementation of Schema.
  *
  * See the interface for further information.
  * 
- * @package     SpiralDi
- * @subpackage  Schema  
  * @author  	Alexis Métaireau	08 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class SpiralDi_Schema_Default implements SpiralDi_Schema
+class DefaultSchema implements Schema
 {
 
 	/**
@@ -29,7 +29,7 @@ class SpiralDi_Schema_Default implements SpiralDi_Schema
 	 * @param   string  $key
 	 * @return  void
 	 */
-	public function addService(SpiralDi_Schema_Service $service, $key = null)
+	public function addService(Service $service, $key = null)
 	{
 		if ($key == null)
 		{

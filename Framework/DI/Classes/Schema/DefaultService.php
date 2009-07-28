@@ -1,5 +1,6 @@
 <?php
-
+namespace \Spiral\Framework\DI\Schema;
+use \Spiral\Framework\DI\Schema\Exception\UnknownMethodException;
 /**
  * The Service class allow to store the state and the configuration of
  * the representation of Service and classes we want to call
@@ -13,7 +14,7 @@
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
 
-class SpiralDi_Schema_Service_Default implements SpiralDi_Schema_Service
+class DefaultService implements Service
 {
 
 	/**
@@ -78,7 +79,7 @@ class SpiralDi_Schema_Service_Default implements SpiralDi_Schema_Service
 	 * @param	$key
 	 * @return  void
 	 */
-	public function addMethod(SpiralDi_Schema_Method $method, $key = null)
+	public function addMethod(Method $method, $key = null)
 	{
 		if ($key == null)
 		{
@@ -99,7 +100,7 @@ class SpiralDi_Schema_Service_Default implements SpiralDi_Schema_Service
 	{
 		if (!array_key_exists($name, $this->_registredMethods))
 		{
-			throw new SpiralDi_Schema_Exception_UnknownMethod($name.' in '. $this->getName());
+			throw new UnknownMethodException($name.' in '. $this->getName());
 		}
 		return $this->_registredMethods[$name];
 	}
