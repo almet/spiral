@@ -14,5 +14,5 @@ interface Loader{
 	 *
 	 * @param	string	$class 	full classname with namespace to load
 	 */
-	public function load($class);
+	public static function load($class);
 }

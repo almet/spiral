@@ -12,7 +12,7 @@ require_once('Loader.php');
  * @copyright	Alexis Metaireau	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class DefaultLoader{
+class DefaultLoader implements Loader{
 	/**
 	 * Load the required class
 	 *
@@ -20,9 +20,15 @@ class DefaultLoader{
 	 */
 	public static function load($class)
 	{
-		$namespaces = split('\\\\', $class);
-			
-		if (array_shift($namespaces) !== "Spiral")
+		$namespaces = explode('\\', $class);
+		
+		$spiralNamespace = array_shift($namespaces);
+		if (empty($spiralNamespace))
+		{
+			$spiralNamespace = array_shift($namespaces);
+		}
+		
+		if ($spiralNamespace !== "Spiral")
 		{
 			return false;
 		} 
@@ -38,7 +44,7 @@ class DefaultLoader{
 		{
 			return true;
 		} else {
-			echo $fileName;
+			throw new Exception\FileNotFoundException($fileName);
 			return false;
 		}
 	}
