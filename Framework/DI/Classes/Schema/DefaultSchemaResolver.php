@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Schema;
+namespace Spiral\Framework\DI\Schema;
 
 /**
  * Resolver for default schema classes

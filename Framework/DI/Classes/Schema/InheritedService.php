@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Schema;
+namespace Spiral\Framework\DI\Schema;
 
 /**
  * Represents an Inherithed Schema Service

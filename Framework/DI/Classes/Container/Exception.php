@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Container;
+namespace Spiral\Framework\DI\Container;
 use \Spiral\Framework\DI\Exception as DIException;
 
 /**

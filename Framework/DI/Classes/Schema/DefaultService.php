@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Schema;
+namespace Spiral\Framework\DI\Schema;
 use \Spiral\Framework\DI\Schema\Exception\UnknownMethodException;
 /**
  * The Service class allow to store the state and the configuration of

@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Schema\Builder;
+namespace Spiral\Framework\DI\Schema\Builder;
 
 /**
  * Schema builder

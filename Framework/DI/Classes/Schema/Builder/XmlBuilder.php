@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Schema\Builder;
+namespace Spiral\Framework\DI\Schema\Builder;
 use \Spiral\framework\DI\Schema\Builder\Exception\EmptyXmlSourceException;
 use \Spiral\framework\DI\Schema\DefaultService;
 use \Spiral\framework\DI\Schema\FactoryService;

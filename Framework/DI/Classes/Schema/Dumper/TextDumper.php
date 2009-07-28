@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Schema\Dumper;
+namespace Spiral\Framework\DI\Schema\Dumper;
 
 /**
  * This specific dumper convert a schema object into text.

@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Schema\Dumper;
+namespace Spiral\Framework\DI\Schema\Dumper;
 use \Spiral\Framework\DI\Schema\Schema;
 
 /**

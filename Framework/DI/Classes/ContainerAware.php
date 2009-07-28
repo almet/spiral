@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI;
+namespace Spiral\Framework\DI;
 use \Spiral\Framework\DI\Container\Container;
 
 /**

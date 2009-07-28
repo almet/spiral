@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Schema;
+namespace Spiral\Framework\DI\Schema;
 
 /**
  * Schema interface
@@ -31,7 +31,7 @@ namespace \Spiral\Framework\DI\Schema;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface Schema extends Iterator, ArrayAccess
+interface Schema extends \Iterator, \ArrayAccess
 {
 
 	/**

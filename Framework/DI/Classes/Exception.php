@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI;
+namespace Spiral\Framework\DI;
 
 /**
  * General Di Exception

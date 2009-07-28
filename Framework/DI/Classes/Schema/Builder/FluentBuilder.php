@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Schema\Builder;
+namespace Spiral\Framework\DI\Schema\Builder;
 use \Spiral\Framework\DI\Schema\SchemaResolver;
 use \Spiral\Framework\DI\Schema\DefaultSchemaResolver;
 use \Spiral\Framework\DI\Schema\Method;

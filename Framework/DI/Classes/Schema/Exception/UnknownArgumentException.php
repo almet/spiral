@@ -1,5 +1,5 @@
 <?php
-namespace \Spiral\Framework\DI\Schema\Exception;
+namespace Spiral\Framework\DI\Schema\Exception;
 use \Spiral\Framework\DI\Schema\Exception as SchemaException;
 
 /**
