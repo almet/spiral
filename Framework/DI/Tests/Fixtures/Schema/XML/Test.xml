@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://namespaces.spiral-project.org/framework/di/1.0/schema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://namespaces.spiral-project.org/framework/di/1.0/schema http://namespaces.spiral-project.org/framework/di/1.0/schema.xsd">
+
+	<service name="saturdayNightClub" class="\Spiral\Framework\DI\Fixtures\Club">
+		<method name="setDiscoBall">
+            <argument type="string" value="string" />
+            <argument type="int" value="23" />
+            <argument type="service" value="service1" />
+            <argument ref="config" value="db.config" factoryMethod="getParam"/>
+            <argument ref="config" factoryMethod="simpleAccessor"/>
+		</method>
+		<method name="setDiscoBall">
+            <argument type="string" value="string" />
+            <argument type="int" value="23" />
+            <argument type="service" value="service1" />
+            <argument ref="config" value="db.config" factoryMethod="getParam"/>
+            <argument ref="config" factoryMethod="simpleAccessor"/>
+		</method>
+	</service>
+
+    <service name="service1" class="DiTest_Service1">
+		<method name="__construct">
+            <argument type="string" value="constructorParam"/>
+		</method>
+	</service>
+
+	<service name="config" class="DiTest_Config" />
+
+    <service name="containerAware" class="DiTest_ContainerAware" containerAware="true" />
+
+    <service name="serviceWithContainer" class="DiTest_ServiceWithContainer">
+        <method name="injectContainer">
+            <argument type="container"/>
+		</method>
+    </service>
+
+    <service name="inheritedService" extends="test" class="DiTest_InheritedService">
+        <method name="childMethod">
+            <argument value="injectedChildParam" />
+        </method>
+    </service>
+
+    <service name="brokenDependencyService" class="DiTest_BrokenDependencyService">
+        <constructor>
+            <argument type="service" value="inexistantService" />
+        </constructor>
+    </service>
+
+    <service name="serviceFactory" type="factory" class="DiTest_ServiceFactory">
+        <method name="getService">
+            <argument value="string1"/>
+            <argument value="string2"/>
+        </method>
+    </service>
+
+    <service name="singletonFactory" type="factory" class="DiTest_ServiceFactory" scope="singleton">
+        <method name="getSingleton" />
+    </service>
+
+    <service name="prototypeFactory" type="factory" class="DiTest_ServiceFactory">
+        <method name="getSingleton" />
+    </service>
+
+    <service name="prototype" class="DiTest_Config" scope="prototype"/>
+
+</container>

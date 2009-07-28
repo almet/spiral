@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+
+<chapter>
+	<title>Dependency Injection</title>
+	<para>
+		SpiralDi comes with a lot of new features, some of them inspired by the excellent Java framework : Spring. 
+		It is now possible to :
+	</para>
+	
+	<itemizedlist>
+		<listitem><para>Use factories to set the parameters values (useful for configuration)</para></listitem>
+		<listitem><para>Use an inheritance system to make configuration file more clear</para></listitem>
+		<listitem><para>Use factories for the construction of the services</para></listitem>
+		<listitem><para>Directly inject the container in ContainerAware services</para></listitem>
+	</itemizedlist>
+</chapter>
