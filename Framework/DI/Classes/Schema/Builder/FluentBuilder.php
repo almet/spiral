@@ -294,7 +294,7 @@ class FluentBuilder implements Builder
 	 *
 	 * @return	\Spiral\Framework\DI\Schema\Schema
 	 */
-	public function getSchema()
+	public function buildSchema()
 	{
 		return $this->_schema;
 	}

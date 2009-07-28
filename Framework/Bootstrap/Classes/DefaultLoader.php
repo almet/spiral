@@ -38,6 +38,7 @@ class DefaultLoader{
 		{
 			return true;
 		} else {
+			echo $fileName;
 			return false;
 		}
 	}
