@@ -44,7 +44,6 @@ class DefaultLoader implements Loader{
 		{
 			return true;
 		} else {
-			throw new Exception\FileNotFoundException($fileName);
 			return false;
 		}
 	}

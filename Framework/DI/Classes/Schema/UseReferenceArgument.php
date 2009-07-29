@@ -2,15 +2,13 @@
 namespace Spiral\Framework\DI\Schema;
 
 /**
- * Default argument, corresponding to a factory.
- *
- * This class represents an agrument to be passed to the Scheme_Method class
- *
+ * Reference Argument : A reference to another service
+ * 
  * @author  	Alexis Métaireau	16 jun. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-class UseRefargument extends DefaultArgument{
+class UseReferenceArgument extends DefaultArgument{
     protected
         $_factoryMethod,
         $_ref;

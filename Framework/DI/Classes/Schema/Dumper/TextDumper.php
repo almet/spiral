@@ -1,5 +1,6 @@
 <?php
 namespace Spiral\Framework\DI\Schema\Dumper;
+use Spiral\Framework\DI\Schema\ServiceReferenceArgument;
 
 /**
  * This specific dumper convert a schema object into text.
@@ -10,14 +11,14 @@ namespace Spiral\Framework\DI\Schema\Dumper;
  */
 class TextDumper extends AbstractDumper
 {
-
 	/**
 	 * convert the schema object into text string
-	 *
+	 * 
 	 * @return 	string
 	 */
 	public function dump()
 	{
+		$output ='';
 		foreach($this->_schema as $service)
 		{
 			$output .= '['.$service->getName()."]\n";
@@ -31,19 +32,21 @@ class TextDumper extends AbstractDumper
 				} 
 				$output .= $method->getName()." with: \n";
 				
-				foreach($method as $arg)
+				foreach($method as $argument)
 				{
 					$output .= "\t - ";
 
-					if ($arg[0] == 'SPIRAL_DI_ACTIVE_SERVICE' && $arg[1] == 'ARG_IS_SERVICE')
+					if ($argument instanceof ActiveServiceArgument)
 					{
 						$output .= '['.$service->getName().']';
-					} elseif($arg[1] == 'ARG_IS_SERVICE')
+					}
+					elseif($argument instanceof ServiceReferenceArgument)
 					{
-						$output .= '['.$arg[0].']';
-					} else 
+						$output .= '['.$argument->getValue().']';
+					} 
+					else 
 					{
-						$output .= $arg[0];
+						$output .= $argument->getValue();
 					}
 					$output .= "\n";
 				}

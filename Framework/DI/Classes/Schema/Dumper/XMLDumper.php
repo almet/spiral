@@ -9,8 +9,9 @@ namespace Spiral\Framework\DI\Schema\Dumper;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-class XmlDumper extends AbstractDumper
+class XMLDumper extends AbstractDumper
 {
+	protected $_schemaVersion = "1.0";
 	/**
 	 * convert the schema object into xml string
 	 *
@@ -18,7 +19,7 @@ class XmlDumper extends AbstractDumper
 	 */
     public function dump()
     {
-        $xmlDoc = new SimpleXMLElement("<container></container>");
+        $xmlDoc = new \SimpleXMLElement('<container xmlns="http://namespaces.spiral-project.org/framework/di/'.$this->_schemaVersion.'/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://localhost/Spiral/Framework/DI/Resources/schema.xsd"></container>');
         
         // process all services
         foreach ($this->_schema as $service)
@@ -35,24 +36,31 @@ class XmlDumper extends AbstractDumper
             // proces all methods
 			foreach($service as $method)
 			{
-                $xmlMethod = $xmlService->addChild('method');
-                if ($method->isStatic())
-                {
-                    $xmlMethod->addAttribute('class', $method->getClass());
-                }
-                $xmlMethod->addAttribute('name', $method->getName());
+				if ($method->getName() == "__construct")
+				{
+					$xmlMethod = $xmlService->addChild('constructor');
+				}
+				else 
+				{
+		            $xmlMethod = $xmlService->addChild('method');
+		            if ($method->isStatic())
+		            {
+		                $xmlMethod->addAttribute('class', $method->getClass());
+		            }
+		            $xmlMethod->addAttribute('name', $method->getName());
+	            }
 
                 // process all arguments
                 foreach($method as $argument)
                 {
-                    if (get_class($argument) == '\Spiral\Framework\DI\Schema\ServiceArgument')
+                    if ($argument instanceof ServiceArgument)
                     {
                         $isService = true;
                     } else {
                         $isService = false;
                     }
                     
-                    $this->_addArgument($xmlMethod, $arg[0], $isService);
+                    $this->_addArgument($xmlMethod, $argument->getValue(), $isService);
                 }
             }
         }
@@ -60,14 +68,14 @@ class XmlDumper extends AbstractDumper
         return $xmlDoc->asXML();
     }
 
-    protected function _addArgument($xmlNode, $arg, $isService = false)
+    protected function _addArgument($xmlNode, $argumentValue, $isService = false)
     {
         $xmlArg = $xmlNode->addChild('argument');
-        $xmlArg->addAttribute('type', gettype($arg));
+        $xmlArg->addAttribute('type', gettype($argumentValue));
 
-        if (!is_array($arg))
+        if (!is_array($argumentValue))
         {
-            $xmlArg->addAttribute('value', $arg);
+            $xmlArg->addAttribute('value', $argumentValue);
         } else {
             foreach($arg as $value)
             {

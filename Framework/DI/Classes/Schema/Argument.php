@@ -10,7 +10,7 @@ namespace Spiral\Framework\DI\Schema;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-interface SpiralDi_Schema_Argument {
+interface Argument {
 
     /**
      * return the argument value

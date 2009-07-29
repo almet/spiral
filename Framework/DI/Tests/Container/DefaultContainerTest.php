@@ -124,6 +124,7 @@ class DefaultContainerTest extends PHPUnit_Framework_TestCase
 	public function testScopes()
 	{
 		$container = $this->getContainer();
+		new 
 		
 		// by default, scope is singleton
 		$this->assertTrue($container->test === $container->test);

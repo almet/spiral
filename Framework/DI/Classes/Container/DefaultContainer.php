@@ -49,9 +49,11 @@ class DefaultContainer implements Container
      * @param	Loader     $loader
      * @return	void
      */
-    public function __construct(Schema $schema, Loader $loader = null){
+    public function __construct(Schema $schema, Loader $loader = null)
+    {
         $this->_schema = $schema;
-        if ($loader != null){
+        if ($loader != null)
+        {
             $this->_loader = $loader;
         }
     }
@@ -64,10 +66,12 @@ class DefaultContainer implements Container
      * @param	array	$args
      * @return
      */
-    protected function _callMethod($class, $methodName, $arguments){
+    protected function _callMethod($class, $methodName, $arguments)
+    {
         $this->_load($class);
 
-        if (method_exists($class, $methodName) && is_callable(array($class, $methodName))){
+        if (method_exists($class, $methodName) && is_callable(array($class, $methodName)))
+        {
             $object = call_user_func_array(array($class, $methodName), $arguments);
         }
 
@@ -79,8 +83,10 @@ class DefaultContainer implements Container
      *
      * @return	void
      */
-    protected function _load($className){
-        if ($this->_loader != null){
+    protected function _load($className)
+    {
+        if ($this->_loader != null)
+        {
             $this->_loader->load($className);
         }
     }
@@ -92,44 +98,51 @@ class DefaultContainer implements Container
      * @param	object	$object
      * @return	array
      */
-    protected function _processMethodArguments(array $arguments, $object = null){
+    protected function _processMethodArguments(array $arguments, $object = null)
+    {
         $processedArguments = array();
         
-        foreach($arguments as $arg){
-            if (!$arg instanceof SpiralDi_Schema_Argument){
-                throw new SpiralDi_Schema_Exception_InvalidArgument(get_class($arg).' must implements the Spiral\Framework\Di\Schema\Argument interface');
+        foreach($arguments as $argument)
+        {
+            if (!$argument instanceof SpiralDi_Schema_Argument)
+            {
+                throw new Exception(get_class($argument).' must implements the Spiral\Framework\Di\Schema\Argument interface');
             }
-            switch(get_class($arg)){
-                case '\Spiral\Framework\Di\Schema\DefaultArgument':
-                     $processedArguments[] = $arg->getValue();
-                break;
-                
-                case '\Spiral\Framework\Di\Schema\ActiveServiceArgument':
-                    if ($object != null){
-                        $processedArguments[] = $object;
-                    }
-                break;
+            
+            if($argument instanceof DefaultArgument)
+            {
+            	$processedArguments[] = $argument->getValue();
+            }
+            elseif($argument instanceof ActiveServiceArgument)
+            {
+            	if ($object != null)
+            	{
+            		$processedArguments[] = $object;
+                }
+            }
+            elseif($argument instanceof ServiceReferenceArgument)
+            {
+            	$processedArguments[] = $this->getService($argument->getValue());
+            }
+            elseif($argument instanceof UseReferenceArgument)
+            {
+            	$serviceName = $argument->getReference();
+				$service = $this->getService($serviceName);
+				$factoryMethod = $argument->getFactoryMethod();
+				$attributes = $argument->getValue();
 
-                case '\Spiral\Framework\Di\Schema\ServiceRefArgument':
-                    $processedArguments[] = $this->getService($arg->getValue());
-                break;
-
-                case '\Spiral\Framework\Di\Schema\UseRefArgument':
-                     $serviceName = $arg->getRef();
-                     $service = $this->getService($serviceName);
-                     $factoryMethod = $arg->getFactoryMethod();
-                     $attributes = $arg->getValue();
-
-                     if(!empty($factoryMethod)){
-                         $processedArguments[] = $service->$factoryMethod($attributes);
-                     }else{
-                         $processedArguments[] = $service->$attributes;
-                     }
-                break;
-
-                case '\Spiral\Framework\Di\Schema\ContainerArgument':
-                    $processedArguments[] = $this;
-                break;
+				if(!empty($factoryMethod))
+				{
+					$processedArguments[] = $service->$factoryMethod($attributes);
+				}
+				else
+				{
+					$processedArguments[] = $service->$attributes;
+				}
+            }
+            elseif($argument instanceof ContainerArgument)
+            {
+            	 $processedArguments[] = $this;
             }
         }
         return $processedArguments;
@@ -142,19 +155,25 @@ class DefaultContainer implements Container
      * @param	mixed	$object 	object to act on
      * @return	void
      */
-    public function injectMethods($methods, $object){
-        foreach ($methods as $method){
+    public function injectMethods($methods, $object)
+    {
+        foreach ($methods as $method)
+        {
             $methodName = $method->getName();
-            if ($methodName != '__construct'){
-                if ($method->isStatic()){
+            if ($methodName != '__construct')
+            {
+                if ($method->isStatic())
+                {
                     $this->_callMethod(
-                    $method->getClass(), $methodName,
-                    $this->_processMethodArguments($method->getArguments(), $object)
+		                $method->getClass(), $methodName,
+		                $this->_processMethodArguments($method->getArguments(), $object)
                     );
-                } else{
+                } 
+                else
+                {
                     $this->_callMethod(
-                    $object, $methodName,
-                    $this->_processMethodArguments($method->getArguments(), $object)
+		                $object, $methodName,
+		                $this->_processMethodArguments($method->getArguments(), $object)
                     );
                 }
             }
@@ -168,6 +187,7 @@ class DefaultContainer implements Container
      *
      * @param	string	$key
      * @return	mixed
+     * @throws	\Spiral\Framework\DI\Schema\Exception\UnknownServiceException
      */
     public function getService($key){
 
@@ -190,7 +210,8 @@ class DefaultContainer implements Container
 
             $return = $this->_callMethod($service->getClassName(), $method->getName(), $args);
 
-            if ($service->isSingleton()){
+            if ($service->isSingleton())
+            {
                 $this->_sharedServices[$key] = $return;
             }
 
@@ -204,7 +225,8 @@ class DefaultContainer implements Container
             $args = $this->_processMethodArguments($constructor->getArguments());
 
             $params = '';
-            for ($i = 0; $i < count($args); $i++) {
+            for ($i = 0; $i < count($args); $i++)
+            {
                 $params .= '$args['.$i.'],';
             }
             // really really ugly eval here. Should be replaced by some reflexion
@@ -212,7 +234,9 @@ class DefaultContainer implements Container
             $object = eval("return new $className($params);");
 
             // if no constructor is defined in the schema, just build the object
-        } catch(UnknownMethodException $e) {
+        } 
+        catch(UnknownMethodException $e) 
+        {
             $object = new $className();
         }
 
@@ -237,7 +261,8 @@ class DefaultContainer implements Container
      *
      * Alias of getService()
      */
-    public function __get($key){
+    public function __get($key)
+    {
         return $this->getService($key);
     }
 

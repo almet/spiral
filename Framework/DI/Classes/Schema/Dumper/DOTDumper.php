@@ -1,6 +1,6 @@
 <?php
 namespace Spiral\Framework\DI\Schema\Dumper;
-
+use Spiral\Framework\DI\Schema\ServiceReferenceArgument;
 /**
  * This specific dumper convert a schema object into a dot string.
  *
@@ -12,7 +12,7 @@ namespace Spiral\Framework\DI\Schema\Dumper;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class DotDumper extends AbstractDumper{
+class DOTDumper extends AbstractDumper{
 
 	/**
 	 * Default options for generating dot files
@@ -90,7 +90,7 @@ class DotDumper extends AbstractDumper{
 	 */
 	protected function _escapeNodeString($string)
 	{
-		$string = preg_replace('#\\\#', '_', $string);
+		$string = str_replace('\\', '_', $string);
 		return strtolower($string);
 	}
 
@@ -102,7 +102,7 @@ class DotDumper extends AbstractDumper{
      */
 	protected function _escapeLabelString($string)
 	{
-		return preg_replace('#\\\#', '\\\\\\', $string);
+		return str_replace('\\', '\\\\', $string);
 	}
 
     /**
@@ -160,13 +160,13 @@ class DotDumper extends AbstractDumper{
 				}
 
                 // or if theses methods link to other services
-				foreach($method as $arg)
+				foreach($method as $argument)
 				{
-					if( $arg[1] == MethodSchema::ARG_IS_SERVICE &&
-                        $arg[0] != MethodSchema::ACTIVE_SERVICE)
+					var_dump($argument);
+					if( $argument instanceof ServiceReferenceArgument)
 					{
 						$output .= $currentServiceNode.' -> '. 'node_service_'
-                            .$arg[0]."\n";
+                            .$argument->getValue()."\n";
 					}
 					
 				}

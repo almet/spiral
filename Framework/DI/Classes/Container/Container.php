@@ -52,6 +52,7 @@ interface Container
 	 *
 	 * @param	string	$key
 	 * @return	mixed
+	 * @throws	\Spiral\Framework\DI\Schema\Exception\UnknownServiceException
 	 */
 	public function getService($key);
 

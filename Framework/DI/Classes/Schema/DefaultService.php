@@ -231,5 +231,3 @@ class DefaultService implements Service
 		return $this->_count > 0;
 	}	
 }
-
-?>

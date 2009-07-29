@@ -30,4 +30,3 @@ abstract class AbstractDumper implements Dumper
 		$this->_schema = $schema;
 	}
 }
-?>

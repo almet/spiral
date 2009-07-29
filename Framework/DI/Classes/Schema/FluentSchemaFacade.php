@@ -1,5 +1,5 @@
 <?php
-namespace Spiral\Framework\DI\Schema\Builder;
+namespace Spiral\Framework\DI\Schema;
 use \Spiral\Framework\DI\Schema\SchemaResolver;
 use \Spiral\Framework\DI\Schema\DefaultSchemaResolver;
 use \Spiral\Framework\DI\Schema\Method;
@@ -7,13 +7,25 @@ use \Spiral\Framework\DI\Schema\Method;
 /**
  * Default implementation of SchemaFluent interface
  *
- * See the interface for further information. 
+ * Facade for the schema supporting fluent interface
+ * 
+ * So, you can view it as a facility to manipulate the schema classes. 
+ *
+ * <code>
+ * $fluentSchema
+ * ->addService('test', 'spiral\tests\ToInject')
+ * ->addService('test2', 'spiral\tests\ToInject')
+ *		->construct()->with('arg1', 'arg2')
+ *		->call('method')->withService('service')
+ *		->etc.
+ * </code>
+ * 
  * 
  * @author  	Alexis Métaireau	20 apr. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class FluentBuilder implements Builder
+class FluentSchemaFacade
 {
 	/**
 	 * Array of active services
@@ -103,12 +115,12 @@ class FluentBuilder implements Builder
 	 *
 	 * If not, create a new one, store it and return it
 	 *
-	 * @param	string  $key		name of the wanted service
-	 * @param	string  $className  classname of the service
+	 * @param	string  $serviceName	name of the wanted service
+	 * @param	string  $className  	classname of the service
      * @param   bool    $isSingleton
 	 * @return  Service
 	 */
-	protected function _getService($key, $className, $isSingleton = false)
+	protected function _getService($serviceName, $className, $isSingleton = false)
 	{
 		if ($this->_lastCall != 'service')
 		{
@@ -116,17 +128,18 @@ class FluentBuilder implements Builder
 		}
 		
 		// if the service is registred, just return the one already registred
-		if (array_key_exists($key, $this->_schema))
+		if (isset($this->_schema[$serviceName]))
 		{
-			$service = $this->_schema->getService($key);
-			
-		// of not, create a new one, and add it to the active object
-		} else 
+			$service = $this->_schema->getService($serviceName);
+		} 
+		// if service is not registred, create a new one, and add it to the active object
+		else 
 		{
 			$serviceClass = $this->_resolver->resolveService();
-			$service = new $serviceClass($key, $className, $isSingleton);
+			$service = new $serviceClass($serviceName, $className, $isSingleton);
 			$this->_schema->addService($service);
 		}
+		
 		// add it to the active services
 		$this->_activeServices[] = $service;
 		$this->_lastCall = 'service';
@@ -242,14 +255,23 @@ class FluentBuilder implements Builder
 	/**
 	 * call the selected method(s) with given parameter
 	 *
-	 * @param   string  $parameter
+	 * @param   string  $value
 	 * @return  \Spiral\Framework\DI\Schema\Builder\FluentBuilder
 	 */
-	public function addArgument($parameter, $asService = false)
+	public function addArgument($value, $asService = false)
 	{
+		if ($asService === true)
+		{
+			$parameter = new ServiceReferenceArgument($value);
+		} 
+		else
+		{
+			$parameter = new DefaultArgument($value);
+		}
+		
 		foreach($this->_activeMethods as $method)
 		{
-			$method->addArgument($parameter, $asService);
+			$method->addArgument($parameter);
 		}
 		//$service->addMethod($method);
 		$this->_lastCall = 'argument';
@@ -294,7 +316,7 @@ class FluentBuilder implements Builder
 	 *
 	 * @return	\Spiral\Framework\DI\Schema\Schema
 	 */
-	public function buildSchema()
+	public function getSchema()
 	{
 		return $this->_schema;
 	}

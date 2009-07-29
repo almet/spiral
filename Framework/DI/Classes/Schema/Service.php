@@ -23,7 +23,7 @@ namespace Spiral\Framework\DI\Schema;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface Service extends Iterator, ArrayAccess
+interface Service extends \Iterator, \ArrayAccess
 {
 	/**
 	 * Set the method to call

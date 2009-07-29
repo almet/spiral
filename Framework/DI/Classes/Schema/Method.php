@@ -35,7 +35,7 @@ namespace Spiral\Framework\DI\Schema;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-interface Method extends Iterator, ArrayAccess
+interface Method extends \Iterator, \ArrayAccess
 {
 	/**
 	 * construct a method and set it's name
