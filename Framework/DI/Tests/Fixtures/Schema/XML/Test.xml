@@ -1,130 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<container xmlns="http://namespaces.spiral-project.org/framework/di/1.0/schema"
+<schema xmlns="http://namespaces.spiral-project.org/framework/di/schema"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="http://localhost/Spiral/Framework/DI/Resources/schema.xsd">
-
-	<!-- TODO : callStatic, default scope for factories, array as arguments, using factories directly in argument (see after) -->
+	xsi:schemaLocation="http://namespaces.spiral-project.org/framework/di/schema ../../../../Resources/schema.xsd">
 
 	<!-- Injection of services in method and constructor -->
 	<service name="discoFeverConcert" class="\Spiral\Framework\DI\Fixtures\Concert">
 		<constructor>
-			<argument ref="location"/>
+			<argument ref="location" />
 		</constructor>
 		<method name="setDiscoBall">
-            <argument ref="discoBall"/>
+			<argument ref="discoBall" />
 		</method>
 		<method name="setArtist">
-            <argument ref="jamesBrown"/>
+			<argument ref="jamesBrown" />
 		</method>
 	</service>
 
 	<!-- Simple argument injection in constructor -->
 	<service name="location" class="\Spiral\Framework\DI\Fixtures\Location">
 		<constructor>
-			<argument type="string" value="Philadelphia"/>
-			<argument type="string" value="USA"/>
+			<argument type="string" value="Philadelphia" />
+			<argument type="string" value="USA" />
 		</constructor>
 	</service>
 
-	<!-- Construction via a static factory, using class constant argument, scope prototype for a factory -->
-    <service name="discoBall" factoryClass="\Spiral\Framework\DI\Fixtures\DiscoBallFactory" scope="prototype">
-    	<factoryMethod name="create">
-    		<argument type="int" value="23"/>				<!-- Diameter of the ball in cm -->
-    		<argument type="int" value="10"/>				<!-- Width of facets in mm -->
-    	</factoryMethod>
-        <method name="setColor">
-            <argument type="constant" value="PINK" class="\Spiral\Framework\DI\Fixtures\Color"/>
+	<!--
+		Construction via a static factory, using class constant argument,
+		scope prototype for a factory (default), array type (with keys, or not
+		and with recursive array type)
+	-->
+	<service name="discoBall" factoryClass="\Spiral\Framework\DI\Fixtures\DiscoBallFactory">
+		<factoryMethod name="create">
+			<argument type="array">
+				<item key="diameter" type="int" value="230" />						<!-- Diameter of the ball in mm -->
+				<item key="facets" type="constant" value="SHAPE_SQUARE" />			<!-- Shape of facets -->
+				<item key="availableColors" type="array">							<!-- Available colors -->
+					<item type="constant" value="GLOSSY_PINK"
+						class="\Spiral\Framework\DI\Fixtures\Color" />
+					<item type="constant" value="GLOSSY_RED"
+						class="\Spiral\Framework\DI\Fixtures\Color" />
+					<item type="constant" value="GLOSSY_GREEN"
+						class="\Spiral\Framework\DI\Fixtures\Color" />
+					<item type="constant" value="GLOSSY_YELLOW"
+						class="\Spiral\Framework\DI\Fixtures\Color" />
+				</item>
+			</argument>
+		</factoryMethod>
+		<method name="setColor">
+			<argument type="constant" value="GLOSSY_PINK"
+				class="\Spiral\Framework\DI\Fixtures\Color" />
 		</method>
 	</service>
 
-	<!-- Construction via a factory instance, using constant argument, scope singleton for a factory -->
-    <service name="microphone" factoryService="microphoneFactory" scope="singleton">
-    	<factoryMethod name="getMicrophone">
-            <argument type="constant" value="MICROPHONE_TYPE_STATIC"/>
-    	</factoryMethod>
+	<!--
+		Construction via a factory instance, scope singleton for a factory
+	-->
+	<service name="microphone" factoryService="microphoneFactory"
+		scope="singleton">
+		<factoryMethod name="getMicrophone">
+			<argument type="int" value="30" />				<!-- Diameter in mm -->
+			<argument type="int" value="180" />				<!-- Length in mm -->
+		</factoryMethod>
 	</service>
 
-	<!-- Construction via a factory instance -->
-    <service name="goldenMicrophone" extends="microphone">
-        <method name="setMaterial">
-            <argument type="constant" value="MATERIAL_GOLDEN"/>
+	<!-- Extension of a service, using constant argument in method -->
+	<service name="goldenMicrophone" extends="microphone">
+		<method name="setMaterial">
+			<argument type="constant" value="MATERIAL_GOLDEN" />
 		</method>
 	</service>
 
-	<!-- Constructor injection, method service injection, singleton scope -->
-    <service name="jamesBrown" class="\Spiral\Framework\DI\Fixtures\God" scope="singleton">
-    	<constructor>
-    		<argument type="string" value="James"/>						<!-- First name -->
-    		<argument type="string" value="Brown"/>						<!-- Surname -->
-    		<argument type="string" value="The Godfather of Soul"/>		<!-- Nickname -->
-    	</constructor>
-        <method name="setMicrophone">
-            <argument type="service" value="goldenMicrophone"/>
+	<!--
+		Constructor injection, method service injection, singleton scope,
+		external call to method
+	-->
+	<service name="jamesBrown" class="\Spiral\Framework\DI\Fixtures\God"
+		scope="singleton">
+		<constructor>
+			<argument type="string" value="James" />						<!-- First name -->
+			<argument type="string" value="Brown" />						<!-- Surname -->
+			<argument type="string" value="The Godfather of Soul" />		<!-- Nickname -->
+		</constructor>
+		<method name="setMicrophone">
+			<argument ref="goldenMicrophone" />
 		</method>
 		<method name="setChoristsGroup">
-            <argument ref="jamesBrownChoristsGroup"/>
+			<argument ref="jamesBrownChoristsGroup" />
+		</method>
+		<method name="declareCreation" class="\Spiral\Framework\DI\Fixtures\GodCreationOffice">
+			<argument ref="this" />								<!-- Current service -->
+			<argument type="string" value="I Feel God !" />		<!-- First words... -->
+		</method>
+		<method name="setMaster" ref="marthaHigh">
+			<argument ref="this" />								<!-- Current service -->
 		</method>
 	</service>
 
 	<!-- Alias of a service -->
-    <service name="theGodfatherOfSoul" ref="jamesBrown"/>
+	<service name="theGodfatherOfSoul" ref="jamesBrown" />
 
-	<!-- TODO : Using factory directly in argument -->
-    <service name="marthaHigh" class="\Spiral\Framework\DI\Fixtures\Chorist">
-    	<constructor>
-   			<argument ref="marthaInformation" attribute="firstName"/>		<!-- First name -->
-    		<argument ref="marthaInformation" attribute="surName"/>			<!-- Surname -->
-    	</constructor>
-	</service>
-
-	<!-- Injection of services in methods -->
-    <service name="marthaHigh2" class="\Spiral\Framework\DI\Fixtures\Chorist">
-        <method name="setMicrophone">
-            <argument ref="choristMicrophone"/>
-		</method>
+	<!--
+		Result of a method call as argument, attribute of an object as
+		argument
+	-->
+	<service name="marthaHigh" class="\Spiral\Framework\DI\Fixtures\Chorist">
+		<constructor>
+			<argument ref="marthaInformation" method="getInformation">		<!-- First name -->
+				<argument type="string" value="firstName" />
+			</argument>
+			<argument ref="marthaInformation" attribute="surName" />		<!-- Surname -->
+		</constructor>
 	</service>
 
 	<!-- Dependency on an undeclared service -->
-    <service name="uselessChorist" class="\Spiral\Framework\DI\Fixtures\Chorist">
-        <method name="setMicrophone">
-            <argument ref="unknownMicrophone"/>
+	<service name="uselessChorist" class="\Spiral\Framework\DI\Fixtures\Chorist">
+		<method name="setMicrophone">
+			<argument ref="unknownMicrophone" />
 		</method>
 	</service>
 
 	<!-- Multiple call on the same method -->
-	<service name="marthaInformation" class="\Spiral\Framework\DI\Fixtures\ChoristConfiguration">
+	<service name="marthaInformation"
+		class="\Spiral\Framework\DI\Fixtures\ChoristConfiguration">
 		<method name="addInformation">
-			<argument type="string" value="firstName"/>
-			<argument type="string" value="Martha"/>
+			<argument type="string" value="firstName" />
+			<argument type="string" value="Martha" />
 		</method>
 		<method name="addInformation">
-			<argument type="string" value="surName"/>
-			<argument type="string" value="High"/>
+			<argument type="string" value="surName" />
+			<argument type="string" value="High" />
 		</method>
 	</service>
 
 	<!-- ContainerAware service -->
-	<service name="jamesBrownChorists" class="\Spiral\Framework\DI\Fixtures\ChoristGroup" containerAware="true">
+	<service name="jamesBrownChorists"
+		class="\Spiral\Framework\DI\Fixtures\ContainerAwareChoristGroup"
+		containerAware="true">
 		<method name="addChorist">
-			<argument type="string" value="marthaHigh"/>		<!-- Only the ID of the chorist -->
+			<argument type="string" value="marthaHigh" />		<!-- Only the ID of the chorist -->
 		</method>
 	</service>
 
 	<!-- Container type dependent service -->
-	<service name="jamesBrownChorists2" class="\Spiral\Framework\DI\Fixtures\ChoristGroup">
+	<service name="jamesBrownChorists2"
+		class="\Spiral\Framework\DI\Fixtures\ContainerDependantChoristGroup">
 		<method name="addChorist">
-			<argument type="string" value="marthaHigh"/>		<!-- Only the ID of the chorist -->
+			<argument type="string" value="marthaHigh" />		<!-- Only the ID of the chorist -->
 		</method>
 		<method name="injectContainer">
-			<argument type="container"/>
+			<argument type="container" />
 		</method>
 	</service>
 
 	<!-- ContainerAware interface implementing service -->
-	<service name="jamesBrownChorists3" class="\Spiral\Framework\DI\Fixtures\ChoristGroup">
+	<service name="jamesBrownChorists3"
+		class="\Spiral\Framework\DI\Fixtures\AutoContainerAwareChoristGroup">
 		<method name="addChorist">
-			<argument type="string" value="marthaHigh"/>		<!-- Only the ID of the chorist -->
+			<argument type="string" value="marthaHigh" />		<!-- Only the ID of the chorist -->
 		</method>
 	</service>
 
-</container>
+</schema>
