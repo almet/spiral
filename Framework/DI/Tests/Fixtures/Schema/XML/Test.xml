@@ -1,68 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://namespaces.spiral-project.org/framework/di/1.0/schema"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://namespaces.spiral-project.org/framework/di/1.0/schema http://namespaces.spiral-project.org/framework/di/1.0/schema.xsd">
+	xsi:noNamespaceSchemaLocation="http://localhost/Spiral/Framework/DI/Resources/schema.xsd">
 
-	<service name="saturdayNightClub" class="\Spiral\Framework\DI\Fixtures\Club">
+	<!-- TODO : callStatic, default scope for factories, array as arguments, using factories directly in argument (see after) -->
+
+	<!-- Injection of services in method and constructor -->
+	<service name="discoFeverConcert" class="\Spiral\Framework\DI\Fixtures\Concert">
+		<constructor>
+			<argument ref="location"/>
+		</constructor>
 		<method name="setDiscoBall">
-            <argument type="string" value="string" />
-            <argument type="int" value="23" />
-            <argument type="service" value="service1" />
-            <argument ref="config" value="db.config" factoryMethod="getParam"/>
-            <argument ref="config" factoryMethod="simpleAccessor"/>
+            <argument ref="discoBall"/>
 		</method>
-		<method name="setDiscoBall">
-            <argument type="string" value="string" />
-            <argument type="int" value="23" />
-            <argument type="service" value="service1" />
-            <argument ref="config" value="db.config" factoryMethod="getParam"/>
-            <argument ref="config" factoryMethod="simpleAccessor"/>
+		<method name="setArtist">
+            <argument ref="jamesBrown"/>
 		</method>
 	</service>
 
-    <service name="service1" class="DiTest_Service1">
-		<method name="__construct">
-            <argument type="string" value="constructorParam"/>
+	<!-- Simple argument injection in constructor -->
+	<service name="location" class="\Spiral\Framework\DI\Fixtures\Location">
+		<constructor>
+			<argument type="string" value="Philadelphia"/>
+			<argument type="string" value="USA"/>
+		</constructor>
+	</service>
+
+	<!-- Construction via a static factory, using class constant argument, scope prototype for a factory -->
+    <service name="discoBall" factoryClass="\Spiral\Framework\DI\Fixtures\DiscoBallFactory" scope="prototype">
+    	<factoryMethod name="create">
+    		<argument type="int" value="23"/>				<!-- Diameter of the ball in cm -->
+    		<argument type="int" value="10"/>				<!-- Width of facets in mm -->
+    	</factoryMethod>
+        <method name="setColor">
+            <argument type="constant" value="PINK" class="\Spiral\Framework\DI\Fixtures\Color"/>
 		</method>
 	</service>
 
-	<service name="config" class="DiTest_Config" />
+	<!-- Construction via a factory instance, using constant argument, scope singleton for a factory -->
+    <service name="microphone" factoryService="microphoneFactory" scope="singleton">
+    	<factoryMethod name="getMicrophone">
+            <argument type="constant" value="MICROPHONE_TYPE_STATIC"/>
+    	</factoryMethod>
+	</service>
 
-    <service name="containerAware" class="DiTest_ContainerAware" containerAware="true" />
-
-    <service name="serviceWithContainer" class="DiTest_ServiceWithContainer">
-        <method name="injectContainer">
-            <argument type="container"/>
+	<!-- Construction via a factory instance -->
+    <service name="goldenMicrophone" extends="microphone">
+        <method name="setMaterial">
+            <argument type="constant" value="MATERIAL_GOLDEN"/>
 		</method>
-    </service>
+	</service>
 
-    <service name="inheritedService" extends="test" class="DiTest_InheritedService">
-        <method name="childMethod">
-            <argument value="injectedChildParam" />
-        </method>
-    </service>
+	<!-- Constructor injection, method service injection, singleton scope -->
+    <service name="jamesBrown" class="\Spiral\Framework\DI\Fixtures\God" scope="singleton">
+    	<constructor>
+    		<argument type="string" value="James"/>						<!-- First name -->
+    		<argument type="string" value="Brown"/>						<!-- Surname -->
+    		<argument type="string" value="The Godfather of Soul"/>		<!-- Nickname -->
+    	</constructor>
+        <method name="setMicrophone">
+            <argument type="service" value="goldenMicrophone"/>
+		</method>
+		<method name="setChoristsGroup">
+            <argument ref="jamesBrownChoristsGroup"/>
+		</method>
+	</service>
 
-    <service name="brokenDependencyService" class="DiTest_BrokenDependencyService">
-        <constructor>
-            <argument type="service" value="inexistantService" />
-        </constructor>
-    </service>
+	<!-- Alias of a service -->
+    <service name="theGodfatherOfSoul" ref="jamesBrown"/>
 
-    <service name="serviceFactory" type="factory" class="DiTest_ServiceFactory">
-        <method name="getService">
-            <argument value="string1"/>
-            <argument value="string2"/>
-        </method>
-    </service>
+	<!-- TODO : Using factory directly in argument -->
+    <service name="marthaHigh" class="\Spiral\Framework\DI\Fixtures\Chorist">
+    	<constructor>
+   			<argument ref="marthaInformation" attribute="firstName"/>		<!-- First name -->
+    		<argument ref="marthaInformation" attribute="surName"/>			<!-- Surname -->
+    	</constructor>
+	</service>
 
-    <service name="singletonFactory" type="factory" class="DiTest_ServiceFactory" scope="singleton">
-        <method name="getSingleton" />
-    </service>
+	<!-- Injection of services in methods -->
+    <service name="marthaHigh2" class="\Spiral\Framework\DI\Fixtures\Chorist">
+        <method name="setMicrophone">
+            <argument ref="choristMicrophone"/>
+		</method>
+	</service>
 
-    <service name="prototypeFactory" type="factory" class="DiTest_ServiceFactory">
-        <method name="getSingleton" />
-    </service>
+	<!-- Dependency on an undeclared service -->
+    <service name="uselessChorist" class="\Spiral\Framework\DI\Fixtures\Chorist">
+        <method name="setMicrophone">
+            <argument ref="unknownMicrophone"/>
+		</method>
+	</service>
 
-    <service name="prototype" class="DiTest_Config" scope="prototype"/>
+	<!-- Multiple call on the same method -->
+	<service name="marthaInformation" class="\Spiral\Framework\DI\Fixtures\ChoristConfiguration">
+		<method name="addInformation">
+			<argument type="string" value="firstName"/>
+			<argument type="string" value="Martha"/>
+		</method>
+		<method name="addInformation">
+			<argument type="string" value="surName"/>
+			<argument type="string" value="High"/>
+		</method>
+	</service>
+
+	<!-- ContainerAware service -->
+	<service name="jamesBrownChorists" class="\Spiral\Framework\DI\Fixtures\ChoristGroup" containerAware="true">
+		<method name="addChorist">
+			<argument type="string" value="marthaHigh"/>		<!-- Only the ID of the chorist -->
+		</method>
+	</service>
+
+	<!-- Container type dependent service -->
+	<service name="jamesBrownChorists2" class="\Spiral\Framework\DI\Fixtures\ChoristGroup">
+		<method name="addChorist">
+			<argument type="string" value="marthaHigh"/>		<!-- Only the ID of the chorist -->
+		</method>
+		<method name="injectContainer">
+			<argument type="container"/>
+		</method>
+	</service>
+
+	<!-- ContainerAware interface implementing service -->
+	<service name="jamesBrownChorists3" class="\Spiral\Framework\DI\Fixtures\ChoristGroup">
+		<method name="addChorist">
+			<argument type="string" value="marthaHigh"/>		<!-- Only the ID of the chorist -->
+		</method>
+	</service>
 
 </container>

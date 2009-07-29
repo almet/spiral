@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+targetNamespace="http://namespaces.spiral-project.org/framework/di/1.0/schema"
+xmlns="http://namespaces.spiral-project.org/framework/di/1.0/schema"
+elementFormDefault="qualified">
+
+<!-- Simple types declaration -->
+	
+	<xsd:simpleType name="argumentTypeEnumeration">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="string"/>
+			<xsd:enumeration value="int"/>
+			<xsd:enumeration value="service"/>
+			<xsd:enumeration value="container"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="serviceScopeEnumeration">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="prototype"/>
+			<xsd:enumeration value="singleton"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="classNameType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[a-zA-Z_][a-zA-Z0-9_\\]*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="methodNameType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[a-zA-Z_][a-zA-Z0-9_]*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+<!-- Complex types declaration -->
+	
+	<!-- Container -->
+	
+	<xsd:complexType name="containerType">
+		<xsd:sequence>
+			<xsd:element name="service" type="serviceType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:unique name="methodName">
+					<xsd:selector xpath="method"/>
+					<xsd:field xpath="name"/>
+				</xsd:unique>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<!-- Service -->
+	
+	<xsd:complexType name="serviceType">
+		<xsd:sequence>
+			<xsd:element name="constructor" type="constructorType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="method" type="methodType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:ID"/>
+		<xsd:attribute name="class" type="classNameType"/>
+		<xsd:attribute name="scope" type="serviceScopeEnumeration" default="singleton"/>
+		<xsd:attribute name="extends" type="xsd:IDREF"/>
+		<xsd:attribute name="containerAware" type="xsd:boolean"/>
+	</xsd:complexType>
+	
+	<!-- Method & Constructor -->
+	
+	<xsd:group name="methodGroupType">
+		
+        <xsd:sequence>
+			
+            <xsd:element name="argument" type="argumentType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:group>
+	
+	<xsd:complexType name="constructorType">
+		<xsd:group ref="methodGroupType"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="methodType">
+		<xsd:sequence>
+			<xsd:group ref="methodGroupType"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="methodNameType"/>
+	</xsd:complexType>
+	
+	<!-- Argument -->
+	
+	<xsd:complexType name="argumentType">
+		<xsd:attribute name="type" type="argumentTypeEnumeration" default="string"/>
+		<xsd:attribute name="ref" type="xsd:IDREF"/>
+		<xsd:attribute name="value" type="xsd:anySimpleType"/>
+		<xsd:attribute name="factoryMethod" type="methodNameType"/>
+	</xsd:complexType>
+
+<!-- Root element -->
+	
+	<xsd:element name="container" type="containerType">
+		
+        <xsd:key name="serviceName">
+			
+            <xsd:selector xpath=".//service" />
+            
+            <xsd:field xpath="@name" />
+        </xsd:key>
+        
+        <xsd:keyref name="argumentRef" refer="serviceName">
+			
+            <xsd:selector xpath=".//argument" />
+            
+            <xsd:field xpath="@ref" />
+        </xsd:keyref>
+        
+        <xsd:keyref name="serviceExtends" refer="serviceName">
+			
+            <xsd:selector xpath=".//service" />
+            
+            <xsd:field xpath="@extends" />
+        </xsd:keyref>
+    </xsd:element>
+	
+</xsd:schema>
