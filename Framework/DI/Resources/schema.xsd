@@ -95,7 +95,7 @@
 
 <!-- Root element -->
 	
-	<xsd:element name="schema" type="containerType">
+	<xsd:element name="services" type="containerType">
 		
         <xsd:key name="serviceName">
 			
