@@ -2,27 +2,31 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
 
 <chapter>
-	<title>Dependency Injection</title>
+	<title>Dependency injection</title>
 	<para>
-		Spiral dependency injector (DI) has many features that should let
-		you use your existing classes without any change and let you manage 
-		everything about your objects, since creation to dependencies injection 
-		and lifecycle management.
+		Spiral dependency injector (DI) is a component that allow you to manage dependencies between 
+		objects. It is an inversion of control (IoC) container, thus it gives you the full power to apply 
+		the IoC pattern in your designs.
 	</para>
 	<para>
-		Here is the quick list of what is possible to do with Spiral DI. More explaination 
+		It has many features that should let you use your existing classes without any change and let you manage 
+		everything about your objects, since creation to dependencies injection and lifecycle management.
+	</para>
+	<para>
+		Here is a quick list of what is possible to do with Spiral DI. More explaination 
 		will be given in the following sections.
 	</para>
 
 	<itemizedlist>
 		<listitem>
 			<para>
-				Multiple objects construction processes : "new" operator, factory instance, static factory.
+				Multiple objects construction processes : direct instantiation, factory instance, static factory.
 			</para>
 		</listitem>
 		<listitem>
 			<para>
-				Injection by constructor or by methods (or both as well).
+				Injection by constructor, by methods or by attributes. You can mix all the injection processes in a 
+				single service as well.
 			</para>
 		</listitem>
 		<listitem>
@@ -52,12 +56,12 @@
 		</listitem>
 		<listitem>
 			<para>
-				Notify others parts when objects are created.
+				Callbacks on lifecycle events like "afterCreation".
 			</para>
 		</listitem>
 		<listitem>
 			<para>
-				Give multiple names to the same services.
+				Aliasing an object with multiple names.
 			</para>
 		</listitem>
 	</itemizedlist>
