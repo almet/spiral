@@ -2,8 +2,8 @@
 
 namespace Spiral\Framework\DI\Fixtures;
 
-use \Spiral\Framework\DI\Container\Container;
-use \Spiral\Framework\DI\ContainerAware;
+use \Spiral\Framework\DI\Construction\Container;
+use \Spiral\Framework\DI\ConstructionAware;
 
 /**
  * Represent an artist finder.

@@ -1,9 +1,9 @@
 <?php
 
-namespace Spiral\Framework\DI\Container\Tests;
+namespace Spiral\Framework\DI\Construction\Tests;
 
-use \Spiral\Framework\DI\Container\DefaultContainer;
-use \Spiral\Framework\DI\Schema\Builder\XMLBuilder;
+use \Spiral\Framework\DI\Construction\DefaultContainer;
+use \Spiral\Framework\DI\Definition\Builder\XMLBuilder;
 
 require_once('PHPUnit/Framework.php');
 
@@ -19,7 +19,7 @@ class DefaultContainerTest extends PHPUnit_Framework_TestCase
 	 * 
 	 * The implementation concerned by this test case is DefaultContainer.
 	 * 
-	 * @var	\Spiral\Framework\DI\Container\DefaultContainer
+	 * @var	\Spiral\Framework\DI\Construction\DefaultContainer
 	 */
 	protected $_container = null;
 	
