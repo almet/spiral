@@ -1,6 +1,7 @@
 <?php
 namespace Spiral\Framework\DI\Schema;
 use \Spiral\Framework\DI\Schema\Service;
+use \Spiral\Framework\DI\Schema\Exception\UnknownServiceException;
 
 /**
  * Default implementation of Schema.
@@ -65,7 +66,7 @@ class DefaultSchema implements Schema
 	{
 		if (!$this->hasService($key))
 		{
-			throw new SpiralDi_Schema_Exception_UnknownService($key);
+			throw new UnknownServiceException($key);
 		}
 		
 		return $this->_registredServices[$key];

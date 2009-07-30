@@ -3,6 +3,7 @@ namespace Spiral\Framework\DI\Container;
 use \Spiral\Framework\DI\Schema\Schema;
 use \Spiral\Framework\Bootstrap\Loader;
 use \Spiral\Framework\DI\Schema\FactoryService;
+use \Spiral\Framework\DI\Schema\Argument;
 use \Spiral\Framework\DI\Schema\Exception\UnknownMethodException;
 use \Spiral\Framework\DI\ContainerAware;
 
@@ -24,14 +25,14 @@ class DefaultContainer implements Container
     /**
      * The schema object
      *
-     * @var	SpiralDi_Schema
+     * @var	\Spiral\Framework\DI\Schema\Schema
      */
     protected $_schema;
 
     /**
      * the loader object
      *
-     * @var	SpiralDi_Loader
+     * @var	\Spiral\Framework\Bootstrap\Loader
      */
     protected $_loader  = null;
 
@@ -104,7 +105,7 @@ class DefaultContainer implements Container
         
         foreach($arguments as $argument)
         {
-            if (!$argument instanceof SpiralDi_Schema_Argument)
+            if (!$argument instanceof Argument)
             {
                 throw new Exception(get_class($argument).' must implements the Spiral\Framework\Di\Schema\Argument interface');
             }

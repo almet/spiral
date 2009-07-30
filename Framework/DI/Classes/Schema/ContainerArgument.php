@@ -8,7 +8,4 @@ namespace Spiral\Framework\DI\Schema;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-class ContainerArgument extends EmptyValueArgument
-{
-    
-}
+class ContainerArgument extends EmptyValueArgument{}

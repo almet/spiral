@@ -14,7 +14,7 @@ interface ContainerAware
 	/**
 	 * Method used to store the container
 	 * 
-	 * @param	SpiralDi_Container
+	 * @param	\Spiral\Framework\DI\Container\Container
 	 */
 	public function setDiContainer(Container $container);
 }

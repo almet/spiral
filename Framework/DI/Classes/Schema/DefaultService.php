@@ -7,8 +7,6 @@ use \Spiral\Framework\DI\Schema\Exception\UnknownMethodException;
  *
  * See the interface for further information.
  *
- * @package     SpiralDi
- * @subpackage  Schema  
  * @author  	Alexis Métaireau	30 mar. 2009
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 

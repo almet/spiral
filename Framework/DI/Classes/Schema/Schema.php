@@ -37,7 +37,7 @@ interface Schema extends \Iterator, \ArrayAccess
 	/**
 	 * create and set the active object.
 	 *
-	 * @param	SpiralDi_Schema_Service	$service
+	 * @param	\Spiral\Framework\DI\Schema\Service	$service
 	 * @param   string  $key
 	 * @return  void
 	 */
