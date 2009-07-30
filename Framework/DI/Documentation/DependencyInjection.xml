@@ -25,7 +25,8 @@
 		</listitem>
 		<listitem>
 			<para>
-				Injection by constructor or by methods (or both as well).
+				Injection by constructor, by methods or by attributes. You can mix all the injection processes in a 
+				single service as well.
 			</para>
 		</listitem>
 		<listitem>

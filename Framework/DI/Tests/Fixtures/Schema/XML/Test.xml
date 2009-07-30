@@ -6,7 +6,7 @@
 	<!--
 		Null argument type (as default type)
 		Null argument type
-		Callback on event "afterCreation"
+		Static callback on event "afterCreation"
 		CurrentService argument type
 	-->
 	<service id="store" class="\Spiral\Framework\DI\Fixtures\Store">
@@ -22,10 +22,10 @@
 	</service>
 
 	<!--
-		Direct instantiation
 		Multiple method calls
 		Service injection
 		Singleton scope (as default scope)
+		Service extension
 	-->
 	<service id="musicStore" class="\Spiral\Framework\DI\Fixtures\MusicStore" extends="store">
 		<method name="addArtist">
@@ -37,16 +37,21 @@
 		<method name="setArtistFinder">
 			<argument ref="artistFinder"/>
 		</method>
+		<method name="setSongFinder">
+			<argument ref="songFinder"/>
+		</method>
 	</service>
 
 	<!--
+		Direct instantiation
 		String type injection
 		String type injection (as default type)
 		Singleton scope
 		Use of a service method result as an argument
 		Use of a service attribute as an argument
+		Callback on a service on event "afterCreation"
 	-->
-	<service id="jamesBrown" class="\Spiral\Framework\DI\Fixtures\Singer" scope="singleton">
+	<service id="jamesBrown" class="\Spiral\Framework\DI\Fixtures\Artist" scope="singleton">
 		<constructor>
 			<argument type="string" value="James"/>
 			<argument value="Brown"/>
@@ -62,6 +67,10 @@
 		<method name="setDiscography">
 			<argument type="service" ref="discography"/>
 		</method>
+		<callback event="afterCreation" ref="goldenMicrophone" method="say">
+			<argument type="currentService"/>
+			<argument value="I Feel Good !"/>
+		</callback>
 	</service>
 
 	<!--
@@ -69,26 +78,29 @@
 	-->
 	<service id="theGodfatherOfSoul" ref="jamesBrown"/>
 
+	<service id="goldenMicrophone" class="\Spiral\Framework\DI\Fixtures\GoldenMicrophone"/>
+
 	<!--
-		Multiple call on the same method
+		Attribute injection
 	-->
 	<service id="jamesBrownInformation" class="\Spiral\Framework\DI\Fixtures\Collection">
 		<method name="setElement">
 			<argument value="nickname"/>
 			<argument value="The Godfather Of Soul"/>
 		</method>
-		<method name="setElement">
-			<argument value="birthdate"/>
-			<argument value="1933-05-03"/>
-		</method>
+		<attribute name="birthdate" value="1933-05-03"/>
 	</service>
 
 	<!--
+		Multiple call on the same method
 		Only method injection
 	-->
 	<service id="discography" class="\Spiral\Framework\DI\Fixtures\Discography">
 		<method name="addAlbum">
 			<argument type="service" ref="pleasePleasePlease"/>
+		</method>
+		<method name="addAlbum">
+			<argument type="service" ref="sexMachine"/>
 		</method>
 	</service>
 
@@ -162,5 +174,10 @@
 		Implicit container injection (via ContainerAware interface)
 	-->
 	<service id="artistFinder" class="\Spiral\Framework\DI\Fixtures\ArtistFinder"/>
+
+	<!--
+		Do not inject container (even when ContainerAware interface is implemented)
+	-->
+	<service id="songFinder" class="\Spiral\Framework\DI\Fixtures\SongFinder" containerAware="false"/>
 
 </services>
