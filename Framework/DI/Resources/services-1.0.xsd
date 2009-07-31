@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://namespaces.spiral-project.org/framework/di/services"
+	xmlns="http://namespaces.spiral-project.org/framework/di/services"
+	elementFormDefault="qualified">
+
+	<xsd:annotation>
+		<xsd:documentation>
+			This XML schema is beta version : be aware that this schema could change until Spiral is published under version 1.0.
+		
+			This XML schema defines the rules of the XML configuration of the Spiral Dependency Injector (DI).
+			Have a look at the documentation manual of Spiral to know more about the Spiral DI and its behavior.
+			We encourage you to read the documentation, because this XML schema is not sufficient to explain the whole
+			behavior of the DI.
+			
+			Hope you enjoy it ;)
+			
+			Spiral Team
+		</xsd:documentation>
+	</xsd:annotation>
+
+<!-- Simple types declaration -->
+
+	<!-- Datatype for class name values -->
+	<xsd:simpleType name="classNameDatatype">
+	
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[a-zA-Z0-9_\\]+"/>
+		</xsd:restriction>
+		
+	</xsd:simpleType>
+
+	<!-- Datatype for scope -->
+	<xsd:simpleType name="scopeDatatype">
+	
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="singleton"/>
+			<xsd:enumeration value="prototype"/>
+			<xsd:enumeration value="clone"/>
+		</xsd:restriction>
+		
+	</xsd:simpleType>
+
+	<!-- Datatype for method argument type attribute values -->
+	<xsd:simpleType name="methodArgumentTypeDatatype">
+	
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="string"/>
+			<xsd:enumeration value="int"/>
+			<xsd:enumeration value="float"/>
+			<xsd:enumeration value="boolean"/>
+			<xsd:enumeration value="array"/>
+			<xsd:enumeration value="null"/>
+			<xsd:enumeration value="constant"/>
+			<xsd:enumeration value="service"/>
+			<xsd:enumeration value="container"/>
+		</xsd:restriction>
+		
+	</xsd:simpleType>
+
+	<!-- Datatype for callback argument type attribute values -->
+	<xsd:simpleType name="callbackArgumentTypeDatatype">
+	
+		<xsd:union memberTypes="methodArgumentTypeDatatype">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="currentService"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:union>
+		
+	</xsd:simpleType>
+
+	<!-- Datatype for callback event values -->
+	<xsd:simpleType name="callbackEventDatatype">
+	
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="afterCreation"/>
+		</xsd:restriction>
+		
+	</xsd:simpleType>
+
+<!-- Complex types declaration -->
+
+	<!-- Services -->
+	<xsd:complexType name="servicesType">
+	
+		<xsd:sequence>
+			<xsd:element name="service" type="serviceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		
+	</xsd:complexType>
+
+	<!-- Service -->
+	<xsd:complexType name="serviceType">
+
+		<xsd:sequence>
+			<xsd:element name="constructor" type="constructorType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="attribute" type="attributeType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="method" type="methodType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="callback" type="callbackType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		
+		<xsd:attribute name="id" type="xsd:ID" use="required"/>
+		<xsd:attribute name="class" type="classNameDatatype"/>
+		<xsd:attribute name="scope" type="scopeDatatype"/>
+		<xsd:attribute name="extends" type="xsd:Name"/>
+		<xsd:attribute name="ref" type="xsd:Name"/>
+		<xsd:attribute name="containerAware" type="xsd:boolean"/>
+		
+	</xsd:complexType>
+
+	<!-- Constructor type -->
+	<xsd:complexType name="constructorType">
+	
+		<xsd:group ref="methodArgumentGroup"/>
+		
+		<xsd:attribute name="factoryClass" type="classNameDatatype"/>
+		<xsd:attribute name="factoryService" type="xsd:Name"/>
+		<xsd:attribute name="factoryMethod" type="xsd:Name"/>
+		
+	</xsd:complexType>
+
+	<!-- Attribute type -->
+	<xsd:complexType name="attributeType">
+	
+		<xsd:attribute name="name" type="xsd:Name" use="required"/>
+		<xsd:attributeGroup ref="methodArgumentAttributeGroup"/>
+		
+	</xsd:complexType>
+
+	<!-- Method type -->
+	<xsd:complexType name="methodType">
+	
+		<xsd:group ref="methodArgumentGroup"/>
+		
+		<xsd:attribute name="name" type="xsd:Name" use="required"/>
+		
+	</xsd:complexType>
+
+	<!-- Callback type -->
+	<xsd:complexType name="callbackType">
+	
+		<xsd:group ref="callbackArgumentGroup"/>
+		
+		<xsd:attribute name="event" type="callbackEventDatatype"/>
+		<xsd:attribute name="class" type="classNameDatatype"/>
+		<xsd:attribute name="ref" type="xsd:Name"/>
+		<xsd:attribute name="method" type="xsd:Name"/>
+		
+	</xsd:complexType>
+
+	<!-- Method argument -->
+	<xsd:complexType name="methodArgument">
+
+		<xsd:sequence>
+			<xsd:element name="item" type="methodArrayItem" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="argument" type="methodArgument" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+		<xsd:attributeGroup ref="methodArgumentAttributeGroup"/>
+
+	</xsd:complexType>
+
+	<!-- Callback argument -->
+	<xsd:complexType name="callbackArgument">
+
+		<xsd:sequence>
+			<xsd:element name="item" type="callbackArrayItem" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="argument" type="callbackArgument" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+		<xsd:attributeGroup ref="callbackArgumentAttributeGroup"/>
+
+	</xsd:complexType>
+
+	<!-- Method array item -->
+	<xsd:complexType name="methodArrayItem">
+
+		<xsd:sequence>
+			<xsd:element name="item" type="methodArrayItem" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+		<xsd:attribute name="key" type="xsd:Name"/>
+		<xsd:attributeGroup ref="methodArgumentAttributeGroup"/>
+
+	</xsd:complexType>
+
+	<!-- Callback array item -->
+	<xsd:complexType name="callbackArrayItem">
+
+		<xsd:sequence>
+			<xsd:element name="item" type="callbackArrayItem" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+		<xsd:attribute name="key" type="xsd:Name"/>
+		<xsd:attributeGroup ref="callbackArgumentAttributeGroup"/>
+
+	</xsd:complexType>
+
+<!-- Element groups -->
+
+	<!-- Method argument group -->
+	<xsd:group name="methodArgumentGroup">
+	
+		<xsd:sequence>
+			<xsd:element name="argument" type="methodArgument" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		
+	</xsd:group>
+
+	<!-- Callback argument group -->
+	<xsd:group name="callbackArgumentGroup">
+
+		<xsd:sequence>
+			<xsd:element name="argument" type="callbackArgument" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+	</xsd:group>
+
+<!-- Attribute groups -->
+
+	<!-- Common argument attribute group -->
+	<xsd:attributeGroup name="commonArgumentAttributeGroup">
+	
+		<xsd:attribute name="value" type="xsd:anySimpleType"/>
+		<xsd:attribute name="class" type="classNameDatatype"/>
+		<xsd:attribute name="ref" type="xsd:Name"/>
+		<xsd:attribute name="attribute" type="xsd:Name"/>
+		<xsd:attribute name="method" type="xsd:Name"/>
+		
+	</xsd:attributeGroup>
+
+	<!-- Method argument attribute group -->
+	<xsd:attributeGroup name="methodArgumentAttributeGroup">
+	
+		<xsd:attribute name="type" type="methodArgumentTypeDatatype"/>
+		<xsd:attributeGroup ref="commonArgumentAttributeGroup"/>
+		
+	</xsd:attributeGroup>
+
+	<!-- Callback argument attribute group -->
+	<xsd:attributeGroup name="callbackArgumentAttributeGroup">
+		
+		<xsd:attribute name="type" type="callbackArgumentTypeDatatype"/>
+		<xsd:attributeGroup ref="commonArgumentAttributeGroup"/>
+		
+	</xsd:attributeGroup>
+
+<!-- Root element -->
+		
+	<xsd:element name="services" type="servicesType">
+		<xsd:key name="serviceId">
+			<xsd:selector xpath="./service" />
+			<xsd:field xpath="@id" />
+		</xsd:key>
+	</xsd:element>
+	
+</xsd:schema>
