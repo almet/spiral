@@ -2,7 +2,7 @@
 
 namespace Spiral\Framework\DI\Fixtures;
 
-use \Spiral\Framework\DI\Container\Container;
+use \Spiral\Framework\DI\Construction\Container;
 
 /**
  * Represent an album finder.
