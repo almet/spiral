@@ -1,5 +1,6 @@
 <?php
 namespace Spiral\Framework\DI\Definition;
+
 use \Spiral\Framework\DI\Definition\Service;
 use \Spiral\Framework\DI\Definition\Exception\UnknownServiceException;
 
@@ -14,7 +15,6 @@ use \Spiral\Framework\DI\Definition\Exception\UnknownServiceException;
  */
 class DefaultSchema implements Schema
 {
-
 	/**
 	 * Array containing all registred services
 	 * 

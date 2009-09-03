@@ -10,17 +10,16 @@ use \Spiral\Framework\DI\Definition;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-class ContainerArgumentResolver extends ArgumentChainResolver
+class DefaultArgumentConstructionStrategy extends AbstractArgumentConstructionStrategy implements ArgumentConstructionStrategy
 {	
 	/**
-	 * Return the container
+	 * return container as argument
 	 * 
-	 * @param 	\Spiral\Framework\DI\Definition\Argument		$argument
-	 * @param	\Spiral\Framework\DI\Construction\Container	$container
-	 * @param	Object										$currentService
-	 * @return 	mixed
+	 * @param	\Spiral\Framework\DI\Construction\Container	$container		
+	 * @param	object										$currentService		current active service
+	 * @return 	string	builded argument
 	 */
-	protected function _resolveArgument(Schema\Argument $argument, Container $container, $currentService)
+	public function buildArgument(Container $container, object $currentService)
 	{
 		if($argument instanceof Schema\ContainerArgument)
 		{

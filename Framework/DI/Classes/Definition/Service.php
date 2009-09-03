@@ -1,6 +1,8 @@
 <?php
 namespace Spiral\Framework\DI\Definition;
 
+use \Spiral\Framework\DI\Construction;
+
 /**
  * Service interface
  *
@@ -101,5 +103,20 @@ interface Service extends \Iterator, \ArrayAccess
      * @return  string
      */
     public function getFactoryMethod();
+    
+	/**
+     * return the construction strategy object
+     * 
+     * @return \Spiral\Framework\DI\Definition\ServiceConstructionStrategy
+     */
+    public function getConstructionStrategy();
+    
+    /**
+     * Set the construction strategy object
+     * 
+     * @param 	\Spiral\Framework\DI\Construction\ServiceConstructionStrategy $context
+     * @return 	void
+     */
+    public function setConstructionStrategy(Construction\ServiceConstructionStrategy $strategy);    
 }
 ?>

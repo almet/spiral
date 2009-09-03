@@ -1,6 +1,8 @@
 <?php
 namespace Spiral\Framework\DI\Definition;
 
+use \Spiral\Framework\DI\Construction;
+
 /**
  * Interface for a Argument class
  *
@@ -18,5 +20,20 @@ interface Argument {
      * @return  mixed
      */
     public function getValue();
+    
+	/**
+     * return the construction strategy object
+     * 
+     * @return \Spiral\Framework\DI\Definition\ArgumentConstructionStrategy
+     */
+    public function getConstructionStrategy();
+    
+    /**
+     * Set the construction strategy object
+     * 
+     * @param 	ArgumentConstructionContext $context
+     * @return 	void
+     */
+    public function setConstructionStrategy(Construction\ArgumentConstructionStrategy $strategy);
 }
 ?>

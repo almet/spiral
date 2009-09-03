@@ -38,7 +38,7 @@ class DefaultLoader implements Loader{
 		
 		$className = array_pop($namespaces);
 		
-		$fileName = $baseNamespace.'/'.$package.'/Classes/'.implode($namespaces, '/').'/'.$className.'.php';
+		$fileName = BASE_PATH.'/'.$baseNamespace.'/'.$package.'/Classes/'.implode($namespaces, '/').'/'.$className.'.php';
 		
 		if(file_exists($fileName) && require_once($fileName))
 		{

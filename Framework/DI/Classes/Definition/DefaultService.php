@@ -12,7 +12,7 @@ use \Spiral\Framework\DI\Definition\Exception\UnknownMethodException;
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
 
-class DefaultService implements Service
+class DefaultService extends AbstractService implements Service
 {
 
 	/**

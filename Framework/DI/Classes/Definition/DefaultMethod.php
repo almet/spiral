@@ -1,5 +1,6 @@
 <?php
 namespace Spiral\Framework\DI\Definition;
+
 use \Spiral\Framework\DI\Definition\Exception\UnknownArgumentException;
 
 /**
@@ -11,9 +12,8 @@ use \Spiral\Framework\DI\Definition\Exception\UnknownArgumentException;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
-class DefaultMethod implements Method
-{
-	
+class DefaultMethod extends AbstractMethod implements Method
+{	
 	/** 
 	 * Store the name of the method
 	 *

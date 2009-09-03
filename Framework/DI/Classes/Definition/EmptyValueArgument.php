@@ -8,8 +8,15 @@ namespace Spiral\Framework\DI\Definition;
  * @copyright	Alexis Metaireau 	2009
  * @licence		GNU/GPL V3. Please see the COPYING FILE.
  */
-class EmptyValueArgument implements Argument
+class EmptyValueArgument extends DefaultArgument
 {
+	/**
+     * constructor
+     * @param   the value to be set
+     * @return  void
+     */
+    public function __construct(){}
+    
     /**
      * the getValue method return nothing
      * 

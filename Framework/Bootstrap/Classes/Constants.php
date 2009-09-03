@@ -10,5 +10,4 @@
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
  
-define('BASE_PATH', __DIR__.'../../../');
-
+define('BASE_PATH', __DIR__.'/../../../');

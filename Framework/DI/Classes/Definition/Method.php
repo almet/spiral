@@ -1,6 +1,8 @@
 <?php
 namespace Spiral\Framework\DI\Definition;
 
+use \Spiral\Framework\DI\Construction;
+
 /**
  * Interface for a Schema method
  * 
@@ -105,5 +107,20 @@ interface Method extends \Iterator, \ArrayAccess
 	 * @return  String
 	 */
 	public function getClass();
+	
+	/**
+     * return the construction strategy object
+     * 
+     * @return \Spiral\Framework\DI\Definition\MethodConstructionStrategy
+     */
+    public function getConstructionStrategy();
+    
+    /**
+     * Set the construction strategy object
+     * 
+     * @param 	\Spiral\Framework\DI\Construction\MethodConstructionStrategy $context
+     * @return 	void
+     */
+    public function setConstructionStrategy(Construction\MethodConstructionStrategy $strategy);
 
 }
