@@ -38,15 +38,7 @@ use \Spiral\Framework\DI\Construction;
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
 interface Method extends \Iterator, \ArrayAccess
-{
-	/**
-	 * construct a method and set it's name
-	 * 
-	 * @param	string	$methodName
-	 * @param	string	$className
-	 */
-	public function __construct($methodName, $className=null);
-	
+{	
 	/** 
 	 * Set the method name of the method
 	 * 

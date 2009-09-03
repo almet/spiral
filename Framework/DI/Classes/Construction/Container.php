@@ -26,17 +26,7 @@ use \Spiral\Framework\Bootstrap\Loader;
  * @licence		GNU/GPL V3. Please see the COPYING FILE. 
  */
 interface Container
-{
-	
-	/**
-	 * set the schema object given in parameter
-	 *
-	 * @param	Schema     $schema
-	 * @param	Loader     $loader
-	 * @return	void
-	 */
-	public function __construct(Schema $schema, Loader $loader = null);
-	
+{	
 	/**
 	 * Call all dynamic added methods
 	 *

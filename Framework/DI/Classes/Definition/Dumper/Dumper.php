@@ -15,11 +15,5 @@ use \Spiral\Framework\DI\Definition\Schema;
  */
 interface Dumper
 {
-	/**
-	 * Dump the schema
-	 *
-	 * @param	\Spiral\Framework\DI\Definition\Schema     $schema		The schema object to dump
-	 * @return 	void
-	 */
-	public function __construct(Schema $schema);
+
 }
