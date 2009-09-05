@@ -49,6 +49,13 @@ class DefaultService extends AbstractService implements Service
      * @var string
      */
     protected $_defaultScope = 'singleton';
+    
+    /**
+     * Default constructor method 
+     * 
+     * @var \Spiral\Framework\DI\Definition\DefaultMethod
+     */
+    protected $_defaultConstructor;
 
 	/**
 	 * add a new service
@@ -102,7 +109,12 @@ class DefaultService extends AbstractService implements Service
 	 * @return \Spiral\Framework\DI\Definition\Method
 	 */
 	public function getConstructor(){
-		return $this->getMethod('__construct');
+		if ($this->hasMethod('__construct')){
+			$constructor = $this->getMethod('__construct'); 
+		} else {
+			$constructor = $this->_defaultConstructor;	
+		}
+		return $constructor; 
 	}
 	
 	/**
