@@ -27,7 +27,6 @@ use \Spiral\Framework\Bootstrap\Loader;
  */
 interface Container
 {	
-		
 	/**
 	 * Resolve all dependencies and return the 
 	 * injected service object
@@ -65,6 +64,21 @@ interface Container
      * @return 	mixed
      */
     public function getSharedService($serviceName);
+    
+	/**
+     * set the loader object given in parameter
+     *
+     * @param	\Spiral\framework\Bootstrap\Loader	$loader
+     * @return	void
+     */
+    public function setLoader(Loader $loader);
+    
+    /**
+     * return the loader object
+     * 
+     * @return \Spiral\Framework\Bootstrap\Loader
+     */
+    public function getLoader();
 
     /**
      * Magic method get.

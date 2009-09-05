@@ -1,6 +1,7 @@
 <?php
 namespace Spiral\Framework\DI\Construction;
 
+use \Spiral\Framework\Bootstrap\Loader;
 /**
  * Abstract Container implementation
  *
@@ -18,6 +19,35 @@ class Abstractcontainer
      * @var array
      */
     protected $_sharedServices = array();
+    
+    /**
+     * the loader object
+     *
+     * @var	\Spiral\Framework\Bootstrap\Loader
+     */
+    protected $_loader  = null;
+    
+    /**
+     * set the loader object given in parameter
+     *
+     * @param	\Spiral\framework\Bootstrap\Loader	$loader
+     * @return	void
+     */
+    public function setLoader(Loader $loader){
+    	if ($loader != null)
+        {
+            $this->_loader = $loader;
+        }
+    }
+    
+    /**
+     * return the loader object
+     * 
+     * @return \Spiral\Framework\Bootstrap\Loader
+     */
+    public function getLoader(){
+    	return $this->_loader;
+    }
     
     /**
      * Add a builded service to the container, this service will be shared, and reused
