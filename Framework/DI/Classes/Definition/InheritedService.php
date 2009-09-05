@@ -6,7 +6,7 @@ namespace Spiral\Framework\DI\Definition;
  *
  * @author  	AME 17 juin 2009 
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
 class InheritedService extends DefaultService
 {
@@ -29,18 +29,18 @@ class InheritedService extends DefaultService
      * Build an inherithed service
      *
      * @param	\Spiral\Framework\DI\Definition\Schema	$schema
-     * @param   string              $service    the service name
-     * @param   string              $inherit    the service that is inherited
-     * @param   string              $className  the classname, if different than the inherithed one
-     * @param   bool                $isSingleton
+     * @param   string  $service    the service name
+     * @param   string  $inherit    the service that is inherited
+     * @param   string  $className  the classname, if different than the inherithed one
+     * @param   string	$scope
      */
-    public function __construct($schema, $service, $inherit, $className='', $isSingleton=null)
+    public function __construct($schema, $service, $inherit, $className='', $scope=null)
     {
         $this->_schema = $schema;
 		$this->_serviceName = $service;
         $this->_inherit = $inherit;
         $this->_className  = $className;
-        $this->_isSingleton  = $isSingleton;
+        $this->setScope($scope);
 	}
 
     /**

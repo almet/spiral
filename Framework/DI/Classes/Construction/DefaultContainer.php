@@ -18,7 +18,7 @@ use \Spiral\Framework\DI\ConstructionAware;
  *
  * @author  	Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 class DefaultContainer implements Container
 {
@@ -172,13 +172,8 @@ class DefaultContainer implements Container
      */
     public function getService($key){
 
-        if (isset($this->_sharedServices[$key]))
-        {
-            return $this->_sharedServices[$key];
-        }
-
         // get the registred service object
-        $service = $this->_schema->getService($key);
+        $this->_schema->getService($key)->getconstructionStrategy()->buildService($container);
 
         $className = $service->getClassName();
 
@@ -235,55 +230,5 @@ class DefaultContainer implements Container
         }
 
         return $object;
-    }
-
-    /**
-     * Magic method get.
-     *
-     * Alias of getService()
-     */
-    public function __get($key)
-    {
-        return $this->getService($key);
-    }
-
-    /**
-     * Directly add an object into the Container (bypassing the Schema)
-     *
-     * Overwrite the Schema configuration
-     *
-     * @param   string  $key
-     * @param   object  $value
-     */
-    public function setService($key, $service)
-    {
-        if (!is_object($service))
-        {
-            throw new Exception('Service '.$key.' must be an object');
-        }
-        $this->_sharedServices[$key] = $service;
-    }
-
-    /**
-     * Magic method set.
-     *
-     * Alias of setService()
-     * @param   string  $key
-     * @param   object  $service
-     */
-    public function __set($key, $service)
-    {
-        $this->setService($key, $service);
-    }
-
-    /**
-     * Magic method isset.
-     * 
-     * @param   string  $key
-     * @return  boolean
-     */
-    public function __isset ($key)
-    {
-    	return isset($this->_sharedServices[$key]) || $this->_schema->hasService($key);
     }
 }

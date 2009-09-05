@@ -8,9 +8,9 @@ use \Spiral\Framework\DI\Definition;
  *
  * @author  	Alexis Métaireau	30 jul. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
-abstract class AbstractserviceConstructionStrategy
+abstract class AbstractserviceConstructionStrategy extends AbstractConstructionStrategy
 {	
 	/**
 	 * Service
@@ -25,7 +25,7 @@ abstract class AbstractserviceConstructionStrategy
 	 * @param 	\Spiral\Framework\DI\Definition\service	$service
 	 * @return	void
 	 */
-	public function setService($service){
+	public function setService(Definition\Service $service){
 		$this->_service = $service;
 	}
 	

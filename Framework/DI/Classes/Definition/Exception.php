@@ -7,6 +7,6 @@ use \Spiral\Framework\DI\Exception as DIException;
  *
  * @author  	Alexis Métaireau    15 apr. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-class SchemaException extends DIException{}
+class Exception extends DIException{}

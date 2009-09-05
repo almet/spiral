@@ -7,6 +7,6 @@ use \Spiral\Framework\DI\Definition\Builder\Exception as BuilderException;
  * 
  * @author  	Alexis Métaireau	10 Jul. 2009
  * @copyright	Alexis Métaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 class PathUnavailableException extends BuilderException{} 

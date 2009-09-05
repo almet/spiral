@@ -7,7 +7,7 @@ namespace Spiral\Framework\DI\Definition\Dumper;
  *
  * @author  	Alexis Métaireau	23 may 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 class XMLDumper extends AbstractDumper
 {

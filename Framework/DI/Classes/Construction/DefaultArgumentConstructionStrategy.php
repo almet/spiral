@@ -8,7 +8,7 @@ use \Spiral\Framework\DI\Definition;
  *
  * @author  	Alexis Métaireau	30 jul. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 class DefaultArgumentConstructionStrategy extends AbstractArgumentConstructionStrategy implements ArgumentConstructionStrategy
 {	
@@ -21,13 +21,6 @@ class DefaultArgumentConstructionStrategy extends AbstractArgumentConstructionSt
 	 */
 	public function buildArgument(Container $container, object $currentService)
 	{
-		if($argument instanceof Schema\ContainerArgument)
-		{
-			return $container;
-		} 
-		else
-		{
-			return false;
-		}
+		return $container;
 	}
 }

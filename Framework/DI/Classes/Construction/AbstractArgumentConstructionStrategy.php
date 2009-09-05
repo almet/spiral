@@ -8,7 +8,7 @@ use \Spiral\Framework\DI\Definition;
  *
  * @author  	Alexis Métaireau	30 jul. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 abstract class AbstractArgumentConstructionStrategy implements ArgumentConstructionStrategy
 {	

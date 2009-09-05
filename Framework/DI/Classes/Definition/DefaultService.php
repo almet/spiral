@@ -9,7 +9,7 @@ use \Spiral\Framework\DI\Definition\Exception\UnknownMethodException;
  *
  * @author  	Alexis Métaireau	30 mar. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
 
 class DefaultService extends AbstractService implements Service
@@ -28,13 +28,6 @@ class DefaultService extends AbstractService implements Service
 	 * @var String
 	 */
 	protected $_className  = null;
-
-    /**
-     * Store if the service is a singleton or not
-     *
-     * @var Bool
-     */
-    protected $_isSingleton;
 	
 	/**
 	 * internal counter
@@ -49,13 +42,13 @@ class DefaultService extends AbstractService implements Service
 	 * @var Array
 	 */
 	protected $_registredMethods = array();
-
+    
     /**
-     * The eventual factory method to call for using the service as a factory
-     *
+     * Default scope, when no scope specified
+     * 
      * @var string
      */
-    protected $_factoryMethod = null;
+    protected $_defaultScope = 'singleton';
 
 	/**
 	 * add a new service
@@ -63,11 +56,11 @@ class DefaultService extends AbstractService implements Service
 	 * @param	string	$serviceName
 	 * @param	string	$className
 	 */
-	public function __construct($service, $class, $isSingleton=true)
+	public function __construct($service, $class, $scope=null)
 	{
 		$this->_serviceName = $service;
 		$this->_className  = $class;
-        $this->_isSingleton = $isSingleton;
+        $this->setScope($scope);
 	}
     
 	/**
@@ -102,6 +95,16 @@ class DefaultService extends AbstractService implements Service
 		}
 		return $this->_registredMethods[$name];
 	}
+	
+	/**
+	 * Return the constructor method
+	 * 
+	 * @return \Spiral\Framework\DI\Definition\Method
+	 */
+	public function getConstructor(){
+		return $this->getMethod('__construct');
+	}
+	
 	/**
 	 * return the internal array of methods
 	 *
@@ -142,35 +145,6 @@ class DefaultService extends AbstractService implements Service
 	{
 		$this->_serviceName = $name;
 	}
-    
-    /**
-     * Tell if this service is a singleton or not
-     *
-     * @return  void
-     */
-    public function isSingleton()
-    {
-        return $this->_isSingleton;
-    }
-
-    /**
-     * Set the factory method to use when calling this service
-     *
-     * @param   string  $factoryMethod
-     */
-    public function setFactoryMethod($factoryMethod){
-        $this->_factoryMethod = $factoryMethod;
-    }
-
-    /**
-     * Retreive the factory method used to eventually use the service as a
-     * factory
-     *
-     * @return  string
-     */
-    public function getFactoryMethod(){
-        return $this->_factoryMethod;
-    }
 
     /**
      * check if the method exists

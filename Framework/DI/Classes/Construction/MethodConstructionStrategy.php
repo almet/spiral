@@ -1,12 +1,14 @@
 <?php
 namespace Spiral\Framework\DI\Construction;
 
+use \spiral\Framework\DI\Definition;
+
 /**
  * Interface for the Method Construction Strategies
  *
  * @author		Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
 interface MethodConstructionStrategy
 {
@@ -26,10 +28,12 @@ interface MethodConstructionStrategy
 	public function getMethod();
 	
 	/**
-	 * return builded method
+	 * call the method and return the result
 	 * 
-	 * @return 	string	builded method
+	 * @param	\Spiral\Framework\DI\Construction\Container container of services
+	 * @param	object	current processed service
+	 * @return 	mixed
 	 */
-	public function buildMethod();
+	public function buildMethod(Container $container, object $currentService = null);
 }
 ?>
