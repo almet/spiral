@@ -14,6 +14,13 @@ require_once('Loader.php');
  */
 class DefaultLoader implements Loader{
 	/**
+	 * Default path to find files
+	 * 
+	 * @var string
+	 */
+	protected static $_defaultPath = 'Classes'; 
+	
+	/**
 	 * Load the required class
 	 *
 	 * @param	string	$class 	full classname with namespace to load
@@ -38,8 +45,8 @@ class DefaultLoader implements Loader{
 		
 		$className = array_pop($namespaces);
 		
-		$fileName = BASE_PATH.'/'.$baseNamespace.'/'.$package.'/Classes/'.implode($namespaces, '/').'/'.$className.'.php';
-		
+		$fileName = BASE_PATH.'/'.$baseNamespace.'/'.$package.'/'.static::$_defaultPath.'/'.implode($namespaces, '/').'/'.$className.'.php';
+
 		if(file_exists($fileName) && require_once($fileName))
 		{
 			return true;
