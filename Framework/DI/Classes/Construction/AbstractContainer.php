@@ -123,6 +123,6 @@ class Abstractcontainer
      */
     public function __isset ($key)
     {
-    	return isset($this->hasSharedService($key)) || $this->_schema->hasService($key);
+    	return ($this->hasSharedService($key) || $this->_schema->hasService($key));
     }
 }

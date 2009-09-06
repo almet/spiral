@@ -30,9 +30,10 @@ interface ServiceConstructionStrategy
 	/**
 	 * Default service builder strategy
 	 * 
+	 * @param	\Spiral\Framework\DI\Definition\Schema
 	 * @param	\Spiral\Framework\DI\Construction\Container
 	 * @return 	object	builded service, with all injected methods and arguments
 	 */
-	public function buildService(Construction\Container $container);
+	public function buildService(Definition\Schema $schema, Construction\Container $container);
 }
 ?>

@@ -2,13 +2,13 @@
 namespace Spiral\Framework\DI\Construction;
 
 /**
- * Default Method Construction Strategy
+ * Method Construction Strategy that use an attribute
  *
  * @author		Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau	2009
  * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-class DefaultMethodConstructionStrategy extends AbstractMethodConstructionStrategy implements MethodConstructionStrategy
+class AttributeMethodConstructionStrategy extends AbstractMethodConstructionStrategy implements MethodConstructionStrategy
 {
 	
 	/**
@@ -19,7 +19,12 @@ class DefaultMethodConstructionStrategy extends AbstractMethodConstructionStrate
 	 * @return 	mixed
 	 */
 	public function buildMethod(Container $container, object $currentService = null){
-		return $this->getMethod();
+		$method = $this->getMethod();
+		$attribute = $method->getAttribute();
+		$value = $method->getValue();
+		
+		$currentService->$attribute = $value;
+		return $value;
 	}
 }
 ?>

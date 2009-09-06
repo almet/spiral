@@ -1,5 +1,4 @@
 <?php
-
 namespace Spiral\Framework\DI\Fixtures;
 
 /**

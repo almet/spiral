@@ -37,69 +37,8 @@ use \Spiral\Framework\DI\Construction;
  * @copyright	Alexis Metaireau 	2009
  * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-interface Method extends \Iterator, \ArrayAccess
-{	
-	/** 
-	 * Set the method name of the method
-	 * 
-	 * @param   String  $name
-	 * @return  void
-	 */
-	public function setName($name);
-	
-	/**
-	 * Return the method name
-	 * 
-	 * @return string
-	 */
-	public function getName();
-	
-	/**
-	 * Add an argument to the list of arguments
-	 * 
-	 * @param   mixed   $argument
-	 * @return  void
-	 */	
-	public function addArgument($argument);
-
-	/**
-	 * Return the complete list of arguments
-	 *
-	 * @param	array
-	 */
-	public function getArguments();
-
-	/**
-	 * Return the argument thanks to the key (ie. arg number)
-	 *
-	 * @param	int
-	 * @return	mixed
-	 * @throws 	UnknownArgument
-	 */
-	public function getArgument($key);
-
-	/**
-	 * Return if the method is a static method or not
-	 *
-	 * @return	bool
-	 */
-	public function isStatic();
-    
-	/**
-	 * Set the name of the class
-	 *
-	 * @param   String  $className
-	 * @return  void
-	 */
-	public function setClass($className);
-
-	/**
-	 * Returns the name of the class
-	 *
-	 * @return  String
-	 */
-	public function getClass();
-	
+interface Method
+{		
 	/**
      * return the construction strategy object
      * 
@@ -114,5 +53,12 @@ interface Method extends \Iterator, \ArrayAccess
      * @return 	void
      */
     public function setConstructionStrategy(Construction\MethodConstructionStrategy $strategy);
+    
+	/**
+	 * Returne the name of this method
+	 * 
+	 * @return string
+	 */
+	public function getName();
 
 }

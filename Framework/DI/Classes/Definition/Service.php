@@ -46,13 +46,6 @@ interface Service extends \Iterator, \ArrayAccess
 	public function getMethod($name);
 	
 	/**
-	 * Return the constructor method
-	 * 
-	 * @return \Spiral\Framework\DI\Definition\Method
-	 */
-	public function getConstructor();
-	
-	/**
 	 * return the internal array of methods
 	 * 
 	 * @return Array

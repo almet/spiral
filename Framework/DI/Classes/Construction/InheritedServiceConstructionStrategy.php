@@ -9,7 +9,7 @@ use Spiral\Framework\DI\Definition;
  * @copyright	Alexis Metaireau	2009
  * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-class DefaultServiceConstructionStrategy  extends AbstractServiceConstructionStrategy implements ServiceConstructionStrategy
+class InheritedServiceConstructionStrategy  extends DefaultServiceConstructionStrategy implements ServiceConstructionStrategy
 {	
 	/**
 	 * Default service builder strategy
@@ -21,15 +21,34 @@ class DefaultServiceConstructionStrategy  extends AbstractServiceConstructionStr
 	public function buildService(Definition\Schema $schema, Construction\Container $container){
 		
 		$service = $this->getService();
+		if ($service instanceof Definition\InheritedService){
+			$baseName = $service->getInheritedService();
+			$base = $schema->getService($baseName);
+		}
 		
 		if ($service->hasMethod('__construct')){
 			$object = $service->getMethod('__construct')->getConstructionStrategy()->buildMethod();
+		} elseif($base->hasMethod('__construct')){
+			$object = $base->getMethod('__construct')->getConstructionStrategy()->buildMethod();
 		} else {
-			$className =$service->getClassName();
+			$className = $service->getClassName();
+			if ($className === null){
+				$className = $base->getClassName();
+			}
+			
 			$object = new $className;
 		}
 		
-		foreach($service->getMethods() as $method){
+		$methods = array();
+        foreach($base->getMethods() as $inheritedMethod){
+            $methods[$inheritedMethod->getName()] = $inheritedMethod;
+        }
+        
+        foreach($service->getMethods() as $childMethod){
+                $methods[$childMethod->getName()] = $childMethod;
+        }
+		
+		foreach($methods as $method){
 			if (! $method instanceof Definition\ConstructorMethod){
 				$method->getConstructionStrategy()->buildMethod($object);
 			}

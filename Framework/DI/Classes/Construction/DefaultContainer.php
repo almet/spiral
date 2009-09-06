@@ -20,7 +20,7 @@ use \Spiral\Framework\DI\ConstructionAware;
  * @copyright	Alexis Metaireau 	2009
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
-class DefaultContainer implements Container
+class DefaultContainer extends AbstractContainer implements Container
 {
 
     /**
@@ -37,10 +37,9 @@ class DefaultContainer implements Container
      * @param	Loader     $loader
      * @return	void
      */
-    public function __construct(Schema $schema, Loader $loader = null)
+    public function __construct(Schema $schema)
     {
         $this->_schema = $schema;
-        $this->setLoader($loader);
     }
 
     /**
@@ -53,6 +52,6 @@ class DefaultContainer implements Container
     public function getService($serviceName){
 
         // get the registred service object
-        return $this->_schema->getService($key)->getconstructionStrategy()->buildService($container);
+        return $this->_schema->getService($key)->getconstructionStrategy()->buildService($this->_schema, $container);
     }
 }

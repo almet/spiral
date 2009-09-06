@@ -10,7 +10,7 @@ use \SpiralFramework\DI\Schema;
  * @copyright	Alexis Metaireau 	2009
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
-class ServiceReferenceArgumentConstructionStrategy extends AbstractArgumentStrategy
+class ServiceReferenceArgumentConstructionStrategy extends AbstractArgumentConstructionStrategy
 {	
 	/**
 	 * return a service as argument

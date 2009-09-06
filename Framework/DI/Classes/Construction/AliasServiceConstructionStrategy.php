@@ -9,7 +9,7 @@ use Spiral\Framework\DI\Definition;
  * @copyright	Alexis Metaireau	2009
  * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-class DefaultServiceConstructionStrategy  extends AbstractServiceConstructionStrategy implements ServiceConstructionStrategy
+class AliasServiceConstructionStrategy  extends AbstractServiceConstructionStrategy implements ServiceConstructionStrategy
 {	
 	/**
 	 * Default service builder strategy
@@ -19,23 +19,8 @@ class DefaultServiceConstructionStrategy  extends AbstractServiceConstructionStr
 	 * @return 	object	builded service, with all injected methods and arguments
 	 */
 	public function buildService(Definition\Schema $schema, Construction\Container $container){
-		
-		$service = $this->getService();
-		
-		if ($service->hasMethod('__construct')){
-			$object = $service->getMethod('__construct')->getConstructionStrategy()->buildMethod();
-		} else {
-			$className =$service->getClassName();
-			$object = new $className;
-		}
-		
-		foreach($service->getMethods() as $method){
-			if (! $method instanceof Definition\ConstructorMethod){
-				$method->getConstructionStrategy()->buildMethod($object);
-			}
-		}
-		
-		return $object;
+		return $this->schema->getService($this->getService()->getServiceName())
+			->getConstructionStrategy()->buildService($schema, $container);
 	}
 }
 ?>

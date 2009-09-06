@@ -35,6 +35,13 @@ abstract class AbstractService
     protected $_defaultScope = 'singleton';
     
     /**
+     * Default constructor method 
+     * 
+     * @var \Spiral\Framework\DI\Definition\DefaultMethod
+     */
+    protected $_defaultConstructor;
+    
+    /**
      * Return the service scope
      * 
      * @return string
@@ -75,6 +82,6 @@ abstract class AbstractService
     public function setConstructionStrategy(Construction\ServiceConstructionStrategy $strategy){
     	$this->_strategy = $strategy;
     	$strategy->setService($this);
-    } 
+    }
 }
 ?>

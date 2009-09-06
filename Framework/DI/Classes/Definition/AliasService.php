@@ -8,7 +8,7 @@ namespace Spiral\Framework\DI\Definition;
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  * @author  AME 18 juin 2009
  */
-class AliasService extends AbstractService implements Service{
+class AliasService extends DefaultService{
 
 	/**
 	 * alias name for the service
@@ -34,10 +34,10 @@ class AliasService extends AbstractService implements Service{
     /**
      * Build an alias service
      *
-     * @param	\Spiral\Framework\DI\Definition\Schema	$schema
+     * @param	string	$alias			alias name
+     * @param	string	$serviceName	aliased service
      */
-    public function __construct(Schema $schema, $alias, $serviceName){
-    	$this->_schema = $schema;
+    public function __construct($alias, $serviceName){
         $this->_alias = $alias;
         $this->_serviceName = $serviceName;
     }
