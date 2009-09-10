@@ -9,7 +9,7 @@ namespace Spiral\Framework\DI\Definition\Builder;
  * @author  	Alexis Métaireau	22 apr. 2009
  * @author		Frédéric Sureau		10 jun. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
 interface Builder
 {

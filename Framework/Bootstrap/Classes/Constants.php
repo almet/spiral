@@ -7,8 +7,7 @@
  *
  * @author		Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
  
-define('BASE_PATH', __DIR__.'../../../');
-
+define('BASE_PATH', __DIR__.'/../../../');

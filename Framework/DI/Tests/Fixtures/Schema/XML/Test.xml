@@ -11,9 +11,6 @@
 		CurrentService argument type
 	-->
 	<service id="store" class="\Spiral\Framework\DI\Fixtures\Store">
-		<constructor>
-			<argument/>
-		</constructor>
 		<method name="setName">
 			<argument type="null"/>
 		</method>

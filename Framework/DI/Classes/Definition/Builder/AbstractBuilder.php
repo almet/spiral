@@ -10,7 +10,7 @@ use \Spiral\Framework\DI\Definition\Schema;
  *
  * @author  	Frédéric Sureau		10 jun. 2009
  * @copyright	Frédéric sureau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 abstract class AbstractBuilder implements Builder
 {

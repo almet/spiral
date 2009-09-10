@@ -10,9 +10,16 @@ require_once('Loader.php');
  *
  * @author		Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
 class DefaultLoader implements Loader{
+	/**
+	 * Default path to find files
+	 * 
+	 * @var string
+	 */
+	protected static $_defaultPath = 'Classes'; 
+	
 	/**
 	 * Load the required class
 	 *
@@ -38,8 +45,8 @@ class DefaultLoader implements Loader{
 		
 		$className = array_pop($namespaces);
 		
-		$fileName = $baseNamespace.'/'.$package.'/Classes/'.implode($namespaces, '/').'/'.$className.'.php';
-		
+		$fileName = BASE_PATH.'/'.$baseNamespace.'/'.$package.'/'.static::$_defaultPath.'/'.implode($namespaces, '/').'/'.$className.'.php';
+
 		if(file_exists($fileName) && require_once($fileName))
 		{
 			return true;

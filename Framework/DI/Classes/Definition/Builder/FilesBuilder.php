@@ -11,7 +11,7 @@ use \Spiral\Framework\DI\Definition\Builder\Exception\PathUnavailableException;
  * @author  	Frédéric Sureau		10 jun. 2009
  * @author 		Alexis Métaireau	09 jul. 2009	
  * @copyright	Frédéric Sureau, Alexis Métaireau	 	2009 
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 class FilesBuilder extends AbstractBuilder
 {

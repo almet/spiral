@@ -15,37 +15,18 @@ use \Spiral\Framework\Bootstrap\Loader;
  * Here is a way to use it:
  * 
  * <code>
- * $container = new Container_Impl($schema);
- * $serv = $container->getService('serviceName');
+ * $container = new Container($schema);
+ * $service = $container->getService('serviceName');
  * // or using the magic __get method:
  * $serv = $container->serviceName;
  * </code>
  *
  * @author		Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
 interface Container
-{
-	
-	/**
-	 * set the schema object given in parameter
-	 *
-	 * @param	Schema     $schema
-	 * @param	Loader     $loader
-	 * @return	void
-	 */
-	public function __construct(Schema $schema, Loader $loader = null);
-	
-	/**
-	 * Call all dynamic added methods
-	 *
-	 * @param	array	$methods	methods to call
-	 * @param	mixed	$object 	object to act on
-	 * @return	void
-	 */
-	public function injectMethods($methods, $object);
-	
+{	
 	/**
 	 * Resolve all dependencies and return the 
 	 * injected service object
@@ -57,37 +38,56 @@ interface Container
 	public function getService($key);
 
 	/**
-	 * Magic method get.
-	 *
-	 * Alias of getService()
-	 */
-	public function __get($key);
-
-    /**
-     * Directly add an object into the Container (bypassing the Schema)
-     *
+     * Add a builded service to the container, this service will be shared, and reused
+     * 
+     * Directly add object into the Container (bypassing the Schema)
      * Overwrite the Schema configuration
-     *
-     * @param   string  $key
-     * @param   object  $value
+     *    
+     * @param 	string	$serviceName
+     * @param 	object	$service
+     * @return 	\Spiral\Framework\DI\Construction\DefaultContainer
      */
-    public function setService($key, $service);
+    public function addSharedService($serviceName, $service);
+    
+    /**
+     * Check if service has been shared
+     * 
+     * @param 	string	$serviceName
+     * @return 	bool
+     */
+    public function hasSharedService($serviceName);
+    
+    /**
+     * Return, if exists, the asked shared service
+     * 
+     * @param 	string	$serviceName
+     * @return 	mixed
+     */
+    public function getSharedService($serviceName);
 
     /**
-	 * Magic method set.
-	 *
-	 * Alias of setService()
+     * Magic method get.
+     *
+     * Alias of getService()
+     */
+    public function __get($key);
+
+    /**
+     * Magic method set.
+     *
+     * Alias of setService()
      * @param   string  $key
      * @param   object  $service
      */
     public function __set($key, $service);
-    
+
     /**
      * Magic method isset.
      * 
      * @param   string  $key
      * @return  boolean
      */
-    public function __isset($key);
+    public function __isset ($key);
+    
 }
 ?>

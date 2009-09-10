@@ -8,25 +8,23 @@ use \SpiralFramework\DI\Schema;
  *
  * @author  	Alexis Métaireau	30 jul. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
-class CurrentServiceArgumentResolver extends ArgumentChainResolver
+class UseReferenceArgumentConstructionStrategy extends AbstractArgumentConstructionStrategy
 {	
 	/**
-	 * Use a factory to resolve the given argument
+	 * Use a service as a factory to return an argument
 	 * 
-	 * @param 	\Spiral\Framework\DI\Definition\Argument		$argument
-	 * @param	\Spiral\Framework\DI\Construction\Container	$container
-	 * @param	Object										$currentService
-	 * @return 	Object
+	 * @param	\Spiral\Framework\DI\Construction\Container	$container		
+	 * @param	object										$currentService		current active service
+	 * @return 	string	builded argument
 	 */
-	abstract protected function _resolveArgument(Schema\Argument $argument, Container $container, $currentService)
-	{
+	public function buildArgument(Container $container, object $currentService){
 		if ($argument instanceof Schema\UseReferenceArgument)
 		{
 			$service = $container->getService($argument->getReference());
 			$factoryMethod = $argument->getFactoryMethod();
-			$attribute = $argument->getValue();
+			$attribute = $this->getArgument()->getValue();
 	
 			if(!empty($factoryMethod))
 			{

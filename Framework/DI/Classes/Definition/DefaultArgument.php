@@ -1,6 +1,8 @@
 <?php
 namespace Spiral\Framework\DI\Definition;
 
+use \Spiral\Framework\DI\Construction; 
+
 /**
  * Default argument, corresponding to native php types.
  *
@@ -8,15 +10,22 @@ namespace Spiral\Framework\DI\Definition;
  *
  * @author  	Alexis Métaireau	16 jun. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
-class DefaultArgument implements Argument {
+class DefaultArgument extends AbstractArgument implements Argument {
     
     /**
      * the value of the argument
      * @var     mixed
      */
     protected $_value;
+    
+    /**
+     * the construction context used to build the argument
+     * 
+     * @var 	ConstructionContext
+     */
+    protected $_context;
     
     /**
      * constructor

@@ -10,19 +10,23 @@ require_once('Constants.php');
  *
  * @author		Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
  class DefaultBootstrap implements Bootstrap
- {
+ { 	
+ 	
  	/**
  	 * Bootstrap the application
  	 *
  	 * @return 	void
  	 */
- 	public function run()
- 	{
+ 	public function run(){
+ 		$this->init();
+ 	}
+ 	
+ 	public function init(){
  		$this->setIncludePaths();
- 		$this->registerAutoload();
+ 		$this->registerAutoload(); 		
  	}
  	
  	/**
@@ -40,8 +44,12 @@ require_once('Constants.php');
  	 *
  	 * @return	void
  	 */
- 	public function registerAutoload()
+ 	public function registerAutoload($autoloadCallback = null)
  	{
- 		spl_autoload_register(__NAMESPACE__.'\DefaultLoader::load');
+ 		if ($autoloadCallback === null){
+	 		$autoloadCallback = __NAMESPACE__.'\DefaultLoader';
+ 		}
+ 		DefaultLoader::load($autoloadCallback);
+ 		spl_autoload_register($autoloadCallback.'::load');
  	}
  }

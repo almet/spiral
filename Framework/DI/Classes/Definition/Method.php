@@ -1,6 +1,8 @@
 <?php
 namespace Spiral\Framework\DI\Definition;
 
+use \Spiral\Framework\DI\Construction;
+
 /**
  * Interface for a Schema method
  * 
@@ -33,77 +35,30 @@ namespace Spiral\Framework\DI\Definition;
  *
  * @author  	Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-interface Method extends \Iterator, \ArrayAccess
-{
+interface Method
+{		
 	/**
-	 * construct a method and set it's name
-	 * 
-	 * @param	string	$methodName
-	 * @param	string	$className
-	 */
-	public function __construct($methodName, $className=null);
-	
-	/** 
-	 * Set the method name of the method
-	 * 
-	 * @param   String  $name
-	 * @return  void
-	 */
-	public function setName($name);
-	
+     * return the construction strategy object
+     * 
+     * @return \Spiral\Framework\DI\Definition\MethodConstructionStrategy
+     */
+    public function getConstructionStrategy();
+    
+    /**
+     * Set the construction strategy object
+     * 
+     * @param 	\Spiral\Framework\DI\Construction\MethodConstructionStrategy $context
+     * @return 	void
+     */
+    public function setConstructionStrategy(Construction\MethodConstructionStrategy $strategy);
+    
 	/**
-	 * Return the method name
+	 * Returne the name of this method
 	 * 
 	 * @return string
 	 */
 	public function getName();
-	
-	/**
-	 * Add an argument to the list of arguments
-	 * 
-	 * @param   mixed   $argument
-	 * @return  void
-	 */	
-	public function addArgument($argument);
-
-	/**
-	 * Return the complete list of arguments
-	 *
-	 * @param	array
-	 */
-	public function getArguments();
-
-	/**
-	 * Return the argument thanks to the key (ie. arg number)
-	 *
-	 * @param	int
-	 * @return	mixed
-	 * @throws 	UnknownArgument
-	 */
-	public function getArgument($key);
-
-	/**
-	 * Return if the method is a static method or not
-	 *
-	 * @return	bool
-	 */
-	public function isStatic();
-    
-	/**
-	 * Set the name of the class
-	 *
-	 * @param   String  $className
-	 * @return  void
-	 */
-	public function setClass($className);
-
-	/**
-	 * Returns the name of the class
-	 *
-	 * @return  String
-	 */
-	public function getClass();
 
 }

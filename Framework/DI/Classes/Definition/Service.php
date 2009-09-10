@@ -1,6 +1,8 @@
 <?php
 namespace Spiral\Framework\DI\Definition;
 
+use \Spiral\Framework\DI\Construction;
+
 /**
  * Service interface
  *
@@ -21,7 +23,7 @@ namespace Spiral\Framework\DI\Definition;
  *
  * @author  	Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
 interface Service extends \Iterator, \ArrayAccess
 {
@@ -80,26 +82,34 @@ interface Service extends \Iterator, \ArrayAccess
 	 */
 	public function setName($name);
 
-    /**
-     * Tell if this service is a singleton or not
+	/**
+     * Return the service scope
      * 
-     * @return  void
+     * @return string
      */
-    public function isSingleton();
-
+    public function getScope();
+    
     /**
-     * Set the factory method to use when calling this service
-     *
-     * @param   string  $factoryMethod
-     */
-    public function setFactoryMethod($factoryMethod);
-
-    /**
-     * Retreive the factory method used to eventually use the service as a
-     * factory
+     * Set the service scope
      * 
-     * @return  string
+     * @param string	$scope	singleton|prototype|session
+     * @return unknown_type
      */
-    public function getFactoryMethod();
+    public function setScope($scope=null);
+    
+	/**
+     * return the construction strategy object
+     * 
+     * @return \Spiral\Framework\DI\Definition\ServiceConstructionStrategy
+     */
+    public function getConstructionStrategy();
+    
+    /**
+     * Set the construction strategy object
+     * 
+     * @param 	\Spiral\Framework\DI\Construction\ServiceConstructionStrategy $context
+     * @return 	void
+     */
+    public function setConstructionStrategy(Construction\ServiceConstructionStrategy $strategy);    
 }
 ?>

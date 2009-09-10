@@ -1,5 +1,6 @@
 <?php
 namespace Spiral\Framework\DI\Definition;
+
 use \Spiral\Framework\DI\Definition\Exception\UnknownArgumentException;
 
 /**
@@ -9,11 +10,10 @@ use \Spiral\Framework\DI\Definition\Exception\UnknownArgumentException;
  * 
  * @author  	Alexis Métaireau	08 apr. 2009
  * @copyright	Alexis Metaireau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE. 
+ * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-class DefaultMethod implements Method
-{
-	
+class DefaultMethod extends AbstractMethod implements Method
+{	
 	/** 
 	 * Store the name of the method
 	 *
@@ -42,7 +42,7 @@ class DefaultMethod implements Method
 	 * @var Bool
 	 */
 	protected $_isStatic = false;
-
+	
     /**
 	 * construct a method and set it's name
 	 *
@@ -54,9 +54,24 @@ class DefaultMethod implements Method
 		$this->setName($methodName);
 		if ($className != null)
 		{
-			$this->setClass($className);
+			$this->setClassName($className);
 		}
 	}
+
+    /**
+	 * Add an argument to the list of arguments
+	 *
+	 * @param   mixed   $argument
+	 * @return  void
+	 */	
+	public function addArgument($arg)
+	{
+        if (! $arg instanceof Argument){
+            $arg = new DefaultArgument($arg);
+        }
+        
+		$this->_arguments[] = $arg;
+	}	
 
 	/**
 	 * Set the method name of the method
@@ -78,21 +93,8 @@ class DefaultMethod implements Method
 	{
 		return $this->_methodName;
 	}
-
-    /**
-	 * Add an argument to the list of arguments
-	 *
-	 * @param   mixed   $argument
-	 * @return  void
-	 */	
-	public function addArgument($arg)
-	{
-        if (! $arg instanceof Argument){
-            $arg = new DefaultArgument($arg);
-        }
-        
-		$this->_arguments[] = $arg;
-	}
+	
+	
     /**
 	 * Return the complete list of arguments
 	 *
@@ -117,8 +119,8 @@ class DefaultMethod implements Method
 			throw new UnknownArgumentException($key);
 		}
 		return $this->_arguments[$key];
-	}
-
+	}    
+    
 	/**
 	 * Return if the method is a static method or not
 	 *
@@ -135,7 +137,7 @@ class DefaultMethod implements Method
 	 * @param   String  $className
 	 * @return  void
 	 */
-	public function setClass($className)
+	public function setClassName($className)
 	{
 		$this->_isStatic = true;
 		$this->_className = $className;
@@ -146,7 +148,7 @@ class DefaultMethod implements Method
 	 *
 	 * @return  String
 	 */
-	public function getClass()
+	public function getClassName()
 	{
 		return $this->_className;
 	}
@@ -203,6 +205,6 @@ class DefaultMethod implements Method
 	public function valid()
 	{
 		return $this->_count > 0;
-	}	  
+	}	
 }
 ?>

@@ -8,7 +8,7 @@ namespace Spiral\Framework\DI\Definition\Builder;
  *
  * @author  	Frédéric Sureau		10 jun. 2009
  * @copyright	Frederic Sureau 	2009
- * @licence		GNU/GPL V3. Please see the COPYING FILE.
+ * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 abstract class FileBuilder extends AbstractBuilder
 {
