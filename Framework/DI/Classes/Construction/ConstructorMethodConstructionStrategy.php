@@ -25,13 +25,14 @@ class ConstructorMethodConstructionStrategy extends AbstractMethodConstructionSt
 		$className = $constructor->getClassName(); 
 		
 		// init array
-		$argumentArray = array();
+		$arguments = array();
 		
 		foreach($constructor->getArguments() as $argument){
-			$argumentArray[] = $argument->getConstructionStrategy()->buildArgument($container, $currentService);	
+			$arguments[] = $argument->getConstructionStrategy()->buildArgument($container, $currentService);
 		}
-		
-		$service = call_user_func_array(array($className, '__construct'), $arguments);
+
+		$reflexionObject = new \ReflectionClass($className);
+		$service = $reflexionObject->newInstanceArgs($arguments);
 		
 		return $service;
 	}

@@ -18,7 +18,7 @@ use Spiral\Framework\DI\Definition\Service;
 class MockArgumentConstructionStrategy extends AbstractArgumentConstructionStrategy implements ArgumentConstructionStrategy {
 
 	public function buildArgument(Container $container,$currentService) {
-		return $this->getArgument()->getValue();
+		return $this->getArgument();
 	}
 }
 ?>
