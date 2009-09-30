@@ -38,6 +38,17 @@ abstract class AbstractMethod
     public function setConstructionStrategy(Construction\MethodConstructionStrategy $strategy){
 		$strategy->setMethod($this);
     	$this->_strategy = $strategy;
-    }  
+    }
+
+	/**
+	 * Alias Method for building method
+	 *
+	 * @param Container $container
+	 * @param object $currentService
+	 * @return mixed
+	 */
+	public function buildMethod(Construction\Container $container, $currentService=null){
+		return $this->getConstructionStrategy()->buildMethod($container, $currentService);
+	}
 }
 ?>

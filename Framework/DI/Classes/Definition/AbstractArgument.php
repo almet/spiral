@@ -22,7 +22,7 @@ abstract class AbstractArgument {
     /**
      * return the construction strategy object
      * 
-     * @return \Spiral\Framework\DI\Definition\ArgumentConstructionStrategy
+     * @return Spiral\Framework\DI\Definition\ArgumentConstructionStrategy
      */
     public function getConstructionStrategy(){
     	return $this->_strategy;
@@ -38,5 +38,16 @@ abstract class AbstractArgument {
     	$strategy->setArgument($this);
 		$this->_strategy = $strategy;
     }
+
+	/**
+	 * Alias Method for building argument
+	 *
+	 * @param Container $container
+	 * @param object $currentService
+	 * @return mixed
+	 */
+	public function buildArgument(Construction\Container $container, $currentService){
+		return $this->getConstructionStrategy()->buildArgument($container, $currentService);
+	}
 }
 ?>

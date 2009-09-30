@@ -13,29 +13,27 @@ use Spiral\Framework\DI\Definition\Service;
 
 class MockSchema implements Schema {
     
-public function getService($key) {
-	$service = new MockService();
-	$service->setName($key);
-	return $service;
-}
-public function addService(Service $service, $key = null){
-	
-}
-public function next() {
-}
-public function getServices() {
-}
-public function current() {
-}
-public function hasService($service) {
-}
-public function addServices(array $services) {
-}
-public function rewind() {
-}
-public function key() {
-}
-public function valid() {
-}
+	public function getService($key) {
+		$service = new MockService();
+		$service->setName($key);
+		return $service;
+	}
+
+	public function addService(Service $service, $key = null){
+
+	}
+
+	public function getServices() {
+	}
+
+	public function current() {
+	}
+
+	public function hasService($service) {
+	}
+
+	public function addServices(array $services) {
+	}
+
 }
 ?>

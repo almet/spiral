@@ -83,5 +83,16 @@ abstract class AbstractService
     	$strategy->setService($this);
     	$this->_strategy = $strategy;
     }
+
+	/**
+	 * Alias Method for building service
+	 *
+	 * @param	\Spiral\Framework\DI\Definition\Schema $schema
+	 * @param	\Spiral\Framework\DI\Construction\Container	$container
+	 * @return mixed
+	 */
+	public function buildService(Schema $schema, Construction\Container $container){
+		return $this->getConstructionStrategy()->buildService($schema, $container);
+	}
 }
 ?>

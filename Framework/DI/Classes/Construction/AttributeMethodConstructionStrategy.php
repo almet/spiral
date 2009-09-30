@@ -10,7 +10,6 @@ namespace Spiral\Framework\DI\Construction;
  */
 class AttributeMethodConstructionStrategy extends AbstractMethodConstructionStrategy implements MethodConstructionStrategy
 {
-	
 	/**
 	 * call the method and return the result
 	 * 
@@ -20,11 +19,10 @@ class AttributeMethodConstructionStrategy extends AbstractMethodConstructionStra
 	 */
 	public function buildMethod(Container $container, $currentService = null){
 		$method = $this->getMethod();
-		$attribute = $method->getAttribute();
-		$value = $method->getValue();
+		$attribute = $method->getName();
+		$value = $method->getArgument(0)->buildArgument($container, $currentService);
 		
 		$currentService->$attribute = $value;
-		return $value;
 	}
 }
 ?>

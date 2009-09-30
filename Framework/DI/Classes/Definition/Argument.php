@@ -35,5 +35,15 @@ interface Argument {
      * @return 	void
      */
     public function setConstructionStrategy(Construction\ArgumentConstructionStrategy $strategy);
+
+
+	/**
+	 * Alias Method for building argument
+	 *
+	 * @param Container $container
+	 * @param object $currentService
+	 * @return mixed
+	 */
+	public function buildArgument(Construction\Container $container, $currentService);
 }
 ?>

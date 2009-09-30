@@ -110,6 +110,15 @@ interface Service
      * @param 	\Spiral\Framework\DI\Construction\ServiceConstructionStrategy $context
      * @return 	void
      */
-    public function setConstructionStrategy(Construction\ServiceConstructionStrategy $strategy);    
+    public function setConstructionStrategy(Construction\ServiceConstructionStrategy $strategy);
+
+	/**
+	 * Alias Method for building service
+	 *
+	 * @param	\Spiral\Framework\DI\Definition\Schema $schema
+	 * @param	\Spiral\Framework\DI\Construction\Container	$container
+	 * @return mixed
+	 */
+	public function buildService(Schema $schema, Construction\Container $container);
 }
 ?>

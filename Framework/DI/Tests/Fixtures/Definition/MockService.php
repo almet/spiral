@@ -2,6 +2,7 @@
 namespace Spiral\Framework\DI\Fixtures\Definition;
 
 use Spiral\Framework\DI\Definition\Service;
+use Spiral\Framework\DI\Definition\AbstractService;
 use Spiral\Framework\DI\Definition\Method;
 use Spiral\Framework\DI\Construction\ServiceConstructionStrategy;
 use Spiral\Framework\DI\Fixtures\Construction\MockServiceConstructionStrategy;
@@ -13,20 +14,14 @@ use Spiral\Framework\DI\Fixtures\Construction\MockServiceConstructionStrategy;
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class MockService implements Service {
+class MockService extends AbstractService implements Service {
 
-	protected $_scope = 'uninitialisedScope';
 	protected $_className = 'uninitialisedClassName';
 	protected $_methods = array();
 	protected $_name = '';
-	protected $_constructionStrategy = null;    
 
 	public function __construct(){
 		$this->setConstructionStrategy(new MockServiceConstructionStrategy());
-	}
-	
-	public function setScope($scope=null) {
-		$this->_scope = $scope;
 	}
 	
 	public function getClassName() {
@@ -37,20 +32,6 @@ class MockService implements Service {
 		return $this->_methods[$name];
 	}
 
-	public function next() {
-	}
-	
-	public function getScope() {
-		return $this->_scope;
-	}
-	
-	public function setConstructionStrategy(ServiceConstructionStrategy $strategy){
-		$this->_constructionStrategy = $strategy;
-		$strategy->setService($this);
-	}
-	
-	public function current() {
-	}
 	public function getMethods() {
 		return $this->_methods;
 	}
@@ -61,17 +42,7 @@ class MockService implements Service {
 	public function hasMethod($method) {
 		
 	}
-
-	public function rewind() {
-	}
-	public function getConstructionStrategy() {
-		return $this->_constructionStrategy;
-	}
 	
-	public function key() {
-	}
-	public function valid() {
-	}
 	public function addMethod(Method $method, $key = null){
 
 	}

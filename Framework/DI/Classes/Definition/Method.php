@@ -61,4 +61,13 @@ interface Method
 	 */
 	public function getName();
 
+	/**
+	 * Alias Method for building method
+	 *
+	 * @param Container $container
+	 * @param object $currentService
+	 * @return mixed
+	 */
+	public function buildMethod(Construction\Container $container, $currentService=null);
+
 }
