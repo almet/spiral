@@ -8,7 +8,8 @@ namespace Spiral\Framework\DI\Construction;
  * @copyright	Alexis Metaireau	2009
  * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-class DefaultMethodConstructionStrategy extends AbstractMethodConstructionStrategy implements MethodConstructionStrategy
+class DefaultMethodConstructionStrategy extends AbstractMethodConstructionStrategy
+	implements MethodConstructionStrategy
 {
 	
 	/**
@@ -18,8 +19,24 @@ class DefaultMethodConstructionStrategy extends AbstractMethodConstructionStrate
 	 * @param	object	current processed service
 	 * @return 	mixed
 	 */
-	public function buildMethod(Container $container, object $currentService = null){
-		return $this->getMethod();
+	public function buildMethod(Container $container, $currentService = null){
+		$method = $this->getMethod();
+
+		if ($method->isStatic()){
+			$callback = $method->getClassName();
+		} else {
+			$callback = $currentService;
+		}
+		$methodName = $method->getName();
+
+		$arguments = array();
+		foreach($method->getArguments() as $argument){
+			$arguments[] = $argument->getConstructionStrategy()->buildArgument($container, $currentService);
+		}
+
+		if (method_exists($class, $methodName) && is_callable(array($class, $methodName))){
+			$object = call_user_func_array(array($class, $methodName), $arguments);
+		}
 	}
 }
 ?>

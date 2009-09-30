@@ -1,5 +1,4 @@
 <?php
-
 namespace Spiral\Framework\DI\Fixtures;
 
 /**
@@ -12,7 +11,7 @@ class Store
 	public $constructionArgument = 23;
 	public $name = 'Default name';
 	
-	public function __construct($constructionArgument)
+	public function __construct($constructionArgument=null)
 	{
 		$this->constructionArgument = $constructionArgument;
 	}

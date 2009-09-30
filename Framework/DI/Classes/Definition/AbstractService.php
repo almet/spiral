@@ -80,8 +80,8 @@ abstract class AbstractService
      * @return 	void
      */
     public function setConstructionStrategy(Construction\ServiceConstructionStrategy $strategy){
-    	$this->_strategy = $strategy;
     	$strategy->setService($this);
+    	$this->_strategy = $strategy;
     }
 }
 ?>

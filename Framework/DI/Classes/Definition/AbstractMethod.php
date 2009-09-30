@@ -36,6 +36,7 @@ abstract class AbstractMethod
      * @return 	void
      */
     public function setConstructionStrategy(Construction\MethodConstructionStrategy $strategy){
+		$strategy->setMethod($this);
     	$this->_strategy = $strategy;
     }  
 }

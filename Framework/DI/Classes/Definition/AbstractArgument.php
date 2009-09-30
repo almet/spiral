@@ -35,7 +35,8 @@ abstract class AbstractArgument {
      * @return 	void
      */
     public function setConstructionStrategy(Construction\ArgumentConstructionStrategy $strategy){
-    	$this->_strategy = $strategy;
+    	$strategy->setArgument($this);
+		$this->_strategy = $strategy;
     }
 }
 ?>

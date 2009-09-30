@@ -19,8 +19,10 @@ class DefaultArgumentConstructionStrategy extends AbstractArgumentConstructionSt
 	 * @param	object										$currentService		current active service
 	 * @return 	string	builded argument
 	 */
-	public function buildArgument(Container $container, object $currentService)
+	public function buildArgument(Container $container, $currentService)
 	{
-		return $container;
+		$argument = $this->getArgument();
+		
+		return $argument->getValue();
 	}
 }

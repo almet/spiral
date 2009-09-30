@@ -1,5 +1,6 @@
 <?php
 namespace Spiral\Framework\DI\Construction;
+
 use \Spiral\Framework\DI\Definition\Schema;
 use \Spiral\Framework\Bootstrap\Loader;
 

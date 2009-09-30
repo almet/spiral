@@ -52,6 +52,6 @@ class DefaultContainer extends AbstractContainer implements Container
     public function getService($serviceName){
 
         // get the registred service object
-        return $this->_schema->getService($key)->getconstructionStrategy()->buildService($this->_schema, $container);
+        return $this->_schema->getService($serviceName)->getconstructionStrategy()->buildService($this->_schema, $this);
     }
 }

@@ -1,6 +1,5 @@
 <?php
-
-namespace Spiral\Framework\DI\Construction\Tests;
+namespace Spiral\Framework\DI\Construction;
 
 use \Spiral\Framework\DI\Construction;
 use \Spiral\Framework\DI\Definition;
@@ -42,18 +41,17 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 			//store service
 			$store = new Definition\DefaultService('store', '\Spiral\Framework\DI\Fixtures\Store');
 			$store->setConstructionStrategy(new Construction\DefaultServiceConstructionStrategy());
-			
+
 			// method1
 			$storeMethod1 = new Definition\DefaultMethod('setName');
 			$storeMethod1->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
-			
+
 			// method1 arg1
 			$storeMethod1Arg1 = new Definition\DefaultArgument(null);
 			$storeMethod1Arg1->setConstructionStrategy(new Construction\DefaultArgumentConstructionStrategy);
 			$storeMethod1->addArgument($storeMethod1Arg1);
 			
 			$store->addMethod($storeMethod1);
-			
 			
 			// callback
 			$methodToCallbackForStore = new Definition\DefaultMethod('register', '\Spiral\Framework\DI\Fixtures\StoreRegister');
@@ -258,122 +256,66 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * Initialize schema configuration to know the services contained by the container.
 	 * 
-	 * @return	void
+	 * @return	Spiral\Framework\DI\Construction\Container
 	 */
 	public function setUp()
 	{
 		// Set up the container to be tested
 		$this->_container = new Construction\DefaultContainer($this->fillInSchema());
+		return $this->_container;
 	}
 	
 	/**
 	 * Test if the hasService() and __isset() method works well when the service exists.
-	 * 
+	 *
 	 * @return	void
 	 */
 	public function testHasExistingService()
 	{
-		$this->_container->hasService();
+		$this->assertNotEquals($this->_container->getService('store'), null);
+		$this->assertEquals(
+			get_class($this->_container->getService('store')),
+			get_class($this->_container->store));
+		
 	}
 	
 	/**
 	 * Test if the hasService() and __isset() method works well when the service does not exist.
-	 * 
+	 *
+	 * @expectedException Spiral\Framework\DI\Definition\Exception\UnknownserviceException
 	 * @return	void
 	 */
 	public function testHasUnknownService()
 	{
-		$this->_container->has;
+		$this->_container->getService("unexistantService");
 	}
-	
-	public function testGetService()
+
+	/**
+	 * An exception had to be thrown when trying to register a non object shared
+	 * service
+	 *
+	 * @expectedException Spiral\Framework\DI\Construction\Exception\InvalidSharedService
+	 */
+	public function testAddSharedServiceNotObject()
 	{
-		$buildedService_test = $container->getService('test');
-		$test_injectedParams = $buildedService_test->getInjectedParams();
-		
-		$this->assertEquals('string', $test_injectedParams[0]);
-		$this->assertEquals(23, $test_injectedParams[1]);
-		$this->assertEquals($container->service1, $test_injectedParams[2]);
-		$this->assertEquals('configParam', $test_injectedParams[3]);
-		$this->assertEquals('with no argument', $test_injectedParams[4]);
-		
-		// check if the container itself has been injected
-		$containerAware = $container->getService('containerAware');
-		$this->assertEquals('SpiralDi_Container_Default', get_class($containerAware->getDiContainer()));
-		
-		// check if the container itself has been injected
-		$containerAware = $container->getService('serviceWithContainer');
-		$this->assertEquals('SpiralDi_Container_Default', get_class($containerAware->getDiContainer()));
-		
-		// check if the inherited service call all parent defined methods
-		$inheritedService = $container->inheritedService;
-		$inheritedService_injectedParams = $inheritedService->getInjectedParams();
-		$this->assertEquals('string', $inheritedService_injectedParams[0]);
-		$this->assertEquals(23, $inheritedService_injectedParams[1]);
-		$this->assertEquals($container->service1, $inheritedService_injectedParams[2]);
-		$this->assertEquals('configParam', $inheritedService_injectedParams[3]);
-		$this->assertEquals('with no argument', $inheritedService_injectedParams[4]);
-		
-		// and that the new method has been called
-		$this->assertEquals('injectedChildParam', $inheritedService->getChildMethodArgs());
-		
-		// check that calling an inexistant service throws an exception
-		try
-		{
-			$container->brokenDependencyService;
-			$this->fail('the SpiralDi_Schema_Exception_UnknownService Exception has not been throwed');
-		}
-		catch(SpiralDi_Schema_Exception_UnknownService $e)
-		{
-			$this->assertTrue(true);
-		}
-		
-		try
-		{
-			// now, inject the container with the inexistantService
-			$container->setService('inexistantService', new DiTest_InexistantService);
-			$container->brokenDependencyService;
-			$this->assertTrue(true);
-		}
-		catch(SpiralDi_Schema_Exception_UnknownService $e)
-		{
-			$this->fail('registering a new service on the fly in the container doesnt works');
-		}
-		
-		$serviceFactory = $container->serviceFactory;
-		$this->assertEquals('DiTest_Service1', get_class($serviceFactory));
+		$this->_container->addSharedService('sharedService', 'test');
 	}
-	
-	public function testScopes()
-	{
-		$container = $this->getContainer();
-		new 
-		
-		// by default, scope is singleton
-		$this->assertTrue($container->test === $container->test);
-		
-		// if the scope is "prototype", objects are not strictly equals
-		$this->assertFalse($container->prototype === $container->prototype);
+
+	/**
+	 * Check that everithing is going well when adding stdclass as shared service
+	 */
+	public function testAddSharedService(){
+		$this->_container->addSharedService('test', new \stdClass());
 	}
-	
-	public function testFactoriesScopes()
-	{
-		$container = $this->getContainer();
-		
-		// by default, scope is prototype for factories
-		$this->assertFalse($container->prototypeFactory === $container->prototypeFactory);
-		
-		// test singleton factories
-		$this->assertTrue($container->singletonFactory === $container->singletonFactory);
+
+	public function testHasSharedService(){
+		$this->_container->addSharedService('test', new \stdClass());
+		$this->assertTrue($this->_container->hasSharedService('test'));
 	}
-	
-	public function testIsset()
-	{
-		$container = $this->getContainer();
-		$this->assertTrue(isset($container->test));
-		$this->assertFalse(isset($container->unexistingService));
-		
-		$container->setService('unexistingService', new DiTest_Test());
-		$this->assertTrue(isset($container->unexistingService));
+
+	public function testGetSharedService(){
+		$sharedService = new \stdClass();
+		$this->_container->addSharedService('test', $sharedService);
+		$this->assertEquals($sharedService, $this->_container->getSharedService('test'));
 	}
 }

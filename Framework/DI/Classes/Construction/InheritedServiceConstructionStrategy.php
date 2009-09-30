@@ -1,6 +1,7 @@
 <?php
 namespace Spiral\Framework\DI\Construction;
-use Spiral\Framework\DI\Definition;
+
+use \Spiral\Framework\DI\Definition;
 
 /**
  * Abstract Service Construction Strategy
@@ -18,7 +19,7 @@ class InheritedServiceConstructionStrategy  extends DefaultServiceConstructionSt
 	 * @param	\Spiral\Framework\DI\Construction\Container
 	 * @return 	object	builded service, with all injected methods and arguments
 	 */
-	public function buildService(Definition\Schema $schema, Construction\Container $container){
+	public function buildService(Definition\Schema $schema, Container $container){
 		
 		$service = $this->getService();
 		if ($service instanceof Definition\InheritedService){

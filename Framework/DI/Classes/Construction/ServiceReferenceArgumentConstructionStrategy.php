@@ -19,15 +19,8 @@ class ServiceReferenceArgumentConstructionStrategy extends AbstractArgumentConst
 	 * @param	object										$currentService		current active service
 	 * @return 	string	builded argument
 	 */
-	public function buildArgument(Container $container, object $currentService)
+	public function buildArgument(Container $container, $currentService)
 	{
-		if($argument instanceof Schema\ServiceReferenceArgument)
-		{
-			return $container->getService($this->getArgument()->getValue());	
-		}
-		else
-		{
-			return false;
-		}
+		return $container->getService($this->getArgument()->getValue());	
 	}
 }

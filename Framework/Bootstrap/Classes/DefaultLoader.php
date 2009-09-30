@@ -18,7 +18,16 @@ class DefaultLoader implements Loader{
 	 * 
 	 * @var string
 	 */
-	protected static $_defaultPath = 'Classes'; 
+	protected static $_defaultPath = array('Classes');
+
+	/**
+	 * Add a path to the default path
+	 * 
+	 * @param string $path
+	 */
+	public static function addDefaultPath($path){
+		static::$_defaultPath[] = $path;
+	}
 	
 	/**
 	 * Load the required class
@@ -44,9 +53,20 @@ class DefaultLoader implements Loader{
 		$package = array_shift($namespaces);
 		
 		$className = array_pop($namespaces);
-		
-		$fileName = BASE_PATH.'/'.$baseNamespace.'/'.$package.'/'.static::$_defaultPath.'/'.implode($namespaces, '/').'/'.$className.'.php';
 
+		if (is_array(static::$_defaultPath)){
+			foreach(static::$_defaultPath as $path){
+				$result = static::loadClass($fileName, $className, $baseNamespace, $package, $path, $namespaces);
+				if ($result === true){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	protected static function loadClass($fileName, $className, $baseNamespace, $package, $path, $namespaces){
+		$fileName = BASE_PATH.$baseNamespace.'/'.$package.'/'.$path.'/'.implode($namespaces, '/').'/'.$className.'.php';
 		if(file_exists($fileName) && require_once($fileName))
 		{
 			return true;

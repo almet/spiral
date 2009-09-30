@@ -62,7 +62,7 @@ class Abstractcontainer
     public function addSharedService($serviceName, $service){
     	if (!is_object($service))
         {
-            throw new Exception('Service '.$key.' must be an object');
+            throw new Exception\InvalidSharedService('Service '.$serviceName.' must be an object, '.getType($service).' given');
         }
         
     	$this->_sharedServices[$serviceName] = $service;

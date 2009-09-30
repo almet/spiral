@@ -17,8 +17,8 @@ class CallbackMethodConstructionStrategy extends AbstractMethodConstructionStrat
 	 * @param	object	current processed service
 	 * @return 	mixed
 	 */
-	public function buildMethod(Container $container, object $currentService = null){
-		return $this->getMethod()->getConstructionStrategy()->build($container, $currentService);
+	public function buildMethod(Container $container, $currentService = null){
+		$this->getMethod()->getMethod()->getConstructionStrategy()->buildMethod($container, $currentService);
 	}
 }
 ?>

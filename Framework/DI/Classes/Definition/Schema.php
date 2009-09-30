@@ -31,7 +31,7 @@ namespace Spiral\Framework\DI\Definition;
  * @copyright	Alexis Metaireau 	2009
  * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-interface Schema extends \Iterator, \ArrayAccess
+interface Schema
 {
 
 	/**

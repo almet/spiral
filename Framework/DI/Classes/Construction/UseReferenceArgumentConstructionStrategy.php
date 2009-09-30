@@ -19,25 +19,18 @@ class UseReferenceArgumentConstructionStrategy extends AbstractArgumentConstruct
 	 * @param	object										$currentService		current active service
 	 * @return 	string	builded argument
 	 */
-	public function buildArgument(Container $container, object $currentService){
-		if ($argument instanceof Schema\UseReferenceArgument)
+	public function buildArgument(Container $container, $currentService){
+		$service = $container->getService($argument->getReference());
+		$factoryMethod = $argument->getFactoryMethod();
+		$attribute = $this->getArgument()->getValue();
+
+		if(!empty($factoryMethod))
 		{
-			$service = $container->getService($argument->getReference());
-			$factoryMethod = $argument->getFactoryMethod();
-			$attribute = $this->getArgument()->getValue();
-	
-			if(!empty($factoryMethod))
-			{
-				return $service->$factoryMethod($attribute);
-			}
-			else
-			{
-				return $service->$attribute;
-			}
+			return $service->$factoryMethod($attribute);
 		}
 		else
 		{
-			return false;
+			return $service->$attribute;
 		}
 	}
 }

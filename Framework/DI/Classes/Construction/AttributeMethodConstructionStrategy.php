@@ -18,7 +18,7 @@ class AttributeMethodConstructionStrategy extends AbstractMethodConstructionStra
 	 * @param	object	current processed service
 	 * @return 	mixed
 	 */
-	public function buildMethod(Container $container, object $currentService = null){
+	public function buildMethod(Container $container, $currentService = null){
 		$method = $this->getMethod();
 		$attribute = $method->getAttribute();
 		$value = $method->getValue();
