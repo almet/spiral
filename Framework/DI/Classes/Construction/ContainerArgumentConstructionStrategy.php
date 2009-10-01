@@ -10,7 +10,7 @@ use \Spiral\Framework\DI\Definition;
  * @copyright	Alexis Metaireau 	2009
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
-class ContainerArgumentConstructionStrategy extends AbstractArgumentStrategy
+class ContainerArgumentConstructionStrategy extends AbstractArgumentConstructionStrategy
 {	
 	/**
 	 * return default argument

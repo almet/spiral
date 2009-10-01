@@ -31,7 +31,7 @@ class AttributeMethodConstructionStrategyTest extends \PHPUnit_Framework_TestCas
 		$strategy->buildMethod($container, $object);
 
 		$this->assertObjectHasAttribute('attribute', $object);
-		$this->assertAttributeEquals($value, 'attribute', $object);
+		$this->assertSame($value, $object->attribute);
 	}
 }
 ?>

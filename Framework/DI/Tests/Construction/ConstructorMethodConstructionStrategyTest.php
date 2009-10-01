@@ -38,9 +38,9 @@ class ConstructorMethodConstructionStrategyTest extends \PHPUnit_Framework_TestC
 		
 		$buildedService = $strategy->buildMethod($container, $object);
 
-		$this->assertAttributeEquals($album, 'name', $buildedService);
-		$this->assertAttributeEquals($year, 'year', $buildedService);
-		$this->assertAttributeEquals($support, 'support', $buildedService);
+		$this->assertSame($album, $buildedService->name);
+		$this->assertSame($year, $buildedService->year);
+		$this->assertSame($support, $buildedService->support);
 	}
 }
 ?>

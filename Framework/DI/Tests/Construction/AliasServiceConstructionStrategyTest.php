@@ -29,8 +29,10 @@ class AliasServiceConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
 		$strategy = new AliasServiceConstructionStrategy();
 		$strategy->setService($aliasService);
 
-		$this->assertEquals($strategy->buildService($schema, $container)->getName(), 'mockService');
-		$this->assertFalse($schema === $strategy->buildService($schema, $container));
+		$buildedService = $strategy->buildService($schema, $container);
+
+		$this->assertEquals($buildedService->getName(), 'mockService');
+		$this->assertNotSame($aliasService,$buildedService);
 	}
 }
 ?>
