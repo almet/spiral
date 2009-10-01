@@ -1,6 +1,8 @@
 <?php
 namespace Spiral\Framework\DI\Construction;
 
+use Spiral\Framework\DI\Definition;
+
 /**
  * Default Method Construction Strategy
  *
@@ -21,6 +23,9 @@ class DefaultMethodConstructionStrategy extends AbstractMethodConstructionStrate
 	 */
 	public function buildMethod(Container $container, $currentService = null){
 		$method = $this->getMethod();
+		if (!$method instanceof Definition\DefaultMethod){
+			throw new Exception\InvalidMethod(get_class($method));
+		}
 
 		if ($method->isStatic()){
 			$callback = $method->getClassName();
@@ -31,11 +36,12 @@ class DefaultMethodConstructionStrategy extends AbstractMethodConstructionStrate
 
 		$arguments = array();
 		foreach($method->getArguments() as $argument){
-			$arguments[] = $argument->getConstructionStrategy()->buildArgument($container, $currentService);
+			$arguments[] = $argument->buildArgument($container, $currentService);
 		}
 
-		if (method_exists($class, $methodName) && is_callable(array($class, $methodName))){
-			$object = call_user_func_array(array($class, $methodName), $arguments);
+		if (method_exists($callback, $methodName) && is_callable(array($callback, $methodName))){
+			$object = call_user_func_array(array($callback, $methodName), $arguments);
+			return $object;
 		}
 	}
 }

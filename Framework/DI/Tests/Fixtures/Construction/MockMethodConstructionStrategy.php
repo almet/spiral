@@ -17,7 +17,7 @@ use Spiral\Framework\DI\Definition\Service;
 
 class MockMethodConstructionStrategy extends AbstractMethodConstructionStrategy implements MethodConstructionStrategy {
 
-	public function buildMethod(Container $container,$currentService) {
+	public function buildMethod(Container $container,$currentService = null) {
 		return $this->getMethod();
 	}
 }

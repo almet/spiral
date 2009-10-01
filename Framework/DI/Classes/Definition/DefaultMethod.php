@@ -152,59 +152,6 @@ class DefaultMethod extends AbstractMethod implements Method
 	{
 		return $this->_className;
 	}
-
-    
-	public function offsetExists($offset)
-	{
-		try{
-			$this->getArgument($offset);
-			return true;
-		} catch (UnknownArgumentException $e)
-		{
-			return false;
-		}
-	}
-
-	public function offsetGet($offset)
-	{
-		return $this->getArgument($offset);
-	}
 	
-	public function offsetSet($offset, $value)
-	{
-		// not implemented
-	}
-	
-	public function offsetUnset($offset)
-	{
-		// not implemented
-	}
-	
-	public function rewind()
-	{
-		reset($this->_arguments);
-		$this->_count = count($this->_arguments);
-	}
-
-	public function key()
-	{
-		return key($this->_arguments);
-	}
-
-	public function current()
-	{
-		return current($this->_arguments);
-	}
-
-	public function next()
-	{
-		next($this->_arguments);
-		--$this->_count;
-	}
-
-	public function valid()
-	{
-		return $this->_count > 0;
-	}	
 }
 ?>
