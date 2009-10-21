@@ -1,6 +1,6 @@
 <?php
 
-namespace \Spiral\Framework\Persistence;
+namespace Spiral\Framework\Persistence;
 
 /**
  * Query
