@@ -1,7 +1,7 @@
 <?php
 namespace Spiral\Framework\DI\Definition;
 
-use \Spiral\Framework\DI\Construction;
+use Spiral\Framework\DI\Construction;
 
 /**
  * Service interface
@@ -25,7 +25,7 @@ use \Spiral\Framework\DI\Construction;
  * @copyright	Alexis Metaireau 	2009
  * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-interface Service extends \Iterator, \ArrayAccess
+interface Service
 {
 	/**
 	 * Set the method to call
@@ -110,6 +110,15 @@ interface Service extends \Iterator, \ArrayAccess
      * @param 	\Spiral\Framework\DI\Construction\ServiceConstructionStrategy $context
      * @return 	void
      */
-    public function setConstructionStrategy(Construction\ServiceConstructionStrategy $strategy);    
+    public function setConstructionStrategy(Construction\ServiceConstructionStrategy $strategy);
+
+	/**
+	 * Alias Method for building service
+	 *
+	 * @param	\Spiral\Framework\DI\Definition\Schema $schema
+	 * @param	\Spiral\Framework\DI\Construction\Container	$container
+	 * @return mixed
+	 */
+	public function buildService(Schema $schema, Construction\Container $container);
 }
 ?>

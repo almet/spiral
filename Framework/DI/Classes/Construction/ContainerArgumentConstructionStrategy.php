@@ -10,17 +10,17 @@ use \Spiral\Framework\DI\Definition;
  * @copyright	Alexis Metaireau 	2009
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
-class DefaultArgumentConstructionStrategy extends AbstractArgumentStrategy
+class ContainerArgumentConstructionStrategy extends AbstractArgumentConstructionStrategy
 {	
 	/**
 	 * return default argument
 	 * 
 	 * @param	\Spiral\Framework\DI\Construction\Container	$container		
 	 * @param	object										$currentService		current active service
-	 * @return 	string	builded argument
+	 * @return 	\Spiral\Framework\DI\Construction\Container
 	 */
-	public function buildArgument(Container $container, object $currentService)
+	public function buildArgument(Container $container, $currentService)
 	{
-		return $this->getArgument()->getValue();
+		return $container;
 	}
 }

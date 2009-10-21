@@ -19,19 +19,20 @@ class ConstructorMethodConstructionStrategy extends AbstractMethodConstructionSt
 	 * @param	object	current processed service
 	 * @return 	mixed
 	 */
-	public function buildMethod(Container $container, object $currentService = null){
+	public function buildMethod(Container $container, $currentService = null){
 		
 		$constructor = $this->getMethod();
 		$className = $constructor->getClassName(); 
 		
 		// init array
-		$argumentArray = array();
+		$arguments = array();
 		
 		foreach($constructor->getArguments() as $argument){
-			$argumentArray[] = $argument->getConstructionStrategy()->buildArgument($container, $currentService);	
+			$arguments[] = $argument->getConstructionStrategy()->buildArgument($container, $currentService);
 		}
-		
-		$service = call_user_func_array(array($className, '__construct'), $arguments);
+
+		$reflexionObject = new \ReflectionClass($className);
+		$service = $reflexionObject->newInstanceArgs($arguments);
 		
 		return $service;
 	}

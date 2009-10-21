@@ -1,6 +1,7 @@
 <?php
 namespace Spiral\Framework\DI\Construction;
-use Spiral\Framework\DI\Definition;
+
+use \Spiral\Framework\DI\Definition;
 
 /**
  * Abstract Service Construction Strategy
@@ -18,9 +19,12 @@ class AliasServiceConstructionStrategy  extends AbstractServiceConstructionStrat
 	 * @param	\Spiral\Framework\DI\Construction\Container
 	 * @return 	object	builded service, with all injected methods and arguments
 	 */
-	public function buildService(Definition\Schema $schema, Construction\Container $container){
-		return $this->schema->getService($this->getService()->getServiceName())
-			->getConstructionStrategy()->buildService($schema, $container);
+	public function buildService(Definition\Schema $schema, Container $container){
+		$alias = $this->getService();
+
+		$service = $schema->getService($alias->getName());
+
+		return $service->getConstructionStrategy()->buildService($schema, $container);
 	}
 }
 ?>

@@ -25,7 +25,7 @@ abstract class AbstractArgumentConstructionStrategy implements ArgumentConstruct
 	 * @param 	\Spiral\Framework\DI\Definition\Argument	$argument
 	 * @return	void
 	 */
-	public function setArgument($argument){
+	public function setArgument(Definition\Argument $argument){
 		$this->_argument = $argument;
 	}
 	

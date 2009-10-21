@@ -17,17 +17,10 @@ class CurrentServiceArgumentConstructionStrategy extends AbstractArgumentConstru
 	 * 
 	 * @param	\Spiral\Framework\DI\Construction\Container	$container		
 	 * @param	object										$currentService		current active service
-	 * @return 	string	builded argument
+	 * @return 	object
 	 */
-	public function buildArgument(Container $container, object $currentService)
+	public function buildArgument(Container $container, $currentService)
 	{
-		if($argument instanceof Schema\CurrentServiceArgument)
-		{
-			return $currentService;
-		}
-		else
-		{
-			return false;
-		}
+		return $currentService;
 	}
 }

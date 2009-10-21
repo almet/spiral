@@ -1,6 +1,7 @@
 <?php
 namespace Spiral\Framework\DI\Construction;
 
+use Spiral\Framework\DI\Definition;
 /**
  * Interface for the Argument Construction Strategies
  *
@@ -16,7 +17,7 @@ interface ArgumentConstructionStrategy
 	 * @param 	\Spiral\Framework\DI\Definition\Argument	$argument
 	 * @return	void
 	 */
-	public function setArgument($argument);
+	public function setArgument(Definition\Argument $argument);
 	
 	/**
 	 * Getter for argument
@@ -32,6 +33,6 @@ interface ArgumentConstructionStrategy
 	 * @param	object										$currentService		current active service
 	 * @return 	string	builded argument
 	 */
-	public function buildArgument(Container $container, object $currentService);
+	public function buildArgument(Container $container, $currentService);
 }
 ?>

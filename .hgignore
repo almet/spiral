@@ -4,6 +4,7 @@
 www/.htaccess
 \.orig$
 \.orig\..*$
+.settings
 .project
 ^/tests/
 ^/nbproject/

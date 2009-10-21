@@ -10,7 +10,7 @@ use \Spiral\Framework\DI\Definition;
  * @copyright	Alexis Metaireau 	2009
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
-abstract class AbstractserviceConstructionStrategy extends AbstractConstructionStrategy
+abstract class AbstractServiceConstructionStrategy extends AbstractConstructionStrategy
 {	
 	/**
 	 * Service

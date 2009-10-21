@@ -38,6 +38,16 @@ require_once('Constants.php');
  	{
  		set_include_path(BASE_PATH .'/'. PATH_SEPARATOR . get_include_path());
  	}
+
+	/**
+	 * Proxy to add default path for Default loader
+	 * 
+	 * @param	string $path
+	 * @return	void
+	 */
+	public function addDefaultPath($path){
+		return DefaultLoader::addDefaultPath($path);
+	}
  	
  	/**
  	 * Register the autoload method

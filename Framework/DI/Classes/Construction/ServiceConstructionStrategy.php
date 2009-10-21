@@ -34,6 +34,6 @@ interface ServiceConstructionStrategy
 	 * @param	\Spiral\Framework\DI\Construction\Container
 	 * @return 	object	builded service, with all injected methods and arguments
 	 */
-	public function buildService(Definition\Schema $schema, Construction\Container $container);
+	public function buildService(Definition\Schema $schema, Container $container);
 }
 ?>
