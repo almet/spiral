@@ -1,10 +1,9 @@
 <?php
 
 /**
- * Web index
+ * Test script
  *
- * This is the entry point of the Spiral web application.
- * Configure and run a Spiral web application.
+ * Launch all the tests of the Spiral framework
  *
  * @author  	Alexis Métaireau	28 jul. 2009
  * @author  	Frédéric Sureau
@@ -13,8 +12,8 @@
  */
 
 // Include the bootstrap class
-require_once(__DIR__.'/../Framework/Bootstrap/Classes/WebBootstrap.php');
+require_once(__DIR__.'/../../Classes/TestsBootstrap.php');
 
 // Bootstrap the application
-$bootstrap = new \Spiral\Framework\Bootstrap\WebBootstrap();
+$bootstrap = new \Spiral\Framework\Bootstrap\TestsBootstrap();
 $bootstrap->run();

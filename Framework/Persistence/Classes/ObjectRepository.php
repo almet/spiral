@@ -2,6 +2,8 @@
 
 namespace Spiral\Framework\Persistence;
 
+use Spiral\Framework\Persistence\Query\Query;
+
 /**
  * Object repository
  * 
@@ -30,21 +32,24 @@ namespace Spiral\Framework\Persistence;
  * 
  * @todo		Define the type of OIDs
  */
-interface Repository
+interface ObjectRepository
 {
 	/**
 	 * Add an object to the repository
 	 * 
+	 * This method adds the object to the repository and make it persist.
+	 * The OID associated to this object by the repository is returned.
+	 * 
 	 * @param	object	$object		The object to add
 	 * 
-	 * @return	mixed	The OID
-	 * 
-	 * @todo	Define the type for OIDs
+	 * @return	mixed	The OID associated to the object by the repository
 	 */
 	public function add($object);
 	
 	/**
 	 * Remove an object from the repository
+	 * 
+	 * The object will be removed from the repository and will not be persistent anymore.
 	 * 
 	 * @param	object	$object		The object to remove
 	 * 
@@ -57,9 +62,9 @@ interface Repository
 	 * 
 	 * Return null if no object with this OID can be found.
 	 * 
-	 * @param	mixed	$oid		The OID of the object you want to find
+	 * @param	mixed			$oid		The OID of the object you want to find
 	 * 
-	 * @return	object|NULL			The object corresponding to the OID or NULL if no object found
+	 * @return	object|NULL					The object corresponding to the OID or NULL if no object found
 	 */
 	public function findByOID($oid);
 	
@@ -75,19 +80,5 @@ interface Repository
 	 * 
 	 * @return	array	Array of objects matching the query
 	 */
-	public function find(Query $query);
-	
-	/**
-	 * Create a new query
-	 * 
-	 * Return a new {@link FluentQuery} instance to play with for retrieving objects from the repository.
-	 * 
-	 * There are other solutions to create a {@link Query} instance.
-	 * @todo	Make a comment about other solutions to create query...
-	 * 
-	 * @param	string		$class			The class of objects you want to query
-	 * 
-	 * @return	Query		A new query
-	 */
-	public function createQuery($class);
+	public function findByQuery(Query $query);
 }

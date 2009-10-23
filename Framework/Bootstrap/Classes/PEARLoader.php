@@ -2,14 +2,19 @@
 
 namespace Spiral\Framework\Bootstrap;
 
+require_once('AbstractLoader.php');
+
 /**
- * Loader interface
+ * PEAR loader
+ *
+ * Load classes using the PEAR naming convention.
+ * Classes to load must be in the include path.
  *
  * @author		Alexis Métaireau	16 apr. 2009
  * @copyright	Alexis Metaireau	2009
  * @license		http://opensource.org/licenses/gpl-3.0.html GNU Public License V3
  */
-interface Loader
+class PEARLoader extends AbstractLoader
 {
 	/**
 	 * Try to load the required class
@@ -20,5 +25,12 @@ interface Loader
 	 * 
 	 * @return	boolean
 	 */
-	public static function load($class);
+	public static function load($class)
+	{
+		$namespaces = explode('_', $class);
+		$fullPath = implode($namespaces, DIRECTORY_SEPARATOR).'.php';
+		parent::_include($fullPath);
+		
+		return class_exists($class);
+	}
 }

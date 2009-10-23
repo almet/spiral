@@ -1,4 +1,5 @@
 <?php
+
 namespace Spiral\Framework\Bootstrap;
 
 require_once('Bootstrap.php');

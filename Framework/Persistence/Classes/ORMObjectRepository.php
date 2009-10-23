@@ -12,7 +12,7 @@ use \Spiral\Framework\Persistence\Introspection\ObjectIntrospector;
  * @copyright	Frédéric Sureau 2009
  * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
  */
-class DefaultRepository implements Repository
+class ORMObjectRepository implements ObjectRepository
 {
 	/**
 	 * Object introspector
@@ -97,23 +97,7 @@ class DefaultRepository implements Repository
 	 * 
 	 * @return	array	Array of objects matching the query
 	 */
-	public function find(Query $query)
-	{
-	}
-	
-	/**
-	 * Create a new query
-	 * 
-	 * Return a new {@link FluentQuery} instance to play with for retrieving objects from the repository.
-	 * 
-	 * There are other solutions to create a {@link Query} instance.
-	 * @todo	Make a comment about other solutions to create query...
-	 * 
-	 * @param	string		$class			The class of objects you want to query
-	 * 
-	 * @return	Query		A new query
-	 */
-	public function createQuery($class)
+	public function findByQuery(Query $query)
 	{
 	}
 }
