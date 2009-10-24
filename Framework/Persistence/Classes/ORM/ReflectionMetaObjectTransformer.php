@@ -60,6 +60,8 @@ class ReflectionMetaObjectTransformer extends ObjectRepositoryMetaObjectTransfor
 		$metaAttributes = $metaObject->getAttributes();
 		$class = $metaObject->getClass();
 		
+		// Create the instance by a "wake up" process thanks to unserialize
+		// The constructor will not be called, but the __wakeup method will 
 		$instance = unserialize('O:'.strlen($class).':"'.$class.'":0:{}');
 		
 		foreach($metaAttributes as $name=>$value)
