@@ -1,17 +1,17 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM;
+namespace Spiral\Framework\Persistence\ORM\Conversion;
 
-use Spiral\Framework\Persistence\Fixtures;
+use Spiral\Framework\Persistence\Fixtures\MockObjectRepository;
 
 /**
- * Reflection based meta object transformer test
+ * Reflection based meta object converter test
  * 
  * @author		Frédéric Sureau <frederic.sureau@gmail.com>
  * @copyright	Frédéric Sureau 2009
  * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
  */
-class ReflectionMetaObjectTransformerTest extends MetaObjectTransformerTest
+class ReflectionMetaConverterTest extends MetaConverterTestAbstract
 {
 	/**
 	 * Sets up the testing environment
@@ -20,8 +20,8 @@ class ReflectionMetaObjectTransformerTest extends MetaObjectTransformerTest
 	{
 		parent::setUp();
 		
-		$this->_metaObjectTransformer = new ReflectionMetaObjectTransformer();
-		$this->_metaObjectTransformer->setObjectRepository(new Fixtures\MockObjectRepository());
+		$this->_metaConverter = new ReflectionMetaConverter();
+		$this->_metaConverter->setObjectRepository(new MockObjectRepository());
 
 		$attributes = array('firstName'=>'James',
 							'surName'=>'Brown',

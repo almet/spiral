@@ -9,7 +9,7 @@ namespace Spiral\Framework\Persistence\ORM;
  * @copyright	Frédéric Sureau 2009
  * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
  */
-class DefaultMetaObjectTest extends MetaObjectTest
+class DefaultMetaObjectTest extends MetaObjectTestAbstract
 {
 	/**
 	 * Sets up the testing environment

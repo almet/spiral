@@ -13,8 +13,7 @@ namespace Spiral\Framework\Persistence\ORM;
  * 	- dirty
  * 	- deleted
  * 
- * The unit of work is responsible of the transition from the high-level world to the storage engine world.
- * It is responsible of recensing only the needed operations that have to be communicated to the storage engine.
+ * The unit of work is responsible of recensing only the needed operations that have to be communicated to the storage engine.
  * 
  * For example, if an object is added then deleted from the object repository, no operation have to be sent 
  * to the storage engine.
@@ -28,13 +27,6 @@ namespace Spiral\Framework\Persistence\ORM;
  */
 interface UnitOfWork
 {
-	/**
-	 * Status constants
-	 */
-	const STATUS_NEW = 1;
-	const STATUS_DIRTY = 2;
-	const STATUS_DELETED = 3;
-	
 	/**
 	 * Commit all operations to the storage engine
 	 * 
@@ -50,14 +42,35 @@ interface UnitOfWork
 	public function rollback();
 	
 	/**
-	 * Define the current status of an object
+	 * Define the status of an object as deleted
 	 * 
-	 * The status is one of the UnitOfWork::STATUS_* constants.
-	 * 
-	 * @param	object	$object		Object which status has to be set
-	 * @param	int		$status		Status for the object
+	 * @param	mixed	$oid		Object ID
 	 * 
 	 * @return	void
 	 */
-	public function setStatus($object, $status);
+	public function registerDeleted($oid);
+	
+	/**
+	 * Define the status of an object as dirty
+	 * 
+	 * The object must not be registered as deleted.
+	 * 
+	 * @param	mixed	$oid		Object ID
+	 * @param	object	$object		Object which status has to be set
+	 * 
+	 * @return	void
+	 */
+	public function registerDirty($oid, $object);
+	
+	/**
+	 * Define the status of an object as new
+	 * 
+	 * The object must not be registered in the unit of work.
+	 * 
+	 * @param	mixed	$oid		Object ID
+	 * @param	object	$object		Object which status has to be set
+	 * 
+	 * @return	void
+	 */
+	public function registerNew($oid, $object);
 }

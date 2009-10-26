@@ -1,11 +1,11 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM;
+namespace Spiral\Framework\Persistence\ORM\Conversion;
 
 use Spiral\Framework\Persistence\ObjectRepository;
 
 /**
- * Object repository meta object transformer
+ * Object repository meta object converter
  * 
  * This component uses object repository to manage relations.
  * 
@@ -13,7 +13,7 @@ use Spiral\Framework\Persistence\ObjectRepository;
  * @copyright	Frédéric Sureau 2009
  * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
  */
-abstract class ObjectRepositoryMetaObjectTransformer extends AbstractMetaObjectTransformer
+abstract class ObjectRepositoryMetaConverter implements MetaConverter
 {
 	/**
 	 * Object repository
@@ -23,25 +23,25 @@ abstract class ObjectRepositoryMetaObjectTransformer extends AbstractMetaObjectT
 	protected $_objectRepository;
 	
 	/**
-	 * Transform an object instance to an atomic meta representation 
+	 * Convert an object instance to an atomic meta representation 
 	 * 
 	 * @param	object		$instance		The in-memory object
 	 * 
 	 * @return	mixed		Atomic representation of the instance
 	 */
-	protected function _transformInstanceToMetaValue($instance)
+	protected function _convertInstanceToMetaValue($instance)
 	{
 		return $this->_objectRepository->add($instance);
 	}
 	
 	/**
-	 * Transform a meta object representation to an object instance
+	 * Convert a meta object representation to an object instance
 	 * 
 	 * @param	mixed		$meta		The meta representation
 	 * 
 	 * @return	object		The instance of the object
 	 */
-	protected function _transformMetaValueToInstance($meta)
+	protected function _convertMetaValueToInstance($meta)
 	{
 		return $this->_objectRepository->findByOID($meta);
 	}

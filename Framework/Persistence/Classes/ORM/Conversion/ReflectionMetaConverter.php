@@ -1,9 +1,12 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM;
+namespace Spiral\Framework\Persistence\ORM\Conversion;
+
+use Spiral\Framework\Persistence\ORM\MetaObject;
+use Spiral\Framework\Persistence\ORM\DefaultMetaObject;
 
 /**
- * Reflection based meta object transformer
+ * Reflection based meta object converter
  * 
  * This component uses reflection to build meta object.
  * 
@@ -11,16 +14,16 @@ namespace Spiral\Framework\Persistence\ORM;
  * @copyright	Frédéric Sureau 2009
  * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
  */
-class ReflectionMetaObjectTransformer extends ObjectRepositoryMetaObjectTransformer
+class ReflectionMetaConverter extends ObjectRepositoryMetaConverter
 {
 	/**
-	 * Transform an in-memory instance to a meta representation object 
+	 * Convert an in-memory instance to a meta representation object 
 	 * 
 	 * @param	object		$instance		The in-memory instance
 	 * 
 	 * @return	MetaObject	The meta object representation of the instance
 	 */
-	public function transformToMetaObject($instance)
+	public function convertToMetaObject($instance)
 	{
 		$reflectionObject = new \ReflectionObject($instance);
 		$reflectionAttributes = $reflectionObject->getProperties();
@@ -34,7 +37,7 @@ class ReflectionMetaObjectTransformer extends ObjectRepositoryMetaObjectTransfor
 			
 			if(is_object($value))
 			{
-				$value = $this->_transformInstanceToMetaValue($value);
+				$value = $this->_convertInstanceToMetaValue($value);
 			}
 			
 			$metaAttributes[$name] = $value;
@@ -49,13 +52,13 @@ class ReflectionMetaObjectTransformer extends ObjectRepositoryMetaObjectTransfor
 	}
 	
 	/**
-	 * Transform a meta object representation to an in-memory instance
+	 * Convert a meta object representation to an in-memory instance
 	 * 
 	 * @param	MetaObject	$metaObject		The meta object to build
 	 * 
 	 * @return	object		The instance represented by the meta object
 	 */
-	public function transformToInstance(MetaObject $metaObject)
+	public function convertToInstance(MetaObject $metaObject)
 	{
 		$metaAttributes = $metaObject->getAttributes();
 		$class = $metaObject->getClass();
@@ -72,7 +75,7 @@ class ReflectionMetaObjectTransformer extends ObjectRepositoryMetaObjectTransfor
 			// FIXME : Use reflection on @var instead ?
 			if(is_string($value) && strlen($value) == 32)
 			{
-				$value = $this->_transformMetaValueToInstance($value);
+				$value = $this->_convertMetaValueToInstance($value);
 			}
 			
 			$reflectionProperty->setValue($instance, $value);

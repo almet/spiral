@@ -1,11 +1,14 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM;
+namespace Spiral\Framework\Persistence\ORM\Conversion;
+
+use Spiral\Framework\Persistence\ORM\MetaObject;
 
 /**
- * Meta object transformer
+ * Meta object converter
  * 
- * The meta object transformer is the component responsible of transformation from in-memory instance to meta object representation.
+ * The meta object converter is the component responsible of transformation from in-memory 
+ * instance to meta object representation.
  * It is also responsible of the instanciation from meta object to in-memory object.
  * 
  * All attributes of the meta object representation need to have atomic values.
@@ -16,23 +19,23 @@ namespace Spiral\Framework\Persistence\ORM;
  * @copyright	Frédéric Sureau 2009
  * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
  */
-interface MetaObjectTransformer
+interface MetaConverter
 {
 	/**
-	 * Transform an in-memory instance to a meta representation object 
+	 * Convert an in-memory instance to a meta representation object 
 	 * 
 	 * @param	object		$instance		The in-memory instance
 	 * 
 	 * @return	MetaObject	The meta object representation of the instance
 	 */
-	public function transformToMetaObject($instance);
+	public function convertToMetaObject($instance);
 	
 	/**
-	 * Transform a meta object representation to an in-memory instance
+	 * Convert a meta object representation to an in-memory instance
 	 * 
 	 * @param	MetaObject	$metaObject		The meta object to build
 	 * 
 	 * @return	object		The instance represented by the meta object
 	 */
-	public function transformToInstance(MetaObject $metaObject);
+	public function convertToInstance(MetaObject $metaObject);
 }

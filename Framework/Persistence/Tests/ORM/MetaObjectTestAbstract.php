@@ -13,7 +13,7 @@ require_once('PHPUnit/Framework.php');
  * @copyright	Frédéric Sureau 2009
  * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
  */
-abstract class MetaObjectTest extends \PHPUnit_Framework_TestCase
+abstract class MetaObjectTestAbstract extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * Meta object to test

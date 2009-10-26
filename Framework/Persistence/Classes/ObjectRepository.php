@@ -2,7 +2,7 @@
 
 namespace Spiral\Framework\Persistence;
 
-use Spiral\Framework\Persistence\Query\Query;
+use \Spiral\Framework\Persistence\Query\Query;
 
 /**
  * Object repository
@@ -39,6 +39,7 @@ interface ObjectRepository
 	 * 
 	 * This method adds the object to the repository and make it persist.
 	 * The OID associated to this object by the repository is returned.
+	 * If the object is already registred in the repository, return the internal OID of this object.
 	 * 
 	 * @param	object	$object		The object to add
 	 * 
@@ -50,6 +51,7 @@ interface ObjectRepository
 	 * Remove an object from the repository
 	 * 
 	 * The object will be removed from the repository and will not be persistent anymore.
+	 * If the object does not exists in the repository, nothing is done.
 	 * 
 	 * @param	object	$object		The object to remove
 	 * 

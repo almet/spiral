@@ -2,11 +2,13 @@
 
 namespace Spiral\Framework\Persistence;
 
-use \Spiral\Framework\Persistence\Backend\StorageEngine;
-use \Spiral\Framework\Persistence\Introspection\ObjectIntrospector;
+use \Spiral\Framework\Persistence\ORM\Backend\StorageEngine;
+use \Spiral\Framework\Persistence\ORM\Conversion\MetaConverter;
+use \Spiral\Framework\Persistence\ORM\UnitOfWork;
+use \Spiral\Framework\Persistence\Query\Query;
 
 /**
- * Default object repository
+ * ORM object repository
  * 
  * @author		Frédéric Sureau <frederic.sureau@gmail.com>
  * @copyright	Frédéric Sureau 2009
@@ -15,54 +17,111 @@ use \Spiral\Framework\Persistence\Introspection\ObjectIntrospector;
 class ORMObjectRepository implements ObjectRepository
 {
 	/**
-	 * Object introspector
+	 * Meta converter
 	 * 
-	 * @var	ObjectIntrospector
+	 * @var	MetaConverter
 	 */
-	private $_objectIntrospector;
+	private $_metaConverter = null;
 	
 	/**
 	 * Storage engine
 	 * 
 	 * @var	StorageEngine
 	 */
-	private $_storageEngine;
+	private $_storageEngine = null;
 	
 	/**
-	 * Set the object introspector
+	 * Unit of work
 	 * 
-	 * @param	ObjectIntrospector	$objectIntrospector
+	 * @var	UnitOfWork
+	 */
+	private $_unitOfWork = null;
+	
+	/**
+	 * Meta objects identity map
+	 * 
+	 * @var	array
+	 */
+	private $_metaObjectsIdentityMap = array();
+	
+	/**
+	 * Instances identity map
+	 * 
+	 * @var	array
+	 */
+	private $_instancesIdentityMap = array();
+	
+	/**
+	 * Define the meta converter
+	 * 
+	 * @param	MetaConverter	$metaConverter
 	 * 
 	 * @return	void
 	 */
-	public function setObjectIntrospector(ObjectIntrospector $objectIntrospector);
+	public function setMetaConverter(MetaConverter $metaConverter)
+	{
+		$this->_metaConverter = $metaConverter;
+	}
 	
 	/**
-	 * Set the storage engine
+	 * Define the storage engine
 	 * 
 	 * @param	StorageEngine	$storageEngine
 	 * 
 	 * @return	void
 	 */
-	public function setStorageEngine(StorageEngine $storageEngine);
+	public function setStorageEngine(StorageEngine $storageEngine)
+	{
+		$this->_storageEngine = $storageEngine;
+	}
+	
+	/**
+	 * Define the unit of work
+	 * 
+	 * @param	UnitOfWork	$unitOfWork
+	 * 
+	 * @return	void
+	 */
+	public function setUnitOfWork(UnitOfWork $unitOfWork)
+	{
+		$this->_unitOfWork = $unitOfWork;
+	}
 	
 	/**
 	 * Add an object to the repository
 	 * 
+	 * This method adds the object to the repository and make it persist.
+	 * The OID associated to this object by the repository is returned.
+	 * If the object is already registsred in the repository, return the internal OID of this object.
+	 * 
 	 * @param	object	$object		The object to add
 	 * 
-	 * @return	mixed	The OID
-	 * 
-	 * @todo	Define the type for OIDs
+	 * @return	mixed	The OID associated to the object by the repository
 	 */
 	public function add($object)
 	{
-		$metaObject = $this->_objectIntrospector->buildMetaObject($object);
-		return $this->_storageEngine->store($metaObject);
+		$oid = array_search($object, $this->_instancesIdentityMap);
+		
+		// If object is not yet registered, add it
+		if($oid === false)
+		{
+			$metaObject = $this->_metaConverter->convertToMetaObject($object);
+			$oid = $this->_storageEngine->generateOID($metaObject);
+			
+			$this->_metaObjectsIdentityMap[$oid] = $metaObject;
+			$this->_instancesIdentityMap[$oid] = $object;
+
+			$this->_unitOfWork->registerNew($oid, $metaObject);
+		}
+		
+		return $oid;
 	}
 	
 	/**
 	 * Remove an object from the repository
+	 * 
+	 * The object will be removed from the repository and will not be persistent anymore.
+	 * If the object does not exists in the repository, nothing is done.
 	 * 
 	 * @param	object	$object		The object to remove
 	 * 
@@ -70,6 +129,7 @@ class ORMObjectRepository implements ObjectRepository
 	 */
 	public function remove($object)
 	{
+		
 	}
 	
 	/**
@@ -77,12 +137,13 @@ class ORMObjectRepository implements ObjectRepository
 	 * 
 	 * Return null if no object with this OID can be found.
 	 * 
-	 * @param	mixed	$oid		The OID of the object you want to find
+	 * @param	mixed			$oid		The OID of the object you want to find
 	 * 
-	 * @return	object|NULL			The object corresponding to the OID or NULL if no object found
+	 * @return	object|NULL					The object corresponding to the OID or NULL if no object found
 	 */
 	public function findByOID($oid)
 	{
+		
 	}
 	
 	/**
@@ -99,5 +160,6 @@ class ORMObjectRepository implements ObjectRepository
 	 */
 	public function findByQuery(Query $query)
 	{
+		
 	}
 }
