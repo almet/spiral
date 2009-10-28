@@ -12,8 +12,8 @@
  */
 
 // Include the bootstrap class
-require_once(__DIR__.'/../Framework/Bootstrap/Classes/WebBootstrap.php');
+require_once(__DIR__.'/../framework/bootstrap/classes/WebBootstrap.php');
 
 // Bootstrap the application
-$bootstrap = new \Spiral\Framework\Bootstrap\WebBootstrap();
+$bootstrap = new \spiral\framework\bootstrap\WebBootstrap();
 $bootstrap->run();
