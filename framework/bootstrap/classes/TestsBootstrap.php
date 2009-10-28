@@ -29,11 +29,11 @@ class TestsBootstrap implements Bootstrap
 		set_include_path( $spiralRootPath .PATH_SEPARATOR. get_include_path() );
 		
 		// Configure the package loader and register it in the SPL autoload queue
-		PackageLoader::addSearchDirectory('Classes', 'Tests');
-		spl_autoload_register('\Spiral\Framework\Bootstrap\PackageLoader::load');
+		PackageLoader::addSearchDirectory('classes', 'tests');
+		spl_autoload_register('\spiral\framework\bootstrap\PackageLoader::load');
 		
 		// Register the PEAR loader for PHPUnit framework
-		spl_autoload_register('\Spiral\Framework\Bootstrap\PEARLoader::load');
+		spl_autoload_register('\spiral\framework\bootstrap\PEARLoader::load');
 		
 		// Run CLI of PHPUnit
 		\PHPUnit_TextUI_Command::main();

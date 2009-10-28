@@ -23,7 +23,7 @@ class PackageLoader extends AbstractLoader
 	 * 
 	 * @var	array
 	 */
-	protected static $_searchDirectories = array('Classes');
+	protected static $_searchDirectories = array('classes');
 
 	/**
 	 * Add one or more search directory to the list
@@ -56,7 +56,7 @@ class PackageLoader extends AbstractLoader
 			$mainNamespace = array_shift($namespaces);
 		}
 		
-		if($mainNamespace !== 'Spiral')
+		if($mainNamespace !== 'spiral')
 		{
 			return false;
 		}

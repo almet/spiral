@@ -24,12 +24,12 @@ class WebBootstrap implements Bootstrap
 	public function run()
 	{
 		// Define include path
-		$spiralRootPath = __DIR__.DIRECTORY_SEPARATOR.'..';
+		$spiralRootPath = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..';
 		set_include_path( $spiralRootPath .PATH_SEPARATOR. get_include_path() );
 		
 		// Configure the package loader and register it in the SPL autoload queue
-		PackageLoader::addSearchDirectory('Classes');
-		spl_autoload_register('\Spiral\Framework\Bootstrap\PackageLoader::load');
+		PackageLoader::addSearchDirectory('classes');
+		spl_autoload_register('\spiral\framework\bootstrap\PackageLoader::load');
 		
 		// Run the application
 		// FIXME Use a MVC front request handler
