@@ -1,51 +1,51 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM;
+namespace spiral\framework\persistence\orm;
 
 /**
  * Abstract unit of work
  * 
  * This component manages objects status changes in collections
  * 
- * @author		Frédéric Sureau <frederic.sureau@gmail.com>
- * @copyright	Frédéric Sureau 2009
- * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
+ * @author		Frédéric Sureau <fred@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
+ * 
+ * FIXME		Objects collections could be replaced by a sort of IdentityMap if 
+ * 				objects must be compared on more than just their OID.
  */
 abstract class AbstractUnitOfWork implements UnitOfWork
 {
 	/**
-	 * Deleted objects collection
-	 */
-	protected $_deletedObjects = array();
-	
-	/**
-	 * Dirty objects collection
-	 */
-	protected $_dirtyObjects = array();
-	
-	/**
-	 * New objects collection
-	 */
-	protected $_newObjects = array();
-	
-	/**
-	 * Clean up object collections
+	 * Internal status constants
 	 * 
-	 * @return	void
+	 * @var string
 	 */
-	protected function _cleanUp()
-	{
-		$this->_deletedObjects = array();
-		$this->_dirtyObjects = array();
-		$this->_newObjects = array();
-	}
+	const _STATUS_NEW = 'new';
+	const _STATUS_DIRTY = 'dirty';
+	const _STATUS_DELETED = 'deleted';
+	const _STATUS_CLEAN = 'clean';
 	
 	/**
-	 * Commit all operations to the storage engine
+	 * Objects collection
 	 * 
-	 * @return	void
+	 * @var	array
 	 */
-	abstract protected function _commit();
+	protected $_objects = array();
+	
+	/**
+	 * Objects status collection
+	 * 
+	 * @var	array
+	 */
+	protected $_objectsStatus = array();
+	
+	/**
+	 * Previous objects status collection
+	 * 
+	 * @var	array
+	 */
+	protected $_previousObjectsStatus = array();
 	
 	/**
 	 * Commit all operations to the storage engine
@@ -69,63 +69,218 @@ abstract class AbstractUnitOfWork implements UnitOfWork
 	}
 	
 	/**
-	 * Define the status of an object as deleted
+	 * Add an object
+	 * 
+	 * Here is the table of applied status modifications:
+	 * ---------------------------------------------------------------------------------
+	 * | Initial status | New status     | Comment                                     |
+	 * ---------------------------------------------------------------------------------
+	 * | clean          | new            | Simply register new status                  |
+	 * | dirty          | ???            | Impossible situation, can't insert a        |
+	 * |                |                |  registered object                          |
+	 * | deleted        | clean or dirty | Recover previous status                     |
+	 * ---------------------------------------------------------------------------------
 	 * 
 	 * @param	mixed	$oid		Object ID
-	 * 
+	 * @param	object	$object		Object
 	 * @return	void
 	 */
-	public function registerDeleted($oid)
+	public function add($oid, $object)
 	{
-		if(isset($this->_newObjects[$oid]))
+		$currentStatus = $this->_getObjectStatus($oid, $object);
+		
+		switch($currentStatus)
 		{
-			unset($this->_newObjects[$oid]);
+			case self::_STATUS_DELETED:
+				if($this->_getPreviousObjectStatus($oid, $object) === self::_STATUS_DIRTY)
+				{
+					$newStatus = self::_STATUS_DIRTY;
+				}
+				else
+				{
+					$newStatus = self::_STATUS_CLEAN;
+				}
+				break;
+				
+			default:
+				$newStatus = self::_STATUS_NEW;
+				break;
 		}
-		elseif(isset($this->_dirtyObjects[$oid]))
-		{
-			unset($this->_dirtyObjects[$oid]);
-		}
-		elseif(array_search($oid, $this->_deletedObjects) === false)
-		{
-			$this->_deletedObjects[] = $oid;
-		}
+		
+		$this->_setStatus($oid, $object, $newStatus);
 	}
 	
 	/**
-	 * Define the status of an object as dirty
+	 * Update an object
 	 * 
-	 * The object must not be registered as deleted.
+	 * Here is the table of applied status modifications:
+	 * ---------------------------------------------------------------------------------
+	 * | Initial status | New status     | Comment                                     |
+	 * ---------------------------------------------------------------------------------
+	 * | clean          | dirty          | Simply register new status                  |
+	 * | new            | new            | Since the object is not yet registered in   |
+	 * |                |                |  the storage engine, an insert will save    |
+	 * |                |                |  dirty values as well                       |
+	 * | deleted        | deleted        | The object is supposed to be deleted so     |
+	 * |                |                |  changes have no importance                 |
+	 * ---------------------------------------------------------------------------------
 	 * 
 	 * @param	mixed	$oid		Object ID
-	 * @param	object	$object		Object which status has to be set
+	 * @param	object	$object		Object
+	 * @return	void
+	 */
+	public function update($oid, $object)
+	{
+		$currentStatus = $this->_getObjectStatus($oid, $object);
+		
+		switch($currentStatus)
+		{
+			case self::_STATUS_NEW:
+				$newStatus = self::_STATUS_NEW;
+				break;
+				
+			case self::_STATUS_DELETED:
+				$newStatus = self::_STATUS_DELETED;
+				break;
+				
+			default:
+				$newStatus = self::_STATUS_DIRTY;
+				break;
+		}
+		
+		$this->_setStatus($oid, $object, $newStatus);
+	}
+	
+	/**
+	 * Delete an object
+	 * 
+	 * Here is the table of applied status modifications:
+	 * ---------------------------------------------------------------------------------
+	 * | Initial status | New status     | Comment                                     |
+	 * ---------------------------------------------------------------------------------
+	 * | clean          | deleted        | Simply register new status                  |
+	 * | new            | clean          | Deleting a new object means to do nothing   |
+	 * |                |                |  at the end                                 |
+	 * | dirty          | deleted        | Do not take care of changes anymore since   |
+	 * |                |                |  we want to delete the object               |
+	 * ---------------------------------------------------------------------------------
+	 * 
+	 * @param	mixed	$oid		Object ID
+	 * @param	object	$object		Object
+	 * @return	void
+	 */
+	public function delete($oid, $object)
+	{
+		$currentStatus = $this->_getObjectStatus($oid, $object);
+		
+		switch($currentStatus)
+		{
+			case self::_STATUS_NEW:
+				$newStatus = self::_STATUS_CLEAN;
+				break;
+				
+			default:
+				$newStatus = self::_STATUS_DELETED;
+				break;
+		}
+		
+		$this->_setStatus($oid, $object, $newStatus);
+	}
+	
+	/**
+	 * Make an object clean
+	 * 
+	 * The object is made clean whatever the current status.
+	 * 
+	 * @param	mixed	$oid		Object ID
+	 * @param	object	$object		Object
+	 * @return	void
+	 */
+	public function clean($oid, $object)
+	{
+		$this->_setStatus($oid, $object, self::_STATUS_CLEAN);
+	}
+	
+	/**
+	 * Commit all operations to the storage engine
 	 * 
 	 * @return	void
 	 */
-	public function registerDirty($oid, $object)
+	abstract protected function _commit();
+	
+	/**
+	 * Clean up object collections
+	 * 
+	 * @return	void
+	 */
+	private function _cleanUp()
 	{
-		if(isset($this->_newObjects[$oid]))
+		$this->_objects = array();
+		$this->_objectsStatus = array();
+		$this->_previousObjectsStatus = array();
+	}
+	
+	/**
+	 * Define the new status of an object
+	 * 
+	 * @param	mixed	$oid		Object ID
+	 * @param	object	$object		Object which status has to be set
+	 * @param	string	$status		New status
+	 * @return	void
+	 * 
+	 * FIXME This implementation is directly dependent from OID classification
+	 */
+	private function _setStatus($oid, $object, $status)
+	{
+		$this->_previousObjectsStatus[$oid] = $this->_getObjectStatus($oid, $object);
+		
+		if($status === self::_STATUS_CLEAN)
 		{
-			$this->_newObjects[$oid] = $object;
+			unset($this->_objectsStatus[$oid]);
+			unset($this->_objects[$oid]);
 		}
 		else
 		{
-			$this->_dirtyObjects[$oid] = $object;
+			$this->_objectsStatus[$oid] = $status;
+			$this->_objects[$oid] = $object;
 		}
 	}
 	
 	/**
-	 * Define the status of an object as new
-	 * 
-	 * The object must not be registered in the unit of work.
+	 * Return the current status of an object
 	 * 
 	 * @param	mixed	$oid		Object ID
-	 * @param	object	$object		Object which status has to be set
+	 * @param	object	$object		Object
+	 * @return	string
 	 * 
-	 * @return	void
+	 * FIXME This implementation is directly dependent from OID classification
 	 */
-	public function registerNew($oid, $object)
+	private function _getObjectStatus($oid, $object)
 	{
-		// Register object as new
-		$this->_newObjects[$oid] = $object;
+		if(!isset($this->_objectsStatus[$oid]))
+		{
+			return self::_STATUS_CLEAN;
+		}
+		 
+		return $this->_objectsStatus[$oid];
+	}
+	
+	/**
+	 * Return the previous status of an object
+	 * 
+	 * @param	mixed	$oid		Object ID
+	 * @param	object	$object		Object
+	 * @return	string
+	 * 
+	 * FIXME This implementation is directly dependent from OID classification
+	 */
+	private function _getPreviousObjectStatus($oid, $object)
+	{
+		if(!isset($this->_previousObjectsStatus[$oid]))
+		{
+			return self::_STATUS_CLEAN;
+		}
+		 
+		return $this->_previousObjectsStatus[$oid];
 	}
 }

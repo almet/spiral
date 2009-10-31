@@ -9,10 +9,19 @@ namespace spiral\framework\persistence\orm;
  * {@link http://martinfowler.com/eaaCatalog/unitOfWork.html}.
  * 
  * The role of this component is to manage the status of objects stored in the {@link ObjectRepository}.
- * The status of an object can take 3 values :
+ * The status of an object can take 4 values:
  * 	- new
  * 	- dirty
  * 	- deleted
+ * 	- clean
+ * 
+ * Four operations can be done on objects that make status update:
+ * 	- add
+ * 	- update
+ * 	- delete
+ * 	- clean
+ * 
+ * Changes in status is up to the actual implementation of this interface.
  * 
  * The unit of work is responsible of recensing only the needed operations that have to be communicated 
  * to the {@link StorageEngine}.
@@ -44,33 +53,38 @@ interface UnitOfWork
 	public function rollback();
 	
 	/**
-	 * Define the status of an object as deleted
+	 * Add an object
 	 * 
 	 * @param	mixed	$oid		Object ID
-	 * @param	object	$object		Object which status has to be set
+	 * @param	object	$object		Object
 	 * @return	void
 	 */
-	public function registerDeleted($oid, $object);
+	public function add($oid, $object);
 	
 	/**
-	 * Define the status of an object as dirty
-	 * 
-	 * The object must not be registered as deleted.
+	 * Update an object
 	 * 
 	 * @param	mixed	$oid		Object ID
-	 * @param	object	$object		Object which status has to be set
+	 * @param	object	$object		Object
 	 * @return	void
 	 */
-	public function registerDirty($oid, $object);
+	public function update($oid, $object);
 	
 	/**
-	 * Define the status of an object as new
-	 * 
-	 * The object must not be registered in the unit of work.
+	 * Delete an object
 	 * 
 	 * @param	mixed	$oid		Object ID
-	 * @param	object	$object		Object which status has to be set
+	 * @param	object	$object		Object
 	 * @return	void
 	 */
-	public function registerNew($oid, $object);
+	public function delete($oid, $object);
+	
+	/**
+	 * Make an object clean
+	 * 
+	 * @param	mixed	$oid		Object ID
+	 * @param	object	$object		Object
+	 * @return	void
+	 */
+	public function clean($oid, $object);
 }

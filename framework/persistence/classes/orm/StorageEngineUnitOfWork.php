@@ -1,18 +1,26 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM;
+namespace spiral\framework\persistence\orm;
 
-use Spiral\Framework\Persistence\ORM\Backend\StorageEngine;
+use \spiral\framework\persistence\orm\backend\StorageEngine;
+use \spiral\framework\persistence\orm\meta\MetaConverter;
 
 /**
  * Unit of work that commits to a storage engine
  * 
- * @author		Frédéric Sureau <frederic.sureau@gmail.com>
- * @copyright	Frédéric Sureau 2009
- * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
+ * @author		Frédéric Sureau <fred@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
 class StorageEngineUnitOfWork extends AbstractUnitOfWork
 {
+	/**
+	 * Meta converter
+	 * 
+	 * @var	MetaConverter
+	 */
+	private $_metaConverter = null;
+	
 	/**
 	 * Storage engine
 	 * 
@@ -27,23 +35,30 @@ class StorageEngineUnitOfWork extends AbstractUnitOfWork
 	 */
 	protected function _commit()
 	{
-		// Insert new objects
-		foreach($this->_newObjects as $oid=>$object)
-		{
-			$this->_storageEngine->insert($oid, $object);
-		}
+		$statusOperationMap[self::_STATUS_NEW] = 'insert';
+		$statusOperationMap[self::_STATUS_DIRTY] = 'update';
+		$statusOperationMap[self::_STATUS_DELETED] = 'delete';
 		
-		// Update dirty objects
-		foreach($this->_dirtyObjects as $oid=>$object)
+		foreach($this->_objectsStatus as $oid=>$status)
 		{
-			$this->_storageEngine->update($oid, $object);
+			$object = $this->_objects[$oid];
+			$metaObject = $this->_metaConverter->convertToMetaObject($object, $oid);
+			
+			$operation = $statusOperationMap[$status];
+			$this->_storageEngine->$operation($metaObject);
 		}
-		
-		// Delete deleted objects
-		foreach($this->_deletedObjects as $oid)
-		{
-			$this->_storageEngine->delete($oid);
-		}
+	}
+	
+	/**
+	 * Define the meta converter
+	 * 
+	 * @param	MetaConverter	$metaConverter		Meta converter
+	 * 
+	 * @return	void
+	 */
+	public function setMetaConverter(MetaConverter $metaConverter)
+	{
+		$this->_metaConverter = $metaConverter;
 	}
 	
 	/**
