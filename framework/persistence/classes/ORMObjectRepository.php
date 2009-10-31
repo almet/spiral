@@ -66,22 +66,24 @@ class ORMObjectRepository implements ObjectRepository
 	 * the OID associated to this object by the repository is returned.
 	 * If the object is already registred in the repository, return the existing OID for this object.
 	 * 
+	 * FIXME The object will not be registered as dirty if it has changed.
+	 * 
 	 * @param	object	$object		The object to add
 	 * @return	mixed	The OID associated to the object by the repository
-	 * 
-	 * FIXME The object will not be registered as dirty if it has changed.
 	 */
 	public function add($object)
 	{
 		// If object is already known, only return its OID
 		if($this->_identityMap->containsObject($object))
 		{
+			// XXX Can check if the object has changed ? Just a proposition.
 			return $this->_identityMap->findOIDByObject($object);
 		}
 		
+		// If the object is not in the identity map, add it to the unit of work
 		$oid = $this->_oidGenerator->generateOID($object);
 		
-		$this->_unitOfWork->registerNew($oid, $object);
+		$this->_unitOfWork->add($oid, $object);
 		$this->_identityMap->register($oid, $object);
 		
 		return $oid;
@@ -98,7 +100,11 @@ class ORMObjectRepository implements ObjectRepository
 	 */
 	public function remove($object)
 	{
-		
+		if($this->_identityMap->containsObject($object))
+		{
+			$oid = $this->_identityMap->findOIDByObject($object);
+			$this->_unitOfWork->delete($oid, $object);
+		}
 	}
 	
 	/**
@@ -111,7 +117,11 @@ class ORMObjectRepository implements ObjectRepository
 	 */
 	public function findByOID($oid)
 	{
+		$object = $this->_identityMap->findObjectByOID($oid);
 		
+		// TODO Search in the storage engine too !
+		
+		return $object;
 	}
 	
 	/**
@@ -127,6 +137,6 @@ class ORMObjectRepository implements ObjectRepository
 	 */
 	public function findByQuery(Query $query)
 	{
-		
+		// TODO Search in the storage engine
 	}
 }
