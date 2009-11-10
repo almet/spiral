@@ -53,7 +53,6 @@ class StorageEngineUnitOfWork extends AbstractUnitOfWork
 	 * Define the meta converter
 	 * 
 	 * @param	MetaConverter	$metaConverter		Meta converter
-	 * 
 	 * @return	void
 	 */
 	public function setMetaConverter(MetaConverter $metaConverter)
@@ -65,7 +64,6 @@ class StorageEngineUnitOfWork extends AbstractUnitOfWork
 	 * Define the storage engine
 	 * 
 	 * @param	StorageEngine	$storageEngine		Storage engine
-	 * 
 	 * @return	void
 	 */
 	public function setStorageEngine(StorageEngine $storageEngine)

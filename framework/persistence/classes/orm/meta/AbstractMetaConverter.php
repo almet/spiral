@@ -5,6 +5,9 @@ namespace spiral\framework\persistence\orm\meta;
 /**
  * Abstract meta object converter
  * 
+ * Provide protected methods to create blank in-memory objects and meta objects.
+ * Also provide basics methods to convert simple values.
+ * 
  * @author		Frédéric Sureau <fred@spiral-project.org>
  * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
  * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
@@ -16,7 +19,6 @@ abstract class AbstractMetaConverter implements MetaConverter
 	 * 
 	 * @param	string		$class			Class
 	 * @param	array		$attributes		Attributes
-	 * 
 	 * @return	object		Instance
 	 */
 	protected function _createInstance($class, $attributes)
@@ -43,9 +45,8 @@ abstract class AbstractMetaConverter implements MetaConverter
 	/**
 	 * Create a meta object with the given parameters
 	 * 
-	 * @param	string		$class			Class
-	 * @param	array		$attributes		Attributes
-	 * 
+	 * @param	string			$class				Class
+	 * @param	array			$attributes			Attributes
 	 * @return	MetaObject		The meta object
 	 */
 	protected function _createMetaObject($class, $attributes)

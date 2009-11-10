@@ -1,18 +1,16 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM\Conversion;
-
-use Spiral\Framework\Persistence\ORM\MetaObject;
-use Spiral\Framework\Persistence\ORM\DefaultMetaObject;
+namespace spiral\framework\persistence\orm\meta;
 
 /**
  * Reflection based meta object converter
  * 
  * This component uses reflection to build meta object.
  * 
- * @author		Frédéric Sureau <frederic.sureau@gmail.com>
- * @copyright	Frédéric Sureau 2009
- * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
+ * 
+ * @author		Frédéric Sureau <fred@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
 class ReflectionMetaConverter extends ObjectRepositoryMetaConverter
 {
@@ -20,10 +18,10 @@ class ReflectionMetaConverter extends ObjectRepositoryMetaConverter
 	 * Convert an in-memory instance to a meta representation object 
 	 * 
 	 * @param	object		$instance		The in-memory instance
-	 * 
+	 * @param	mixed		$oid			The OID associated to this instance
 	 * @return	MetaObject	The meta object representation of the instance
 	 */
-	public function convertToMetaObject($instance)
+	public function convertToMetaObject($instance, $oid)
 	{
 		$reflectionObject = new \ReflectionObject($instance);
 		$reflectionAttributes = $reflectionObject->getProperties();
@@ -43,19 +41,15 @@ class ReflectionMetaConverter extends ObjectRepositoryMetaConverter
 			$metaAttributes[$name] = $value;
 		}
 		
-		// FIXME : Maybe use a prototype instead
-		$metaObject = new DefaultMetaObject();
-		$metaObject->setAttributes($metaAttributes);
-		$metaObject->setClass(get_class($instance));
+		$metaAttributes['oid'] = $oid;
 		
-		return $metaObject;
+		return $this->_createMetaObject(get_class($instance), $metaAttributes);
 	}
 	
 	/**
 	 * Convert a meta object representation to an in-memory instance
 	 * 
 	 * @param	MetaObject	$metaObject		The meta object to build
-	 * 
 	 * @return	object		The instance represented by the meta object
 	 */
 	public function convertToInstance(MetaObject $metaObject)
@@ -63,24 +57,21 @@ class ReflectionMetaConverter extends ObjectRepositoryMetaConverter
 		$metaAttributes = $metaObject->getAttributes();
 		$class = $metaObject->getClass();
 		
-		// Create the instance by a "wake up" process thanks to unserialize
-		// The constructor will not be called, but the __wakeup method will 
-		$instance = unserialize('O:'.strlen($class).':"'.$class.'":0:{}');
+		// FIXME : Maybe check before if the 'oid' key exists
+		unset($metaAttributes['oid']);
 		
+		$attributes = array();
 		foreach($metaAttributes as $name=>$value)
 		{
-			$reflectionProperty = new \ReflectionProperty($class, $name);
-			$reflectionProperty->setAccessible(true);
-			
 			// FIXME : Use reflection on @var instead ?
 			if(is_string($value) && strlen($value) == 32)
 			{
 				$value = $this->_convertMetaValueToInstance($value);
 			}
 			
-			$reflectionProperty->setValue($instance, $value);
+			$attributes[$name] = $value;
 		}
 		
-		return $instance;
+		return $this->_createInstance($class, $attributes);
 	}
 }

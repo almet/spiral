@@ -1,8 +1,6 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM\Conversion;
-
-use Spiral\Framework\Persistence\ORM\MetaObject;
+namespace spiral\framework\persistence\orm\meta;
 
 /**
  * Meta object converter
@@ -15,9 +13,9 @@ use Spiral\Framework\Persistence\ORM\MetaObject;
  * 
  * @see			MetaObject
  * 
- * @author		Frédéric Sureau <frederic.sureau@gmail.com>
- * @copyright	Frédéric Sureau 2009
- * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
+ * @author		Frédéric Sureau <fred@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
 interface MetaConverter
 {
@@ -25,16 +23,15 @@ interface MetaConverter
 	 * Convert an in-memory instance to a meta representation object 
 	 * 
 	 * @param	object		$instance		The in-memory instance
-	 * 
+	 * @param	mixed		$oid			The OID associated to this instance
 	 * @return	MetaObject	The meta object representation of the instance
 	 */
-	public function convertToMetaObject($instance);
+	public function convertToMetaObject($instance, $oid);
 	
 	/**
 	 * Convert a meta object representation to an in-memory instance
 	 * 
 	 * @param	MetaObject	$metaObject		The meta object to build
-	 * 
 	 * @return	object		The instance represented by the meta object
 	 */
 	public function convertToInstance(MetaObject $metaObject);

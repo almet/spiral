@@ -1,15 +1,13 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM;
+namespace spiral\framework\persistence\orm\meta;
 
 /**
  * Default meta object implementation
  * 
- * @see			MetaObject
- * 
- * @author		Frédéric Sureau <frederic.sureau@gmail.com>
- * @copyright	Frédéric Sureau 2009
- * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
+ * @author		Frédéric Sureau <fred@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
 class DefaultMetaObject implements MetaObject
 {
@@ -54,8 +52,7 @@ class DefaultMetaObject implements MetaObject
 	 * 
 	 * The array is empty if there are no attributes.
 	 * 
-	 * @param	array	$attributes		Associative array of all attributes names and values.
-	 * 
+	 * @param	array	$attributes		Associative array of all attributes names and values
 	 * @return	void
 	 */
 	public function setAttributes(array $attributes)
@@ -67,7 +64,6 @@ class DefaultMetaObject implements MetaObject
 	 * Define the instanciation class
 	 * 
 	 * @param	string	Full name of the class with namespace
-	 * 
 	 * @return	void
 	 */
 	public function setClass($class)

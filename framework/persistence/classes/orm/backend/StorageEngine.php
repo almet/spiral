@@ -2,7 +2,7 @@
 
 namespace spiral\framework\persistence\orm\backend;
 
-use spiral\framework\persistence\orm\MetaObject;
+use \spiral\framework\persistence\orm\meta\MetaObject;
 
 /**
  * Storage engine
@@ -14,41 +14,33 @@ use spiral\framework\persistence\orm\MetaObject;
  * 
  * @author		Frédéric Sureau <fred@spiral-project.org>
  * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
- * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html
+ * 
+ * FIXME : Don't forget the select method
  */
 interface StorageEngine
 {
 	/**
 	 * Delete the meta object associaed to the oid in the storage engine
 	 * 
-	 * @param	mixed		$oid			OID
+	 * @param	MetaObject	$metaObject		Meta object
 	 * @return	void
 	 */
-	public function delete($oid);
-	
-	/**
-	 * Generate an OID for the given meta object
-	 * 
-	 * @param	MetaObject	$metaObject		Meta object
-	 * @return	mixed		OID
-	 */
-	public function generateOID(MetaObject $metaObject);
+	public function delete(MetaObject $metaObject);
 	
 	/**
 	 * Insert the meta object in the storage engine
 	 * 
-	 * @param	mixed		$oid			OID
 	 * @param	MetaObject	$metaObject		Meta object
 	 * @return	void
 	 */
-	public function insert($oid, MetaObject $metaObject);
+	public function insert(MetaObject $metaObject);
 	
 	/**
 	 * Update the meta object in the storage engine
 	 * 
-	 * @param	mixed		$oid			OID
 	 * @param	MetaObject	$metaObject		Meta object
 	 * @return	void
 	 */
-	public function update($oid, MetaObject $metaObject);
+	public function update(MetaObject $metaObject);
 }

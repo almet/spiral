@@ -1,17 +1,22 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM\Conversion;
+namespace spiral\framework\persistence\orm\meta;
 
-use Spiral\Framework\Persistence\ObjectRepository;
+use \spiral\framework\persistence\ObjectRepository;
 
 /**
  * Object repository meta object converter
  * 
- * This component uses object repository to manage relations.
+ * This component uses the {@link ObjectRepository} to manage relations.
+ * When an object need to be converted to a {@link MetaObject}, all relations are added
+ * to the {@link ObjectRepository} first and replaced by OIDs that the {@link ObjectRepository}
+ * has returned.
  * 
- * @author		Frédéric Sureau <frederic.sureau@gmail.com>
- * @copyright	Frédéric Sureau 2009
- * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
+ * @see		ObjectRepository
+ * 
+ * @author		Frédéric Sureau <fred@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
 abstract class ObjectRepositoryMetaConverter implements MetaConverter
 {
@@ -26,7 +31,6 @@ abstract class ObjectRepositoryMetaConverter implements MetaConverter
 	 * Convert an object instance to an atomic meta representation 
 	 * 
 	 * @param	object		$instance		The in-memory object
-	 * 
 	 * @return	mixed		Atomic representation of the instance
 	 */
 	protected function _convertInstanceToMetaValue($instance)
@@ -38,7 +42,6 @@ abstract class ObjectRepositoryMetaConverter implements MetaConverter
 	 * Convert a meta object representation to an object instance
 	 * 
 	 * @param	mixed		$meta		The meta representation
-	 * 
 	 * @return	object		The instance of the object
 	 */
 	protected function _convertMetaValueToInstance($meta)
@@ -50,7 +53,6 @@ abstract class ObjectRepositoryMetaConverter implements MetaConverter
 	 * Define the object repository
 	 * 
 	 * @param	ObjectRepository		$objectRepository	Object repository
-	 * 
 	 * @return	void
 	 */
 	public function setObjectRepository(ObjectRepository $objectRepository)
