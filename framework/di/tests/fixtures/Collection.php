@@ -1,6 +1,6 @@
 <?php
 
-namespace Spiral\Framework\DI\Fixtures;
+namespace spiral\framework\di\fixtures;
 
 /**
  * Represent a collection of elements.

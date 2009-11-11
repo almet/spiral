@@ -1,9 +1,9 @@
 <?php
 
-namespace Spiral\Framework\DI\Fixtures;
+namespace spiral\framework\di\fixtures;
 
-use \Spiral\Framework\DI\Construction\Container;
-use \Spiral\Framework\DI\ConstructionAware;
+use \spiral\framework\di\construction\Container;
+use \spiral\framework\di\constructionAware;
 
 /**
  * Represent an song finder.

@@ -1,8 +1,8 @@
 <?php
-namespace Spiral\Framework\DI\Construction;
+namespace spiral\framework\di\construction;
 
-use \Spiral\Framework\DI\Definition;
-use \Spiral\Framework\DI\Fixtures;
+use \spiral\framework\di\definition;
+use \spiral\framework\di\fixtures;
 
 require_once('PHPUnit/Framework.php');
 
@@ -16,17 +16,17 @@ require_once('PHPUnit/Framework.php');
 
 class AttributeMethodConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
     public function testBuildMethod(){
-		$value = new Fixtures\Definition\MockArgument('value');
-		$value->setConstructionStrategy(new Fixtures\Construction\MockArgumentConstructionStrategy());
+		$value = new fixtures\definition\MockArgument('value');
+		$value->setConstructionStrategy(new fixtures\construction\MockArgumentConstructionStrategy());
 		
-		$method = new Definition\AttributeMethod('attribute', $value);
+		$method = new definition\AttributeMethod('attribute', $value);
 
 		$strategy = new AttributeMethodConstructionStrategy();
 		$strategy->setMethod($method);
 		
 		$object = new \stdClass();
 
-		$container = new Fixtures\Construction\MockContainer();
+		$container = new fixtures\construction\MockContainer();
 		
 		$strategy->buildMethod($container, $object);
 

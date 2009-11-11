@@ -1,11 +1,11 @@
 <?php
-namespace Spiral\Framework\DI\Fixtures\Construction;
+namespace spiral\framework\di\fixtures\construction;
 
-use Spiral\Framework\DI\Construction\AbstractServiceConstructionStrategy;
-use Spiral\Framework\DI\Construction\ServiceConstructionStrategy;
-use Spiral\Framework\DI\Construction\Container;
-use Spiral\Framework\DI\Definition\Schema;
-use Spiral\Framework\DI\Definition\Service;
+use spiral\framework\di\construction\AbstractServiceConstructionStrategy;
+use spiral\framework\di\construction\ServiceConstructionStrategy;
+use spiral\framework\di\construction\Container;
+use spiral\framework\di\definition\Schema;
+use spiral\framework\di\definition\Service;
 
 /**
  * Mock service construction Strategy

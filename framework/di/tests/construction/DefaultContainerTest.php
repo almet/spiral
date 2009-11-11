@@ -1,8 +1,8 @@
 <?php
-namespace Spiral\Framework\DI\Construction;
+namespace spiral\framework\di\construction;
 
-use \Spiral\Framework\DI\Construction;
-use \Spiral\Framework\DI\Definition;
+use \spiral\framework\di\construction;
+use \spiral\framework\di\definition;
 
 require_once('PHPUnit/Framework.php');
 
@@ -18,53 +18,53 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 	 * 
 	 * The implementation concerned by this test case is DefaultContainer.
 	 * 
-	 * @var	\Spiral\Framework\DI\Construction\DefaultContainer
+	 * @var	\spiral\framework\di\construction\DefaultContainer
 	 */
 	protected $_container = null;
 	
 	/**
 	 * Default Schema that will be tested
 	 * 
-	 * @return \Spiral\Framework\DI\Definition\Schema
+	 * @return \spiral\framework\di\definition\Schema
 	 */
 	protected $_schema = null;
 	
 	/**
 	 * Fill in the schema object and return it
 	 * 
-	 * @return \Spiral\Framework\DI\Definition\Schema
+	 * @return \spiral\framework\di\definition\Schema
 	 */
 	protected function fillInSchema(){
 		if ($this->_schema === null){
-			$this->_schema = new Definition\DefaultSchema();
+			$this->_schema = new definition\DefaultSchema();
 			
 			//store service
-			$store = new Definition\DefaultService('store', '\Spiral\Framework\DI\Fixtures\Store');
-			$store->setConstructionStrategy(new Construction\DefaultServiceConstructionStrategy());
+			$store = new definition\DefaultService('store', '\spiral\framework\di\fixtures\Store');
+			$store->setConstructionStrategy(new construction\DefaultServiceConstructionStrategy());
 
 			// method1
-			$storeMethod1 = new Definition\DefaultMethod('setName');
-			$storeMethod1->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$storeMethod1 = new definition\DefaultMethod('setName');
+			$storeMethod1->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 
 			// method1 arg1
-			$storeMethod1Arg1 = new Definition\DefaultArgument(null);
-			$storeMethod1Arg1->setConstructionStrategy(new Construction\DefaultArgumentConstructionStrategy);
+			$storeMethod1Arg1 = new definition\DefaultArgument(null);
+			$storeMethod1Arg1->setConstructionStrategy(new construction\DefaultArgumentConstructionStrategy);
 			$storeMethod1->addArgument($storeMethod1Arg1);
 			
 			$store->addMethod($storeMethod1);
 			
 			// callback
-			$methodToCallbackForStore = new Definition\DefaultMethod('register', '\Spiral\Framework\DI\Fixtures\StoreRegister');
-			$methodToCallbackForStore->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$methodToCallbackForStore = new definition\DefaultMethod('register', '\spiral\framework\di\fixtures\StoreRegister');
+			$methodToCallbackForStore->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
 			// callback arg
-			$storeCallbackArg1 = new Definition\CurrentServiceArgument();
-			$storeCallbackArg1->setConstructionStrategy(new Construction\CurrentServiceArgumentConstructionStrategy());
+			$storeCallbackArg1 = new definition\CurrentServiceArgument();
+			$storeCallbackArg1->setConstructionStrategy(new construction\CurrentServiceArgumentConstructionStrategy());
 			
 			$methodToCallbackForStore->addArgument($storeCallbackArg1);
 
-			$storeCallback = new Definition\CallbackMethod('afterCreation', $methodToCallbackForStore);
-			$storeCallback->setConstructionStrategy(new Construction\CallbackMethodConstructionStrategy());
+			$storeCallback = new definition\CallbackMethod('afterCreation', $methodToCallbackForStore);
+			$storeCallback->setConstructionStrategy(new construction\CallbackMethodConstructionStrategy());
 			$store->addMethod($storeCallback);
 			
 			// add service to schema
@@ -72,49 +72,49 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 			
 			
 			// musicStore service
-			$musicStore = new Definition\InheritedService('musicStore', 'store', '\Spiral\Framework\DI\Fixtures\MusicStore');
-			$musicStore->setConstructionStrategy(new Construction\InheritedServiceConstructionStrategy());
+			$musicStore = new definition\InheritedService('musicStore', 'store', '\spiral\framework\di\fixtures\MusicStore');
+			$musicStore->setConstructionStrategy(new construction\InheritedServiceConstructionStrategy());
 			
 			// method1
-			$musicStoreMethod1 = new Definition\DefaultMethod('addArtist');
-			$musicStoreMethod1->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$musicStoreMethod1 = new definition\DefaultMethod('addArtist');
+			$musicStoreMethod1->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
 			// method1 arg1
-			$musicStoreMethod1Arg1 = new Definition\ServiceReferenceArgument('jamesBrown');
-			$musicStoreMethod1Arg1->setConstructionStrategy(new Construction\ServiceReferenceArgumentConstructionStrategy());
+			$musicStoreMethod1Arg1 = new definition\ServiceReferenceArgument('jamesBrown');
+			$musicStoreMethod1Arg1->setConstructionStrategy(new construction\ServiceReferenceArgumentConstructionStrategy());
 			$musicStoreMethod1->addArgument($musicStoreMethod1Arg1);
 			
 			$musicStore->addMethod($musicStoreMethod1);
 			
 			// method2
-			$musicStoreMethod2 = new Definition\DefaultMethod('setAlbumFinder');
-			$musicStoreMethod2->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$musicStoreMethod2 = new definition\DefaultMethod('setAlbumFinder');
+			$musicStoreMethod2->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
 			// method2 arg1
-			$musicStoreMethod2Arg2 = new Definition\ServiceReferenceArgument('albumFinder');
-			$musicStoreMethod2Arg2->setConstructionStrategy(new Construction\ServiceReferenceArgumentConstructionStrategy());
+			$musicStoreMethod2Arg2 = new definition\ServiceReferenceArgument('albumFinder');
+			$musicStoreMethod2Arg2->setConstructionStrategy(new construction\ServiceReferenceArgumentConstructionStrategy());
 			$musicStoreMethod2->addArgument($musicStoreMethod2Arg2);
 			
 			$musicStore->addMethod($musicStoreMethod2);
 			
 			// method3
-			$musicStoreMethod3 = new Definition\DefaultMethod('setArtistFinder');
-			$musicStoreMethod3->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$musicStoreMethod3 = new definition\DefaultMethod('setArtistFinder');
+			$musicStoreMethod3->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
 			// method3 arg1
-			$musicStoreMethod3Arg1 = new Definition\ServiceReferenceArgument('artistFinder');
-			$musicStoreMethod3Arg1->setConstructionStrategy(new Construction\ServiceReferenceArgumentConstructionStrategy());
+			$musicStoreMethod3Arg1 = new definition\ServiceReferenceArgument('artistFinder');
+			$musicStoreMethod3Arg1->setConstructionStrategy(new construction\ServiceReferenceArgumentConstructionStrategy());
 			$musicStoreMethod3->addArgument($musicStoreMethod3Arg1);
 			
 			$musicStore->addMethod($musicStoreMethod3);
 			
 			// method4
-			$musicStoreMethod4 = new Definition\DefaultMethod('setSongFinder');
-			$musicStoreMethod4->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$musicStoreMethod4 = new definition\DefaultMethod('setSongFinder');
+			$musicStoreMethod4->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
 			// method4 arg1
-			$musicStoreMethod4Arg1 = new Definition\ServiceReferenceArgument('songFinder');
-			$musicStoreMethod4Arg1->setConstructionStrategy(new Construction\ServiceReferenceArgumentConstructionStrategy());
+			$musicStoreMethod4Arg1 = new definition\ServiceReferenceArgument('songFinder');
+			$musicStoreMethod4Arg1->setConstructionStrategy(new construction\ServiceReferenceArgumentConstructionStrategy());
 			$musicStoreMethod4->addArgument($musicStoreMethod4Arg1);
 			
 			$musicStore->addMethod($musicStoreMethod4);
@@ -123,82 +123,82 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 			$this->_schema->addService($musicStore);
 			
 			// jamesBrown service
-			$jamesBrown = new Definition\DefaultService('jamesBrown', '\Spiral\Framework\DI\Fixtures\Artist', 'singleton');
-			$jamesBrown->setConstructionStrategy(new Construction\DefaultServiceConstructionStrategy());
+			$jamesBrown = new definition\DefaultService('jamesBrown', '\spiral\framework\di\fixtures\Artist', 'singleton');
+			$jamesBrown->setConstructionStrategy(new construction\DefaultServiceConstructionStrategy());
 			
 			// constructor
-			$jamesBrownConstructor = new Definition\DefaultMethod('__construct');
-			$jamesBrownConstructor->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$jamesBrownConstructor = new definition\DefaultMethod('__construct');
+			$jamesBrownConstructor->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
 			// constructor arg1
-			$jamesBrownConstructorArg1 = new Definition\DefaultArgument('James');
-			$jamesBrownConstructorArg1->setconstructionStrategy(new Construction\DefaultArgumentConstructionStrategy());
+			$jamesBrownConstructorArg1 = new definition\DefaultArgument('James');
+			$jamesBrownConstructorArg1->setconstructionStrategy(new construction\DefaultArgumentConstructionStrategy());
 			$jamesBrownConstructor->addArgument($jamesBrownConstructorArg1);
 			// constructor arg2
-			$jamesBrownConstructorArg2 = new Definition\DefaultArgument('Brown');
-			$jamesBrownConstructorArg2->setconstructionStrategy(new Construction\DefaultArgumentConstructionStrategy());
+			$jamesBrownConstructorArg2 = new definition\DefaultArgument('Brown');
+			$jamesBrownConstructorArg2->setconstructionStrategy(new construction\DefaultArgumentConstructionStrategy());
 			$jamesBrownConstructor->addArgument($jamesBrownConstructorArg2);
 			
 			$jamesBrown->addMethod($jamesBrownConstructor);
 			
 			// method1
-			$jamesBrownMethod1 = new Definition\DefaultMethod('setNickname');
-			$jamesBrownMethod1->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$jamesBrownMethod1 = new definition\DefaultMethod('setNickname');
+			$jamesBrownMethod1->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
 			// method1 arg1
 			// arguments for resolve argument
-			$jamesBrownMethod1Arg1Ref = new Definition\DefaultMethod('getElement');
-			$jamesBrownMethod1Arg1Ref->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$jamesBrownMethod1Arg1Ref = new definition\DefaultMethod('getElement');
+			$jamesBrownMethod1Arg1Ref->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
-			$jamesBrownMethod1Arg1Arg1 = new Definition\DefaultArgument('nickname');
-			$jamesBrownMethod1Arg1Arg1->setConstructionStrategy(new Construction\DefaultArgumentConstructionStrategy());
+			$jamesBrownMethod1Arg1Arg1 = new definition\DefaultArgument('nickname');
+			$jamesBrownMethod1Arg1Arg1->setConstructionStrategy(new construction\DefaultArgumentConstructionStrategy());
 			$jamesBrownMethod1Arg1Ref->addArgument($jamesBrownMethod1Arg1Arg1);
 			
-			$jamesBrownMethod1Arg1 = new Definition\UseReferenceArgument('jamesBrownInformation', $jamesBrownMethod1Arg1Ref);
-			$jamesBrownMethod1Arg1->setConstructionStrategy(new Construction\UseReferenceArgumentConstructionStrategy());
+			$jamesBrownMethod1Arg1 = new definition\UseReferenceArgument('jamesBrownInformation', $jamesBrownMethod1Arg1Ref);
+			$jamesBrownMethod1Arg1->setConstructionStrategy(new construction\UseReferenceArgumentConstructionStrategy());
 			
 			$jamesBrownMethod1->addArgument($jamesBrownMethodArg1);
 			$jamesBrown->addMethod($jamesBrownMethod1);
 			
 			// method2
-			$jamesBrownMethod2 = new Definition\DefaultMethod('setBirthdate');
-			$jamesBrownMethod2->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$jamesBrownMethod2 = new definition\DefaultMethod('setBirthdate');
+			$jamesBrownMethod2->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
 			// method2 arg1
-			$jamesBrownMethod2Arg1Ref = new Definition\UseAttributeMethod('birthdate');
-			$jamesBrownMethod2Arg1Ref->setConstructionStrategy(new Construction\UseAttributeMethodConstructionStrategy());
+			$jamesBrownMethod2Arg1Ref = new definition\UseAttributeMethod('birthdate');
+			$jamesBrownMethod2Arg1Ref->setConstructionStrategy(new construction\UseAttributeMethodConstructionStrategy());
 			
-			$jamesBrownMethod2Arg1 = new Definition\UseReferenceArgument('jamesBrownInformation', $jamesBrownMethod2Arg1Ref);
-			$jamesBrownMethod2Arg1->setconstructionStrategy(new Construction\UseReferenceArgumentConstructionStrategy());
+			$jamesBrownMethod2Arg1 = new definition\UseReferenceArgument('jamesBrownInformation', $jamesBrownMethod2Arg1Ref);
+			$jamesBrownMethod2Arg1->setconstructionStrategy(new construction\UseReferenceArgumentConstructionStrategy());
 			$jamesBrownMethod2->addArgument($jamesBrownMethod2Arg1);
 			
 			$jamesBrown->addMethod($jamesBrownMethod2);
 			
 			// method3
-			$jamesBrownMethod3 = new Definition\DefaultMethod('setDiscography');
-			$jamesBrownMethod3->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$jamesBrownMethod3 = new definition\DefaultMethod('setDiscography');
+			$jamesBrownMethod3->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
-			$jamesBrownMethod3arg1 = new Definition\ServiceReferenceArgument('discography');
-			$jamesBrownMethod3arg1->setConstructionStrategy(new Construction\ServiceReferenceArgumentConstructionStrategy());
+			$jamesBrownMethod3arg1 = new definition\ServiceReferenceArgument('discography');
+			$jamesBrownMethod3arg1->setConstructionStrategy(new construction\ServiceReferenceArgumentConstructionStrategy());
 			
 			$jamesBrownMethod3->addArgument($jamesBrownMethod3arg1);
 			$jamesBrown->addMethod($jamesBrownMethod3);
 			
 			// callback
 			
-			$methodToCallbackForJamesBrown = new Definition\ServiceReferenceMethod('goldenMicrophone', 'say');
-			$methodToCallbackForJamesBrown->setConstructionStrategy(new Construction\ServiceReferenceMethodConstructionStrategy());
+			$methodToCallbackForJamesBrown = new definition\ServiceReferenceMethod('goldenMicrophone', 'say');
+			$methodToCallbackForJamesBrown->setConstructionStrategy(new construction\ServiceReferenceMethodConstructionStrategy());
 
-			$jamesBrownCallback = new Definition\CallbackMethod('register', $methodToCallbackForJamesBrown, 'afterCreation');
-			$jamesBrownCallback->setConstructionStrategy(new Construction\CallbackMethodConstructionStrategy());
+			$jamesBrownCallback = new definition\CallbackMethod('register', $methodToCallbackForJamesBrown, 'afterCreation');
+			$jamesBrownCallback->setConstructionStrategy(new construction\CallbackMethodConstructionStrategy());
 			
-			$jamesBrownCallbackArgument1 = new Definition\CurrentServiceArgument();
-			$jamesBrownCallbackArgument1->setConstructionStrategy(new Construction\CurrentServiceArgumentConstructionStrategy());
+			$jamesBrownCallbackArgument1 = new definition\CurrentServiceArgument();
+			$jamesBrownCallbackArgument1->setConstructionStrategy(new construction\CurrentServiceArgumentConstructionStrategy());
 			$methodToCallbackForJamesBrown->addArgument($jamesBrownCallbackArgument1);
 			
 
-			$jamesBrownCallbackArgument2 = new Definition\CurrentServiceArgument('I Feel Good !');
-			$jamesBrownCallbackArgument2->setConstructionStrategy(new Construction\DefaultArgumentConstructionStrategy());
+			$jamesBrownCallbackArgument2 = new definition\CurrentServiceArgument('I Feel Good !');
+			$jamesBrownCallbackArgument2->setConstructionStrategy(new construction\DefaultArgumentConstructionStrategy());
 			$methodToCallbackForJamesBrown->addArgument($jamesBrownCallbackArgument2);
 			$jamesBrown->addMethod($jamesBrownCallback);
 			
@@ -206,40 +206,40 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 			$this->_schema->addService($jamesBrown);
 			
 			// theGodfatherOfSoul service
-			$theGodfatherOfSoul = new Definition\AliasService('theGodfatherOfSoul', 'jamesBrown');
-			$theGodfatherOfSoul->setConstructionStrategy(new Construction\AliasServiceConstructionStrategy());
+			$theGodfatherOfSoul = new definition\AliasService('theGodfatherOfSoul', 'jamesBrown');
+			$theGodfatherOfSoul->setConstructionStrategy(new construction\AliasServiceConstructionStrategy());
 			// add service to schema
 			$this->_schema->addService($theGodfatherOfSoul);
 			
 			// goldenMicrophone service
-			$goldenMicrophone = new Definition\DefaultService('goldenMicrophone', '\Spiral\Framework\DI\Fixtures\GoldenMicrophone');
-			$goldenMicrophone->setConstructionStrategy(new Construction\DefaultServiceConstructionStrategy());
+			$goldenMicrophone = new definition\DefaultService('goldenMicrophone', '\spiral\framework\di\fixtures\GoldenMicrophone');
+			$goldenMicrophone->setConstructionStrategy(new construction\DefaultServiceConstructionStrategy());
 			// add service to schema
 			$this->_schema->addService($goldenMicrophone);
 			
 			// jamesBrownInformation service
-			$jamesBrownInformation = new Definition\DefaultService('jamesBrownInformation', '\Spiral\Framework\DI\Fixtures\Collection');
-			$jamesBrownInformation->setConstructionStrategy(new Construction\DefaultServiceConstructionStrategy());
+			$jamesBrownInformation = new definition\DefaultService('jamesBrownInformation', '\spiral\framework\di\fixtures\Collection');
+			$jamesBrownInformation->setConstructionStrategy(new construction\DefaultServiceConstructionStrategy());
 			
 			// method 1
-			$jamesBrownInformationMethod1 = new Definition\DefaultMethod('setElement');
-			$jamesBrownInformationMethod1->setConstructionStrategy(new Construction\DefaultMethodConstructionStrategy());
+			$jamesBrownInformationMethod1 = new definition\DefaultMethod('setElement');
+			$jamesBrownInformationMethod1->setConstructionStrategy(new construction\DefaultMethodConstructionStrategy());
 			
 			// method1 arg1
-			$jamesBrownInformationMethod1Arg1 = new Definition\DefaultArgument('nickname');
-			$jamesBrownInformationMethod1Arg1->setConstructionStrategy(new Construction\DefaultArgumentConstructionStrategy());
+			$jamesBrownInformationMethod1Arg1 = new definition\DefaultArgument('nickname');
+			$jamesBrownInformationMethod1Arg1->setConstructionStrategy(new construction\DefaultArgumentConstructionStrategy());
 			$jamesBrownInformationMethod1->addArgument($jamesBrownInformationMethod1Arg1);
 			
 			// method1 arg2
-			$jamesBrownInformationMethod1Arg2 = new Definition\DefaultArgument('The Godfather Of Soul');
-			$jamesBrownInformationMethod1Arg1->setConstructionStrategy(new Construction\DefaultArgumentConstructionStrategy());
+			$jamesBrownInformationMethod1Arg2 = new definition\DefaultArgument('The Godfather Of Soul');
+			$jamesBrownInformationMethod1Arg1->setConstructionStrategy(new construction\DefaultArgumentConstructionStrategy());
 			$jamesBrownInformationMethod1->addArgument($jamesBrownInformationMethod1Arg2);
 			
 			$jamesBrownInformation->addMethod($jamesBrownInformationMethod1);
 			
 			// method 2 (attribute)
-			$jamesBrownInformationMethod2 = new Definition\AttributeMethod('birthdate', '1933-05-03');
-			$jamesBrownInformationMethod2->setConstructionStrategy(new Construction\AttributeMethodConstructionStrategy());
+			$jamesBrownInformationMethod2 = new definition\AttributeMethod('birthdate', '1933-05-03');
+			$jamesBrownInformationMethod2->setConstructionStrategy(new construction\AttributeMethodConstructionStrategy());
 			$jamesBrownInformation->addMethod($jamesBrownInformationMethod2);
 
 			// add service to schema
@@ -256,12 +256,12 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 	 *
 	 * Initialize schema configuration to know the services contained by the container.
 	 * 
-	 * @return	Spiral\Framework\DI\Construction\Container
+	 * @return	spiral\framework\di\construction\Container
 	 */
 	public function setUp()
 	{
 		// Set up the container to be tested
-		$this->_container = new Construction\DefaultContainer($this->fillInSchema());
+		$this->_container = new construction\DefaultContainer($this->fillInSchema());
 		return $this->_container;
 	}
 	
@@ -282,7 +282,7 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * Test if the hasService() and __isset() method works well when the service does not exist.
 	 *
-	 * @expectedException Spiral\Framework\DI\Definition\Exception\UnknownserviceException
+	 * @expectedException spiral\framework\di\definition\Exception\UnknownserviceException
 	 * @return	void
 	 */
 	public function testHasUnknownService()
@@ -294,7 +294,7 @@ class DefaultContainerTest extends \PHPUnit_Framework_TestCase
 	 * An exception had to be thrown when trying to register a non object shared
 	 * service
 	 *
-	 * @expectedException Spiral\Framework\DI\Construction\Exception\InvalidSharedService
+	 * @expectedException spiral\framework\di\construction\Exception\InvalidSharedService
 	 */
 	public function testAddSharedServiceNotObject()
 	{

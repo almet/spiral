@@ -1,3 +1,3 @@
 #!/bin/sh
 
-php ../Framework/Bootstrap/Resources/Scripts/tests.php --colors ../Framework/Persistence/Tests/
+php ../framework/bootstrap/resources/scripts/tests.php --colors ../framework/persistence/tests/

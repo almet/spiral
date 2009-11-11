@@ -1,9 +1,9 @@
 <?php
-namespace Spiral\Framework\DI\Fixtures\Definition;
+namespace spiral\framework\di\fixtures\definition;
 
-use Spiral\Framework\DI\Definition\Argument;
-use Spiral\Framework\DI\Definition\AbstractArgument;
-use Spiral\Framework\DI\Fixtures\Construction\MockArgumentConstructionStrategy;
+use spiral\framework\di\definition\Argument;
+use spiral\framework\di\definition\AbstractArgument;
+use spiral\framework\di\fixtures\construction\MockArgumentConstructionStrategy;
 
 class MockArgument extends AbstractArgument implements Argument
 {

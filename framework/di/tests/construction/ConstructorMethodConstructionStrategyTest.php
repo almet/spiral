@@ -1,8 +1,8 @@
 <?php
-namespace Spiral\Framework\DI\Construction;
+namespace spiral\framework\di\construction;
 
-use \Spiral\Framework\DI\Definition;
-use \Spiral\Framework\DI\Fixtures;
+use \spiral\framework\di\definition;
+use \spiral\framework\di\fixtures;
 
 require_once('PHPUnit/Framework.php');
 
@@ -16,16 +16,16 @@ require_once('PHPUnit/Framework.php');
 
 class ConstructorMethodConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
     public function testBuildMethod(){
-		$album = new Definition\DefaultArgument('Please Please Please');
-		$album->setConstructionStrategy(new Fixtures\Construction\MockArgumentConstructionStrategy());
+		$album = new definition\DefaultArgument('Please Please Please');
+		$album->setConstructionStrategy(new fixtures\construction\MockArgumentConstructionStrategy());
 		
-		$year = new Definition\DefaultArgument('2004');
-		$year->setConstructionStrategy(new Fixtures\Construction\MockArgumentConstructionStrategy());
+		$year = new definition\DefaultArgument('2004');
+		$year->setConstructionStrategy(new fixtures\construction\MockArgumentConstructionStrategy());
 
-		$support = new Definition\DefaultArgument('support');
-		$support->setConstructionStrategy(new Fixtures\Construction\MockArgumentConstructionStrategy());
+		$support = new definition\DefaultArgument('support');
+		$support->setConstructionStrategy(new fixtures\construction\MockArgumentConstructionStrategy());
 
-		$method = new Definition\DefaultMethod('__construct', '\Spiral\Framework\DI\Fixtures\Album');
+		$method = new definition\DefaultMethod('__construct', '\spiral\framework\di\fixtures\Album');
 		$method->addArgument($album);
 		$method->addArgument($year);
 		$method->addArgument($support);
@@ -34,7 +34,7 @@ class ConstructorMethodConstructionStrategyTest extends \PHPUnit_Framework_TestC
 		$strategy->setMethod($method);
 
 		$object = new \stdClass();
-		$container = new Fixtures\Construction\MockContainer();
+		$container = new fixtures\construction\MockContainer();
 		
 		$buildedService = $strategy->buildMethod($container, $object);
 

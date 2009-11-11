@@ -1,8 +1,8 @@
 <?php
-namespace Spiral\Framework\DI\Fixtures\Definition;
+namespace spiral\framework\di\fixtures\definition;
 
-use Spiral\Framework\DI\Definition\Schema;
-use Spiral\Framework\DI\Definition\Service;
+use spiral\framework\di\definition\Schema;
+use spiral\framework\di\definition\Service;
 /**
  * Mock Schema
  *

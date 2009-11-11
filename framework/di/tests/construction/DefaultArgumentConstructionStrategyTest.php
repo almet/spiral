@@ -1,8 +1,8 @@
 <?php
-namespace Spiral\Framework\DI\Construction;
+namespace spiral\framework\di\construction;
 
-use \Spiral\Framework\DI\Definition;
-use \Spiral\Framework\DI\Fixtures;
+use \spiral\framework\di\definition;
+use \spiral\framework\di\fixtures;
 
 require_once('PHPUnit/Framework.php');
 
@@ -20,7 +20,7 @@ class DefaultArgumentConstructionStrategyTest extends \PHPUnit_Framework_TestCas
 	protected $_currentService;
 	
 	public function setUp(){
-		$this->_container = new Fixtures\Construction\MockContainer();
+		$this->_container = new fixtures\construction\MockContainer();
 		$this->_currentService = new \stdClass();
 	}
 
@@ -31,9 +31,9 @@ class DefaultArgumentConstructionStrategyTest extends \PHPUnit_Framework_TestCas
 	 */
 	public function provider(){
 		return array(
-			array((int)1, new Definition\DefaultArgument(1)),
-			array((string)1, new Definition\DefaultArgument("1")),
-			array((float)1.1, new Definition\DefaultArgument(1.1))
+			array((int)1, new definition\DefaultArgument(1)),
+			array((string)1, new definition\DefaultArgument("1")),
+			array((float)1.1, new definition\DefaultArgument(1.1)),
 		);
 	}
 	

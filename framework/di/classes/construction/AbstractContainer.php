@@ -68,7 +68,7 @@ abstract class Abstractcontainer implements Container
     {
     	if (!is_object($service))
         {
-            throw new Exception\InvalidSharedService('Service '.$serviceName.' must be an object, '.getType($service).' given');
+            throw new exception\InvalidSharedService('Service '.$serviceName.' must be an object, '.getType($service).' given');
         }
         
     	$this->_sharedServices[$serviceName] = $service;

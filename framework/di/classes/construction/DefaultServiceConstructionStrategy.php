@@ -36,7 +36,7 @@ class DefaultServiceConstructionStrategy  extends AbstractServiceConstructionStr
 		
 		foreach($service->getMethods() as $method)
 		{
-			if(! $method instanceof Definition\ConstructorMethod)
+			if(! $method instanceof definition\ConstructorMethod)
 			{
 				$method->getConstructionStrategy()->buildMethod($container, $object);
 			}

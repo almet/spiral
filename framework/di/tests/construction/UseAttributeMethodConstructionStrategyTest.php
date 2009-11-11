@@ -1,8 +1,8 @@
 <?php
-namespace Spiral\Framework\DI\Construction;
+namespace spiral\framework\di\construction;
 
-use Spiral\Framework\DI\Definition;
-use Spiral\Framework\DI\Fixtures;
+use spiral\framework\di\definition;
+use spiral\framework\di\fixtures;
 
 require_once('PHPUnit/Framework.php');
 
@@ -20,16 +20,16 @@ class UseAttributeMethodConstructionStrategyTest extends \PHPUnit_Framework_Test
 	protected $_currentService;
 
 	public function setUp(){
-		$this->_container = new Fixtures\Construction\MockContainer();
+		$this->_container = new fixtures\construction\MockContainer();
 		$this->_currentService = new \stdClass();
 	}
 
     public function testBuildServiceWithConstructor(){
 		// a service construct himself by calling the construct method, and inject all properties, after that.
 		// here, we just have to check that all mocks methods are called
-		$mockService = new Fixtures\Definition\MockService();
-		$mockConstructor = new Fixtures\Definition\MockMethod('__construct');
-		$otherMethod = new Fixtures\Definition\MockMethod();
+		$mockService = new fixtures\definition\MockService();
+		$mockConstructor = new fixtures\definition\MockMethod('__construct');
+		$otherMethod = new fixtures\definition\MockMethod();
 	}
 
 }

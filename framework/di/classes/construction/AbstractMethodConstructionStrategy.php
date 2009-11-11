@@ -27,7 +27,7 @@ abstract class AbstractMethodConstructionStrategy implements MethodConstructionS
 	 * @param 	Method	$method
 	 * @return	void
 	 */
-	public function setMethod($method)
+	public function setMethod(Method $method)
 	{
 		$this->_method = $method;
 		return $this;

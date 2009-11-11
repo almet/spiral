@@ -10,11 +10,11 @@
 		Static callback on event "afterCreation"
 		CurrentService argument type
 	-->
-	<service id="store" class="\Spiral\Framework\DI\Fixtures\Store">
+	<service id="store" class="\spiral\framework\di\fixtures\Store">
 		<method name="setName">
 			<argument type="null"/>
 		</method>
-		<callback event="afterCreation" class="\Spiral\Framework\DI\Fixtures\StoreRegister" method="register">
+		<callback event="afterCreation" class="\spiral\framework\di\fixtures\StoreRegister" method="register">
 			<argument type="currentService"/>
 		</callback>
 	</service>
@@ -25,7 +25,7 @@
 		Singleton scope (as default scope)
 		Service extension
 	-->
-	<service id="musicStore" class="\Spiral\Framework\DI\Fixtures\MusicStore" extends="store">
+	<service id="musicStore" class="\spiral\framework\di\fixtures\MusicStore" extends="store">
 		<method name="addArtist">
 			<argument ref="jamesBrown"/>
 		</method>
@@ -49,7 +49,7 @@
 		Use of a service attribute as an argument
 		Callback on a service on event "afterCreation"
 	-->
-	<service id="jamesBrown" class="\Spiral\Framework\DI\Fixtures\Artist" scope="singleton">
+	<service id="jamesBrown" class="\spiral\framework\di\fixtures\Artist" scope="singleton">
 		<constructor>
 			<argument type="string" value="James"/>
 			<argument value="Brown"/>
@@ -76,12 +76,12 @@
 	-->
 	<service id="theGodfatherOfSoul" ref="jamesBrown"/>
 
-	<service id="goldenMicrophone" class="\Spiral\Framework\DI\Fixtures\GoldenMicrophone"/>
+	<service id="goldenMicrophone" class="\spiral\framework\di\fixtures\GoldenMicrophone"/>
 
 	<!--
 		Attribute injection
 	-->
-	<service id="jamesBrownInformation" class="\Spiral\Framework\DI\Fixtures\Collection">
+	<service id="jamesBrownInformation" class="\spiral\framework\di\fixtures\Collection">
 		<attribute name="birthdate" value="1933-05-03"/>
 		<method name="setElement">
 			<argument value="nickname"/>
@@ -93,7 +93,7 @@
 		Multiple call on the same method
 		Only method injection
 	-->
-	<service id="discography" class="\Spiral\Framework\DI\Fixtures\Discography">
+	<service id="discography" class="\spiral\framework\di\fixtures\Discography">
 		<method name="addAlbum">
 			<argument type="service" ref="pleasePleasePlease"/>
 		</method>
@@ -111,7 +111,7 @@
 		Prototype scope when using a factory (as default scope)
 	-->
 	<service id="pleasePleasePlease">
-		<constructor factoryClass="\Spiral\Framework\DI\Fixtures\StaticAlbumFactory" factoryMethod="create">
+		<constructor factoryClass="\spiral\framework\di\fixtures\StaticAlbumFactory" factoryMethod="create">
 			<argument value="Please Please Please"/>
 			<argument type="int" value="2004"/>
 			<argument type="constant" value="ALBUM_SUPPORT_CD"/>
@@ -134,7 +134,7 @@
 		<constructor factoryService="albumFactory" factoryMethod="create">
 			<argument value="Sex Machine"/>
 			<argument type="int" value="1970"/>
-			<argument type="constant" class="\Spiral\Framework\DI\Fixtures\Album" value="SUPPORT_VINYL"/>
+			<argument type="constant" class="\spiral\framework\di\fixtures\Album" value="SUPPORT_VINYL"/>
 		</constructor>
 		<method name="setSongs">
 			<argument type="array">
@@ -156,13 +156,13 @@
 		No constructor and no method
 		Prototype scope
 	-->
-	<service id="albumFactory" class="\Spiral\Framework\DI\Fixtures\AlbumFactory" scope="prototype"/>
+	<service id="albumFactory" class="\spiral\framework\di\fixtures\AlbumFactory" scope="prototype"/>
 
 	<!--
 		Only constructor injection
 		Explicit container injection
 	-->
-	<service id="albumFinder" class="\Spiral\Framework\DI\Fixtures\AlbumFinder">
+	<service id="albumFinder" class="\spiral\framework\di\fixtures\AlbumFinder">
 		<constructor>
 			<argument type="container"/>
 		</constructor>
@@ -171,11 +171,11 @@
 	<!--
 		Implicit container injection (via ContainerAware interface)
 	-->
-	<service id="artistFinder" class="\Spiral\Framework\DI\Fixtures\ArtistFinder"/>
+	<service id="artistFinder" class="\spiral\framework\di\fixtures\ArtistFinder"/>
 
 	<!--
 		Do not inject container (even when ContainerAware interface is implemented)
 	-->
-	<service id="songFinder" class="\Spiral\Framework\DI\Fixtures\SongFinder" containerAware="false"/>
+	<service id="songFinder" class="\spiral\framework\di\fixtures\SongFinder" containerAware="false"/>
 
 </services>

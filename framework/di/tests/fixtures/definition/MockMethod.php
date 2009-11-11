@@ -1,10 +1,10 @@
 <?php
-namespace Spiral\Framework\DI\Fixtures\Definition;
+namespace spiral\framework\di\fixtures\definition;
 
-use Spiral\Framework\DI\Definition\Method;
-use Spiral\Framework\DI\Definition\AbstractMethod;
-use Spiral\Framework\DI\Construction;
-use Spiral\Framework\DI\Fixtures\Construction\MockMethodConstructionStrategy;
+use spiral\framework\di\definition\Method;
+use spiral\framework\di\definition\AbstractMethod;
+use spiral\framework\di\construction;
+use spiral\framework\di\fixtures\construction\MockMethodConstructionStrategy;
 
 class MockMethod extends AbstractMethod implements Method
 {

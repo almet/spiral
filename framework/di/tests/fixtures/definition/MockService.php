@@ -1,11 +1,11 @@
 <?php
-namespace Spiral\Framework\DI\Fixtures\Definition;
+namespace spiral\framework\di\fixtures\definition;
 
-use Spiral\Framework\DI\Definition\Service;
-use Spiral\Framework\DI\Definition\AbstractService;
-use Spiral\Framework\DI\Definition\Method;
-use Spiral\Framework\DI\Construction\ServiceConstructionStrategy;
-use Spiral\Framework\DI\Fixtures\Construction\MockServiceConstructionStrategy;
+use spiral\framework\di\definition\Service;
+use spiral\framework\di\definition\AbstractService;
+use spiral\framework\di\definition\Method;
+use spiral\framework\di\construction\ServiceConstructionStrategy;
+use spiral\framework\di\fixtures\construction\MockServiceConstructionStrategy;
 /**
  * Mock service used in tests
  *

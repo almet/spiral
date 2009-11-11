@@ -1,7 +1,7 @@
 <?php
-namespace Spiral\Framework\DI\Fixtures\Construction;
+namespace spiral\framework\di\fixtures\construction;
 
-use Spiral\Framework\DI\Construction\Container;
+use spiral\framework\di\construction\Container;
 /**
  * Mock service used in tests
  *

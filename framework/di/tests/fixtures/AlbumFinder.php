@@ -1,8 +1,8 @@
 <?php
 
-namespace Spiral\Framework\DI\Fixtures;
+namespace spiral\framework\di\fixtures;
 
-use \Spiral\Framework\DI\Construction\Container;
+use \spiral\framework\di\construction\Container;
 
 /**
  * Represent an album finder.

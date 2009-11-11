@@ -1,8 +1,8 @@
 <?php
-namespace Spiral\Framework\DI\Construction;
+namespace spiral\framework\di\construction;
 
-use \Spiral\Framework\DI\Definition;
-use \Spiral\Framework\DI\Fixtures;
+use \spiral\framework\di\definition;
+use \spiral\framework\di\fixtures;
 
 require_once('PHPUnit/Framework.php');
 
@@ -17,13 +17,13 @@ require_once('PHPUnit/Framework.php');
 class AliasServiceConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
     public function testBuildService(){
 		// build alias service mock
-		$aliasService = new Fixtures\Definition\MockService();
+		$aliasService = new fixtures\definition\MockService();
 		$aliasService->setName('mockService');
 
-		$schema = new Fixtures\Definition\MockSchema();
+		$schema = new fixtures\definition\MockSchema();
 
 		// schema mock
-		$container = new Fixtures\Construction\MockContainer();
+		$container = new fixtures\construction\MockContainer();
 
 		//check that calling alias service returns our mock
 		$strategy = new AliasServiceConstructionStrategy();

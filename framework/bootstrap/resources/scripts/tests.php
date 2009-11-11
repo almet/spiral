@@ -11,7 +11,7 @@
  */
 
 // Include the bootstrap class
-require_once __DIR__.'/../../Classes/TestsBootstrap.php';
+require_once __DIR__.'/../../classes/TestsBootstrap.php';
 
 // Bootstrap the application
 $bootstrap = new \Spiral\Framework\Bootstrap\TestsBootstrap();

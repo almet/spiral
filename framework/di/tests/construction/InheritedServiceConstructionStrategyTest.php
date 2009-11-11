@@ -1,8 +1,8 @@
 <?php
-namespace Spiral\Framework\DI\Construction;
+namespace spiral\framework\di\construction;
 
-use Spiral\Framework\DI\Definition;
-use Spiral\Framework\DI\Fixtures;
+use spiral\framework\di\definition;
+use spiral\framework\di\fixtures;
 
 require_once('PHPUnit/Framework.php');
 
@@ -20,16 +20,16 @@ class InheritedServiceConstructionStrategyTest extends \PHPUnit_Framework_TestCa
 	protected $_currentService;
 
 	public function setUp(){
-		$this->_container = new Fixtures\Construction\MockContainer();
+		$this->_container = new fixtures\construction\MockContainer();
 		$this->_currentService = new \stdClass();
 	}
 
     public function testBuildService(){
-		$baseService = new Definition\DefaultService('store','Spiral\Framework\DI\Tests\Fixtures\Definition\Store');
+		$baseService = new definition\DefaultService('store','spiral\framework\di\Tests\fixtures\definition\Store');
 
-		$constructor = new Definition\DefaultMethod('__construct');
-		$arg1 = new Definition\DefaultArgument('injectedArgument');
-		$inheritedService = new Definition\InheritedService('musicStore', 'store', 'Spiral\Framework\DI\Tests\Fixtures\Definition\MusicStore');
+		$constructor = new definition\DefaultMethod('__construct');
+		$arg1 = new definition\DefaultArgument('injectedArgument');
+		$inheritedService = new definition\InheritedService('musicStore', 'store', 'spiral\framework\di\Tests\fixtures\definition\MusicStore');
 
 
 	}

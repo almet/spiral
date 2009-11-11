@@ -1,8 +1,8 @@
 <?php
-namespace Spiral\Framework\DI\Construction;
+namespace spiral\framework\di\construction;
 
-use \Spiral\Framework\DI\Definition;
-use \Spiral\Framework\DI\Fixtures;
+use \spiral\framework\di\definition;
+use \spiral\framework\di\fixtures;
 
 require_once('PHPUnit/Framework.php');
 
@@ -16,12 +16,12 @@ require_once('PHPUnit/Framework.php');
 
 class ContainerArgumentConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
     public function testBuildArgument(){		
-		$argument = new Definition\ContainerArgument();
+		$argument = new definition\ContainerArgument();
 
 		$strategy = new ContainerArgumentConstructionStrategy();
 		$strategy->setArgument($argument);
 
-		$container = new Fixtures\Construction\MockContainer();
+		$container = new fixtures\construction\MockContainer();
 		
 		$object = new \stdClass();
 
