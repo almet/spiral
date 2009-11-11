@@ -8,17 +8,22 @@ use Spiral\Framework\DI\Fixtures\Construction\MockMethodConstructionStrategy;
 
 class MockMethod extends AbstractMethod implements Method
 {
-	public function __construct(){
+	protected $_name = null;
+
+	public function __construct($name = null){
+		if($name !== null){
+			$this->_name = $name;
+		}
 		$this->setConstructionStrategy(new MockMethodConstructionStrategy());
 	}
-    
+
 	/**
 	 * Returne the name of this method
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getName(){
-		
+		return $this->_name;
 	}
 
 }
