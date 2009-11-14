@@ -15,9 +15,13 @@ use spiral\framework\di\definition\Service;
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class MockArgumentConstructionStrategy extends AbstractArgumentConstructionStrategy implements ArgumentConstructionStrategy {
-
-	public function buildArgument(Container $container,$currentService) {
+class MockArgumentConstructionStrategy extends AbstractArgumentConstructionStrategy implements ArgumentConstructionStrategy
+{
+	public $buildArgumentArguments = array();
+	
+	public function buildArgument(Container $container,$currentService)
+	{
+		$this->buildArgumentArguments = array($container, $currentService);
 		return $this->getArgument();
 	}
 }

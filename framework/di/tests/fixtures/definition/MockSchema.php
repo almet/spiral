@@ -1,7 +1,7 @@
 <?php
 namespace spiral\framework\di\fixtures\definition;
 
-use spiral\framework\di\definition\Schema;
+use spiral\framework\di\definition\DefaultSchema;
 use spiral\framework\di\definition\Service;
 /**
  * Mock Schema
@@ -11,29 +11,8 @@ use spiral\framework\di\definition\Service;
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class MockSchema implements Schema {
-    
-	public function getService($key) {
-		$service = new MockService();
-		$service->setName($key);
-		return $service;
-	}
-
-	public function addService(Service $service, $key = null){
-
-	}
-
-	public function getServices() {
-	}
-
-	public function current() {
-	}
-
-	public function hasService($service) {
-	}
-
-	public function addServices(array $services) {
-	}
+class MockSchema extends DefaultSchema
+{
 
 }
 ?>

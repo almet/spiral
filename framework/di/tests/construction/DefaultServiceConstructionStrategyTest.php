@@ -3,6 +3,7 @@ namespace spiral\framework\di\construction;
 
 use spiral\framework\di\definition;
 use spiral\framework\di\fixtures;
+use spiral\framework\di\TestCase;
 
 require_once('PHPUnit/Framework.php');
 
@@ -14,22 +15,74 @@ require_once('PHPUnit/Framework.php');
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class DefaultServiceConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
+class DefaultServiceConstructionStrategyTest extends TestCase
+{
 
-	protected $_container;
-	protected $_currentService;
+	/**
+	 * Check that the construction strategy create objects when no constructor
+	 * method is defined.
+	 */
+    public function testBuildServiceWithoutConstructor()
+	{
+		$service = $this->_getMockService('\stdClass');
 
-	public function setUp(){
-		$this->_container = new fixtures\construction\MockContainer();
-		$this->_currentService = new \stdClass();
+		$constructionStrategy = new DefaultServiceConstructionStrategy();
+		$constructionStrategy->setService($service);
+		$object = $constructionStrategy->buildService($this->_getMockSchema(), $this->_getMockContainer());
+
+		$this->assertEquals('stdClass', get_class($object));
 	}
 
-    public function testBuildServiceWithConstructor(){
-		// a service construct himself by calling the construct method, and inject all properties, after that.
-		// here, we just have to check that all mocks methods are called
-		$mockService = new fixtures\definition\MockService();
-		$mockConstructor = new fixtures\definition\MockMethod('__construct');
-		$otherMethod = new fixtures\definition\MockMethod();
+	/**
+	 * Checks that the construction strategy delegate on method construction
+	 * strategy when a constructor is defined.
+	 */
+	public function testBuildServiceWithConstructor()
+	{
+		$service = $this->_getMockService('\spiral\framework\di\fixtures\Store');
+		$constructor = $this->_getMockMethod('__construct');
+
+		$strategy = $this->_getMockMethodConstructionStrategy();
+		$container = $this->_getMockContainer();
+		$constructor->setConstructionStrategy($strategy);
+
+		$service->addMethod($constructor);
+
+		$constructionStrategy = new DefaultServiceConstructionStrategy();
+		$constructionStrategy->setService($service);
+		$object = $constructionStrategy->buildService($this->_getMockSchema(), $container);
+
+		$this->assertNull($object);
+		$this->assertAttributeContains($container, 'buildMethodCalledWith', $strategy);
+	}
+
+	/**
+	 * Checks that the construction strategy call all method construction
+	 * strategies, passing their the right initialized object
+	 */
+	public function testBuildServiceWithArguments()
+	{
+		// get mocks
+		$service = $this->_getMockService('\stdClass');
+		$container = $this->_getMockContainer();
+		$schema = $this->_getMockSchema();
+		$strategy = $this->_getMockMethodConstructionStrategy();
+
+		// create the service
+		$constructionStrategy = new DefaultServiceConstructionStrategy();
+		$constructionStrategy->setService($service);
+
+		// create and add methods to the service
+		$method = $this->_getMockMethod('myMethod');
+		$method->setConstructionStrategy($strategy);
+		$service->addMethod($method);
+
+		// call to the method
+		$object = $constructionStrategy->buildService($schema, $container);
+
+		$this->assertEquals('stdClass', get_class($object));
+		$this->assertAttributeContains($container, 'buildMethodCalledWith', $strategy);
+		$this->assertAttributeContains($object, 'buildMethodCalledWith', $strategy);
 	}
 
 }

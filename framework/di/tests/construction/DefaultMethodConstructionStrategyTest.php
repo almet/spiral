@@ -1,8 +1,14 @@
 <?php
 namespace spiral\framework\di\construction;
 
-use spiral\framework\di\definition;
-use spiral\framework\di\fixtures;
+use spiral\framework\di\TestCase;
+use spiral\framework\di\definition\DefaultArgument;
+use spiral\framework\di\definition\DefaultMethod;
+use spiral\framework\di\fixtures\Store;
+use spiral\framework\di\fixtures\construction\MockContainer;
+use spiral\framework\di\fixtures\construction\MockArgumentConstructionStrategy;
+use spiral\framework\di\fixtures\definition\MockMethod;
+use spiral\framework\di\fixtures\definition\OtherMethod;
 
 require_once('PHPUnit/Framework.php');
 
@@ -14,7 +20,8 @@ require_once('PHPUnit/Framework.php');
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class DefaultMethodConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
+class DefaultMethodConstructionStrategyTest extends TestCase
+{
 
 	protected $_container;
 	protected $_currentService;
@@ -22,25 +29,27 @@ class DefaultMethodConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
 	protected $_year;
 	protected $_support;
 
-	public function setUp(){
-		$this->_container = new fixtures\construction\MockContainer();
+	public function setUp()
+	{
+		$this->_container = $this->_getMockContainer();
 		$this->_currentService = new \stdClass();
 
-		$this->_album = new definition\DefaultArgument('Please Please Please');
-		$this->_album->setConstructionStrategy(new fixtures\construction\MockArgumentConstructionStrategy());
+		$this->_album = new DefaultArgument('Please Please Please');
+		$this->_album->setConstructionStrategy(new MockArgumentConstructionStrategy());
 
-		$this->_year = new definition\DefaultArgument('2004');
-		$this->_year->setConstructionStrategy(new fixtures\construction\MockArgumentConstructionStrategy());
+		$this->_year = new DefaultArgument('2004');
+		$this->_year->setConstructionStrategy(new MockArgumentConstructionStrategy());
 
-		$this->_support = new definition\DefaultArgument('support');
-		$this->_support->setConstructionStrategy(new fixtures\construction\MockArgumentConstructionStrategy());
+		$this->_support = new DefaultArgument('support');
+		$this->_support->setConstructionStrategy(new MockArgumentConstructionStrategy());
 	}
 
 	/**
 	 * Test static method calls
 	 */
-    public function testBuildStaticMethod(){
-		$method = new definition\DefaultMethod('create', '\spiral\framework\di\fixtures\StaticAlbumFactory');
+    public function testBuildStaticMethod()
+	{
+		$method = new DefaultMethod('create', '\spiral\framework\di\fixtures\StaticAlbumFactory');
 		
 		$method->addArgument($this->_album);
 		$method->addArgument($this->_year);
@@ -61,11 +70,12 @@ class DefaultMethodConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
 		$this->assertSame($this->_support, $buildedMethod->support);
 	}
 
-	public function testBuildMethod(){
-		$method = new definition\DefaultMethod('setName');
+	public function testBuildMethod()
+	{
+		$method = new DefaultMethod('setName');
 		$method->addArgument($this->_album);
 
-		$store = new fixtures\Store();
+		$store = new Store();
 
 		$strategy = new DefaultMethodConstructionStrategy();
 		$strategy->setMethod($method);
@@ -78,11 +88,13 @@ class DefaultMethodConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	/**
-	 * @expectedException \spiral\framework\di\construction\Exception\InvalidMethod
+	 * 
+	 * @expectedException \spiral\framework\di\construction\exception\InvalidMethod
 	 */
-	public function testInvalidMethod(){
+	public function testInvalidMethod()
+	{
 		$strategy = new DefaultMethodConstructionStrategy();
-		$strategy->setMethod(new fixtures\definition\MockMethod());
+		$strategy->setMethod(new OtherMethod());
 		
 		$strategy->buildMethod($this->_container, $this->_currentService);
 	}

@@ -1,7 +1,7 @@
 <?php
 namespace spiral\framework\di\fixtures\construction;
 
-use spiral\framework\di\construction\Container;
+use spiral\framework\di\construction\DefaultContainer;
 /**
  * Mock service used in tests
  *
@@ -10,21 +10,15 @@ use spiral\framework\di\construction\Container;
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class MockContainer implements Container {
+class MockContainer extends DefaultContainer
+{
+	public $getServiceArguments = array();
 
-	public function getService($key) {
+	public function getService($name)
+	{
+		$this->getServiceArguments = array($name);
+		return parent::getService($name);
 	}
-	public function __set($key,$service) {
-	}
-	public function addSharedService($serviceName,$service) {
-	}
-	public function getSharedService($serviceName) {
-	}
-	public function __isset($key) {
-	}
-	public function __get($key) {
-	}
-	public function hasSharedService($serviceName) {
-	}
+	
 }
 ?>

@@ -49,7 +49,15 @@ class DefaultContainer extends AbstractContainer
      */
     public function getService($serviceName)
     {
-        // get the registred service object
-        return $this->_schema->getService($serviceName)->getConstructionStrategy()->buildService($this->_schema, $this);
+		if ($this->hasSharedService($serviceName))
+		{
+			$buildedService = $this->getSharedService($serviceName);
+		} 
+		else
+		{
+			$buildedService = $this->_schema->getService($serviceName)->getConstructionStrategy()->buildService($this->_schema, $this);
+		}
+		
+        return $buildedService;
     }
 }

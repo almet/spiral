@@ -5,7 +5,6 @@ use spiral\framework\di\construction\AbstractServiceConstructionStrategy;
 use spiral\framework\di\construction\ServiceConstructionStrategy;
 use spiral\framework\di\construction\Container;
 use spiral\framework\di\definition\Schema;
-use spiral\framework\di\definition\Service;
 
 /**
  * Mock service construction Strategy
@@ -15,9 +14,12 @@ use spiral\framework\di\definition\Service;
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class MockServiceConstructionStrategy extends AbstractServiceConstructionStrategy implements ServiceConstructionStrategy {
-
-	public function buildService(Schema $schema,Container $container) {
+class MockServiceConstructionStrategy extends AbstractServiceConstructionStrategy implements ServiceConstructionStrategy
+{
+	public $buildServiceArguments = array();
+	public function buildService(Schema $schema,Container $container)
+	{
+		$this->buildServiceArguments = array($schema, $container);
 		return $this->getService();
 	}
 }

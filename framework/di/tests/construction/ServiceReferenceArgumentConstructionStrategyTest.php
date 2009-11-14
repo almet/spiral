@@ -1,35 +1,40 @@
 <?php
 namespace spiral\framework\di\construction;
 
-use spiral\framework\di\definition;
-use spiral\framework\di\fixtures;
-
-require_once('PHPUnit/Framework.php');
+use spiral\framework\di\TestCase;
+use spiral\framework\di\definition\ServiceReferenceArgument;
+use spiral\framework\di\definition\exception\UnknownserviceException;
+use spiral\framework\di\construction\ServiceReferenceArgumentConstructionStrategy;
 
 /**
- * Test file for service construction strategy
+ * Test file for service reference construction strategy
  * 
- * @author  	Alexis Métaireau	01 oct. 2009
+ * @author  	Alexis Métaireau	13 nov. 2009
  * @copyright	Alexis Metaireau 	2009
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class ServiceReferenceArgumentConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
+class ServiceReferenceArgumentConstructionStrategyTest extends TestCase
+{
 
-	protected $_container;
-	protected $_currentService;
+	/**
+	 * Test that argument reference construction strategy relies and delegate
+	 * the construction of the service to the container
+	 */
+    public function testBuildServiceWithConstructor()
+	{
+		$ref = new ServiceReferenceArgument('service');
 
-	public function setUp(){
-		$this->_container = new fixtures\construction\MockContainer();
-		$this->_currentService = new \stdClass();
-	}
+		$strategy = new ServiceReferenceArgumentConstructionStrategy();
+		$strategy->setArgument($ref);
 
-    public function testBuildServiceWithConstructor(){
-		// a service construct himself by calling the construct method, and inject all properties, after that.
-		// here, we just have to check that all mocks methods are called
-		$mockService = new fixtures\definition\MockService();
-		$mockConstructor = new fixtures\definition\MockMethod('__construct');
-		$otherMethod = new fixtures\definition\MockMethod();
+		try
+		{
+			$strategy->buildArgument($this->_container, $object);
+		}
+		catch(UnknownserviceException $e){}
+		
+		$this->assertAttributeContains('service','getServiceArguments', $this->_container);
 	}
 
 }

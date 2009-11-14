@@ -1,10 +1,10 @@
 <?php
 namespace spiral\framework\di\construction;
 
-use spiral\framework\di\definition;
-use spiral\framework\di\fixtures;
-
-require_once('PHPUnit/Framework.php');
+use spiral\framework\di\TestCase;
+use spiral\framework\di\fixtures\Collection;
+use spiral\framework\di\definition\UseReferenceArgument;
+use spiral\framework\di\construction\UseReferenceArgumentConstructionStrategy;
 
 /**
  * Test file for service construction strategy
@@ -14,28 +14,29 @@ require_once('PHPUnit/Framework.php');
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class UseReferenceArgumentConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
+class UseReferenceArgumentConstructionStrategyTest extends TestCase
+{
 
-	protected $_container;
-	protected $_currentService;
+	/**
+	 * We have a service defined, in the container, and we want to use one of
+	 * this method and inject the result as an argument for another service.
+	 *
+	 * Tests if the construction strategies try to get the object via the
+	 * container, and if it's return the value passed by the container
+	 */
+    public function testBuildServiceWithConstructor()
+	{
+		$collection = new Collection();
+		$collection->setElement('element', 'value');
+		$this->_container->addSharedService('collection', $collection);
 
-	public function setUp(){
-		$this->_container = new fixtures\construction\MockContainer();
-		$this->_currentService = new \stdClass();
+		$argument = new UseReferenceArgument('collection', 'getElement', 'element');
+		$strategy = new UseReferenceArgumentConstructionStrategy();
+		$strategy->setArgument($argument);
+
+		$returnedValue = $strategy->buildArgument($this->_container, $this->_object);
+
+		$this->assertEquals('value', $returnedValue);
 	}
-
-    public function testBuildServiceWithConstructor(){
-		// a service construct himself by calling the construct method, and inject all properties, after that.
-		// here, we just have to check that all mocks methods are called
-		$baseService = new definition\DefaultService('store','Store');
-
-		$inheritedService = new definition\InheritedService('musicStore', 'store');
-
-		
-
-		$mockConstructor = new fixtures\definition\MockMethod('__construct');
-		$otherMethod = new fixtures\definition\MockMethod();
-	}
-
 }
 ?>

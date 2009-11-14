@@ -26,7 +26,7 @@ class DefaultServiceConstructionStrategy  extends AbstractServiceConstructionStr
 		
 		if($service->hasMethod('__construct'))
 		{
-			$object = $service->getMethod('__construct')->getConstructionStrategy()->buildMethod();
+			$object = $service->getMethod('__construct')->getConstructionStrategy()->buildMethod($container);
 		}
 		else
 		{

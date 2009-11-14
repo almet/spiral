@@ -15,10 +15,14 @@ use spiral\framework\di\definition\Service;
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class MockMethodConstructionStrategy extends AbstractMethodConstructionStrategy implements MethodConstructionStrategy {
-
-	public function buildMethod(Container $container,$currentService = null) {
-		return $this->getMethod();
+class MockMethodConstructionStrategy extends AbstractMethodConstructionStrategy implements MethodConstructionStrategy
+{
+	public $buildMethodCalledWith = array();
+	
+	public function buildMethod(Container $container,$currentService = null)
+	{
+		$this->buildMethodCalledWith = array($container, $currentService);
+		return null;
 	}
 }
 ?>

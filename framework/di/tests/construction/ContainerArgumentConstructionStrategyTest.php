@@ -1,8 +1,8 @@
 <?php
 namespace spiral\framework\di\construction;
 
-use \spiral\framework\di\definition;
-use \spiral\framework\di\fixtures;
+use spiral\framework\di\TestCase;
+use spiral\framework\di\definition\ContainerArgument;
 
 require_once('PHPUnit/Framework.php');
 
@@ -14,15 +14,21 @@ require_once('PHPUnit/Framework.php');
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class ContainerArgumentConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
-    public function testBuildArgument(){		
-		$argument = new definition\ContainerArgument();
+class ContainerArgumentConstructionStrategyTest extends TestCase
+{
+
+	/**
+	 * Check out that the container argument construction strategy
+	 * return the container given in parameter.
+	 */
+    public function testBuildArgument()
+	{
+		$argument = new ContainerArgument();
+		$container = $this->_getMockContainer();
 
 		$strategy = new ContainerArgumentConstructionStrategy();
 		$strategy->setArgument($argument);
 
-		$container = new fixtures\construction\MockContainer();
-		
 		$object = new \stdClass();
 
 		$buildedArgument = $strategy->buildArgument($container, $object);

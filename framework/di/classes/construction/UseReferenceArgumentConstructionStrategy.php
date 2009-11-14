@@ -20,6 +20,7 @@ class UseReferenceArgumentConstructionStrategy extends AbstractArgumentConstruct
 	 */
 	public function buildArgument(Container $container, $currentService)
 	{
+		$argument = $this->getArgument();
 		$service = $container->getService($argument->getReference());
 		$factoryMethod = $argument->getFactoryMethod();
 		$attribute = $this->getArgument()->getValue();

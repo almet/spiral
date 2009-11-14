@@ -1,8 +1,8 @@
 <?php
 namespace spiral\framework\di\construction;
 
-use \spiral\framework\di\definition;
-use \spiral\framework\di\fixtures;
+use spiral\framework\di\TestCase;
+use \spiral\framework\di\definition\CurrentServiceArgument;
 
 require_once('PHPUnit/Framework.php');
 
@@ -14,15 +14,21 @@ require_once('PHPUnit/Framework.php');
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class CurrentServiceArgumentConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
-    public function testBuildArgument(){		
-		$argument = new definition\CurrentServiceArgument();
+class CurrentServiceArgumentConstructionStrategyTest extends TestCase
+{
+
+	/**
+	 * Check that the current service argument construction strategy return the
+	 * service given in parameter as a builded argument
+	 */
+    public function testBuildArgument()
+	{
+		$argument = new CurrentServiceArgument();
+		$container = $this->_getMockContainer();
 
 		$strategy = new CurrentServiceArgumentConstructionStrategy();
 		$strategy->setArgument($argument);
 
-		$container = new fixtures\construction\MockContainer();
-		
 		$object = new \stdClass();
 		$object->godfatherOfSaoul = 'JB';
 

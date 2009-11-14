@@ -1,8 +1,9 @@
 <?php
 namespace spiral\framework\di\construction;
 
-use \spiral\framework\di\definition;
-use \spiral\framework\di\fixtures;
+use spiral\framework\di\TestCase;
+use spiral\framework\di\definition\AliasService;
+use spiral\framework\di\definition\exception\UnknownserviceException;
 
 require_once('PHPUnit/Framework.php');
 
@@ -14,25 +15,40 @@ require_once('PHPUnit/Framework.php');
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class AliasServiceConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
-    public function testBuildService(){
+class AliasServiceConstructionStrategyTest extends TestCase
+{
+
+	/**
+	 * Test that aliases services build themselves by calling the aliased
+	 * service
+	 */
+    public function testBuildService()
+	{
 		// build alias service mock
-		$aliasService = new fixtures\definition\MockService();
-		$aliasService->setName('mockService');
-
-		$schema = new fixtures\definition\MockSchema();
-
-		// schema mock
-		$container = new fixtures\construction\MockContainer();
+		$aliasStrategy = $this->_getMockServiceConstructionStrategy();
+		$aliasService = new AliasService('aliasName', 'aliasedService');
+		$aliasService->setConstructionStrategy($aliasStrategy);
+		
+		$schema = $this->_getMockSchema();
+		$container = $this->_getMockContainer();
 
 		//check that calling alias service returns our mock
 		$strategy = new AliasServiceConstructionStrategy();
 		$strategy->setService($aliasService);
 
-		$buildedService = $strategy->buildService($schema, $container);
+		try
+		{
+			$buildedService = $strategy->buildService($schema, $container);
+		}
+		catch(UnknownserviceException $e)
+		{
+			$unknownserviceExceptionThrown = True;
+		}
 
-		$this->assertEquals($buildedService->getName(), 'mockService');
-		$this->assertNotSame($aliasService,$buildedService);
+		$this->assertTrue($unknownserviceExceptionThrown);
+
+		// and check that the mocked container getService method is called
+		$this->assertAttributeContains('aliasName','getServiceArguments', $container);
 	}
 }
 ?>

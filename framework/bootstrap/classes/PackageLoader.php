@@ -91,9 +91,14 @@ class PackageLoader extends AbstractLoader
 	{
 		$fullPath = $applicationNamespace.DIRECTORY_SEPARATOR
 					.$package.DIRECTORY_SEPARATOR
-					.$packageDirectory.DIRECTORY_SEPARATOR
-					.implode($packageNamespaces, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR
-					.$className.'.php';
+					.$packageDirectory.DIRECTORY_SEPARATOR;
+
+		if (!empty($packageNamespaces))
+		{
+			$fullPath .= implode($packageNamespaces, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+		}
+
+		$fullPath .= $className.'.php';
 
 		parent::_include($fullPath);
 	}

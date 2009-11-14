@@ -2,7 +2,8 @@
 
 namespace spiral\framework\di\construction;
 
-use \spiral\framework\di\definition\Service;
+use spiral\framework\di\definition\Service;
+use spiral\framework\di\construction\exception\ServiceNotSetException;
 
 /**
  * Abstract service
@@ -38,6 +39,10 @@ abstract class AbstractServiceConstructionStrategy extends AbstractConstructionS
 	 */
 	public function getService()
 	{
+		if ($this->_service === null)
+		{
+			throw new ServiceNotSetException();
+		}
 		return $this->_service;
 	}
 	

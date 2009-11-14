@@ -15,7 +15,7 @@ class UseReferenceArgument extends DefaultArgument
 {
 	// TODO Comment
     protected $_factoryMethod;
-    protected $_ref;
+    protected $_referenceName;
 
     /**
      * Constructor
@@ -24,9 +24,9 @@ class UseReferenceArgument extends DefaultArgument
      * @param   string  $factoryMethod  the factory method to call
      * @return	void
      */
-    public function __construct($ref, $factoryMethod=null, $value=null)
+    public function __construct($referenceName, $factoryMethod=null, $value=null)
     {
-        $this->_ref = $ref;
+        $this->_referenceName = $referenceName;
         $this->_factoryMethod = $factoryMethod;
         $this->_value = $value;
     }
@@ -46,8 +46,8 @@ class UseReferenceArgument extends DefaultArgument
      * 
      * @return  string
      */
-    public function getRef()
+    public function getReference()
     {
-        return $this->_ref;
+        return $this->_referenceName;
     }
 }

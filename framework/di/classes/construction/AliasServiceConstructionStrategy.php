@@ -22,10 +22,7 @@ class AliasServiceConstructionStrategy  extends AbstractServiceConstructionStrat
 	 */
 	public function buildService(Schema $schema, Container $container)
 	{
-		$alias = $this->getService();
-
-		$service = $schema->getService($alias->getName());
-
-		return $service->getConstructionStrategy()->buildService($schema, $container);
+		$alias = $this->getService()->getAlias();
+		return $container->getService($alias);
 	}
 }

@@ -1,10 +1,8 @@
 <?php
 namespace spiral\framework\di\construction;
 
-use \spiral\framework\di\definition;
-use \spiral\framework\di\fixtures;
-
-require_once('PHPUnit/Framework.php');
+use spiral\framework\di\TestCase;
+use spiral\framework\di\definition\DefaultArgument;
 
 /**
  * Test file for "default argument" construction strategies
@@ -14,13 +12,14 @@ require_once('PHPUnit/Framework.php');
  * @license		GNU/GPL V3. Please see the COPYING FILE.
  */
 
-class DefaultArgumentConstructionStrategyTest extends \PHPUnit_Framework_TestCase{
-
+class DefaultArgumentConstructionStrategyTest extends TestCase
+{
 	protected $_container;
 	protected $_currentService;
 	
-	public function setUp(){
-		$this->_container = new fixtures\construction\MockContainer();
+	public function setUp()
+	{
+		$this->_container = $this->_getMockContainer();
 		$this->_currentService = new \stdClass();
 	}
 
@@ -29,20 +28,22 @@ class DefaultArgumentConstructionStrategyTest extends \PHPUnit_Framework_TestCas
 	 *
 	 * @return array
 	 */
-	public function provider(){
+	public function provider()
+	{
 		return array(
-			array((int)1, new definition\DefaultArgument(1)),
-			array((string)1, new definition\DefaultArgument("1")),
-			array((float)1.1, new definition\DefaultArgument(1.1)),
+			array((int)1, new DefaultArgument(1)),
+			array((string)1, new DefaultArgument("1")),
+			array((float)1.1, new DefaultArgument(1.1)),
 		);
 	}
 	
 	/**
-	 * Test method
+	 * Test that the default argument construction strategy retun right types
 	 * 
 	 * @dataProvider	provider
 	 */
-    public function testBuildArgument($expected, $argument){
+    public function testBuildArgument($expected, $argument)
+	{
 		$strategy = new DefaultArgumentConstructionStrategy();
 		$strategy->setArgument($argument);
 
