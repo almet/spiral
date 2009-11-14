@@ -3,6 +3,7 @@
 namespace spiral\framework\di\construction;
 
 use \spiral\framework\di\definition\Argument;
+use spiral\framework\di\construction\exception\ArgumentNotSetException;
 
 /**
  * Abstract argument
@@ -38,6 +39,11 @@ abstract class AbstractArgumentConstructionStrategy implements ArgumentConstruct
 	 */
 	public function getArgument()
 	{
+		if ($this->_argument === null)
+		{
+			throw new ArgumentNotSetException();
+		}
+		
 		return $this->_argument;
 	}
 }

@@ -2,8 +2,9 @@
 
 namespace spiral\framework\di\construction;
 
-use \spiral\framework\bootstrap\Loader;
-use \spiral\framework\di\construction\DefaultContainer;
+use spiral\framework\bootstrap\Loader;
+use spiral\framework\di\construction\DefaultContainer;
+use spiral\framework\di\construction\exception\InvalidSharedServiceException;
 
 /**
  * Abstract Container implementation
@@ -68,7 +69,7 @@ abstract class Abstractcontainer implements Container
     {
     	if (!is_object($service))
         {
-            throw new exception\InvalidSharedService('Service '.$serviceName.' must be an object, '.getType($service).' given');
+            throw new InvalidSharedServiceException('Service '.$serviceName.' must be an object, '.getType($service).' given');
         }
         
     	$this->_sharedServices[$serviceName] = $service;

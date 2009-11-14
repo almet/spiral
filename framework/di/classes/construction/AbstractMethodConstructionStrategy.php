@@ -3,6 +3,7 @@
 namespace spiral\framework\di\construction;
 
 use spiral\framework\di\definition\Method;
+use spiral\framework\di\construction\exception\MethodNotSetException;
 
 /**
  * Abstract method construction strategy
@@ -40,6 +41,10 @@ abstract class AbstractMethodConstructionStrategy implements MethodConstructionS
 	 */
 	public function getMethod()
 	{
+		if ($this->_method === null)
+		{
+			throw new MethodNotSetException();
+		}
 		return $this->_method;
 	}
 }

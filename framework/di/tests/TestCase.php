@@ -9,6 +9,13 @@ use spiral\framework\di\fixtures\construction\MockContainer;
 use spiral\framework\di\fixtures\construction\MockServiceConstructionStrategy;
 use spiral\framework\di\fixtures\construction\MockMethodConstructionStrategy;
 use spiral\framework\di\fixtures\construction\MockArgumentConstructionStrategy;
+use spiral\framework\di\fixtures\construction\MockAbstractConstructionStrategy;
+use spiral\framework\di\fixtures\construction\MockAbstractArgumentConstructionStrategy;
+use spiral\framework\di\fixtures\construction\MockAbstractMethodConstructionStrategy;
+use spiral\framework\di\fixtures\construction\MockAbstractServiceConstructionStrategy;
+use spiral\framework\di\fixtures\construction\MockAbstractContainer;
+
+use spiral\framework\di\fixtures\construction\MockLoader;
 
 /**
  * Abstract test case class.
@@ -128,6 +135,35 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 		return new MockServiceConstructionStrategy();
 	}
 
+	protected function _getMockLoader()
+	{
+		return new MockLoader();
+	}
+
+	protected function _getMockAbstractConstructionStrategy()
+	{
+		return new MockAbstractConstructionStrategy();
+	}
+
+	protected function _getMockAbstractArgumentConstructionStrategy()
+	{
+		return new MockAbstractArgumentConstructionStrategy();
+	}
+
+	protected function _getMockAbstractMethodConstructionStrategy()
+	{
+		return new MockAbstractMethodConstructionStrategy();
+	}
+
+	protected function _getMockAbstractServiceConstructionStrategy()
+	{
+		return new MockAbstractServiceConstructionStrategy();
+	}
+
+	protected function _getMockAbstractContainer()
+	{
+		return new MockAbstractContainer();
+	}
 	
 }
 ?>

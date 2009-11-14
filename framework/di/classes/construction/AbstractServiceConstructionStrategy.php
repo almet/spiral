@@ -4,6 +4,8 @@ namespace spiral\framework\di\construction;
 
 use spiral\framework\di\definition\Service;
 use spiral\framework\di\construction\exception\ServiceNotSetException;
+use spiral\framework\di\definition\Schema;
+use spiral\framework\di\construction\Container;
 
 /**
  * Abstract service
@@ -45,5 +47,5 @@ abstract class AbstractServiceConstructionStrategy extends AbstractConstructionS
 		}
 		return $this->_service;
 	}
-	
+
 }

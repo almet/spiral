@@ -5,8 +5,6 @@ use spiral\framework\di\TestCase;
 use spiral\framework\di\definition\AliasService;
 use spiral\framework\di\definition\exception\UnknownserviceException;
 
-require_once('PHPUnit/Framework.php');
-
 /**
  * Test file for aliases construction strategies
  * 
