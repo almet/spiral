@@ -1,6 +1,6 @@
 <?php
 
-namespace Spiral\Framework\Persistence\Fixtures;
+namespace spiral\framework\persistence\fixtures;
 
 /**
  * Represent an artist discography

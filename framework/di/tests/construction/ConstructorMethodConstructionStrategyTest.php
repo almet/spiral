@@ -1,7 +1,8 @@
 <?php
+
 namespace spiral\framework\di\construction;
 
-use spiral\framework\di\TestCase;
+use \spiral\framework\di\TestCase;
 use \spiral\framework\di\definition\DefaultArgument;
 use \spiral\framework\di\definition\DefaultMethod;
 

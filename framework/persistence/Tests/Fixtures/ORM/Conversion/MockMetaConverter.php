@@ -1,10 +1,10 @@
 <?php
 
-namespace Spiral\Framework\Persistence\Fixtures\ORM\Conversion;
+namespace spiral\framework\persistence\fixtures\orm\conversion;
 
-use \Spiral\Framework\Persistence\ORM\Conversion\MetaConverter;
-use \Spiral\Framework\Persistence\ORM\DefaultMetaObject;
-use \Spiral\Framework\Persistence\ORM\MetaObject;
+use \spiral\framework\persistence\orm\conversion\MetaConverter;
+use \spiral\framework\persistence\orm\DefaultMetaObject;
+use \spiral\framework\persistence\orm\MetaObject;
 
 class MockMetaConverter implements MetaConverter
 {

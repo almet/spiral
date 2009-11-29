@@ -1,4 +1,5 @@
 <?php
+
 namespace spiral\framework\di\fixtures;
 
 /**

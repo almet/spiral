@@ -1,4 +1,5 @@
 <?php
+
 namespace spiral\framework\di\construction;
 
 use spiral\framework\di\TestCase;
