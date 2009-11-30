@@ -1,3 +1,63 @@
-#!/bin/sh
+#!/bin/bash
 
-php ../framework/bootstrap/resources/scripts/tests.php --colors ../framework/
+###############################################
+# This script runs all PHP unit tests of Spiral
+# It should be run in a terminal
+#
+# Run "run_tests -h" to display help message
+#
+# Author		Frédéric Sureau <fred@spiral-project.org>
+# Copyright		2009 Spiral-project.org <http://www.spiral-project.org>
+# License		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
+###############################################
+
+#php ../framework/bootstrap/resources/scripts/tests.php --colors ../framework/
+
+usage()
+{
+	cat << EOF
+Usage:
+   $0 -h                    Display help message
+   $0 -a                    Run all tests
+   $0 -p <package_name>     Run all tests of the specified package
+   If no option given, the help message is displayed
+
+This script runs PHP unit tests.
+
+Requirements:
+   PHP CLI >= 5.3 should be installed on your computer
+
+Author		Frédéric Sureau <fred@spiral-project.org>
+Copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+License		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
+
+EOF
+}
+
+while getopts “hap:” OPTION
+do
+     case $OPTION in
+         h)
+             usage
+             exit 1
+             ;;
+         a)
+		 	 php ../framework/bootstrap/resources/scripts/tests.php --colors ../framework/
+			 exit $?
+             ;;
+         p)
+		 	 php ../framework/bootstrap/resources/scripts/tests.php --colors ../framework/$OPTARG/
+			 exit $?
+             ;;
+         ?)
+             usage
+             exit 1
+             ;;
+     esac
+done
+
+if [ $# = 0 ]
+then
+     usage
+     exit 1
+fi
