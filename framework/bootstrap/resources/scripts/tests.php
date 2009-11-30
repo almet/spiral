@@ -11,8 +11,8 @@
  */
 
 // Include the bootstrap class
-require_once __DIR__.'/../../classes/TestsBootstrap.php';
+require_once __DIR__.str_replace('/', DIRECTORY_SEPARATOR, '/../../classes/TestsBootstrap.php');
 
 // Bootstrap the application
-$bootstrap = new \Spiral\Framework\Bootstrap\TestsBootstrap();
+$bootstrap = new \spiral\framework\bootstrap\TestsBootstrap();
 $bootstrap->run();
