@@ -9,11 +9,10 @@ use spiral\framework\di\construction\ServiceReferenceArgumentConstructionStrateg
 /**
  * Test file for service reference construction strategy
  * 
- * @author  	Alexis Métaireau	13 nov. 2009
- * @copyright	Alexis Metaireau 	2009
- * @license		GNU/GPL V3. Please see the COPYING FILE.
+ * @author		Alexis Métaireau <alexis@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
-
 class ServiceReferenceArgumentConstructionStrategyTest extends TestCase
 {
 
@@ -30,7 +29,7 @@ class ServiceReferenceArgumentConstructionStrategyTest extends TestCase
 
 		try
 		{
-			$strategy->buildArgument($this->_container, $object);
+			$strategy->buildArgument($this->_container, null);
 		}
 		catch(UnknownserviceException $e){}
 		
@@ -38,4 +37,4 @@ class ServiceReferenceArgumentConstructionStrategyTest extends TestCase
 	}
 
 }
-?>
+
