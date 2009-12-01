@@ -5,14 +5,18 @@ namespace spiral\framework\persistence\orm;
 /**
  * Abstract unit of work
  * 
- * This component manages objects status changes in collections
+ * This component manages objects status changes.
+ * See methods documentation to learn how status are updated.
+ * 
+ * Note on the implementation:
+ * 	- This implementation is directly dependent from OID classification
+ * 		which means that the OID is used to identify an object and not the reference
+ * 		as it could be thought.
+ * 	- OIDs are considered to be scalar values.
  * 
  * @author		Frédéric Sureau <fred@spiral-project.org>
  * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
  * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
- * 
- * FIXME		Objects collections could be replaced by a sort of IdentityMap if 
- * 				objects must be compared on more than just their OID.
  */
 abstract class AbstractUnitOfWork implements UnitOfWork
 {
@@ -227,8 +231,6 @@ abstract class AbstractUnitOfWork implements UnitOfWork
 	 * @param	object	$object		Object which status has to be set
 	 * @param	string	$status		New status
 	 * @return	void
-	 * 
-	 * FIXME This implementation is directly dependent from OID classification
 	 */
 	private function _setStatus($oid, $object, $status)
 	{
@@ -252,8 +254,6 @@ abstract class AbstractUnitOfWork implements UnitOfWork
 	 * @param	mixed	$oid		Object ID
 	 * @param	object	$object		Object
 	 * @return	string
-	 * 
-	 * FIXME This implementation is directly dependent from OID classification
 	 */
 	private function _getObjectStatus($oid, $object)
 	{
@@ -271,8 +271,6 @@ abstract class AbstractUnitOfWork implements UnitOfWork
 	 * @param	mixed	$oid		Object ID
 	 * @param	object	$object		Object
 	 * @return	string
-	 * 
-	 * FIXME This implementation is directly dependent from OID classification
 	 */
 	private function _getPreviousObjectStatus($oid, $object)
 	{

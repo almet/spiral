@@ -1,10 +1,17 @@
 <?php
 
-namespace Spiral\Framework\Persistence\Fixtures;
+namespace spiral\framework\persistence\fixtures;
 
-use \Spiral\Framework\Persistence\Query\Query;
-use \Spiral\Framework\Persistence\ObjectRepository;
+use \spiral\framework\persistence\query\Query;
+use \spiral\framework\persistence\ObjectRepository;
 
+/**
+ * Mock object repository for test purpose
+ * 
+ * @author		Frédéric Sureau <fred@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
+ */
 class MockObjectRepository implements ObjectRepository
 {
 	private $_objects = array();

@@ -7,7 +7,6 @@ namespace spiral\framework\persistence\orm\meta;
  * 
  * This component uses reflection to build meta object.
  * 
- * 
  * @author		Frédéric Sureau <fred@spiral-project.org>
  * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
  * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>

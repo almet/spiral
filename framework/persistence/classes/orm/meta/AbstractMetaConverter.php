@@ -30,13 +30,11 @@ abstract class AbstractMetaConverter implements MetaConverter
 		$reflectionObject = new \ReflectionObject($instance);
 		$reflectionProperties = $reflectionObject->getProperties();
 		
-		foreach($attributes as $property)
+		foreach($attributes as $name=>$value)
 		{
 			$reflectionProperty = new \ReflectionProperty($class, $name);
 			$reflectionProperty->setAccessible(true);
-			
-			$value = $attributes[$property->getName()];
-			$property->setValue($value);
+			$reflectionProperty->setValue($instance, $value);
 		}
 		
 		return $instance;

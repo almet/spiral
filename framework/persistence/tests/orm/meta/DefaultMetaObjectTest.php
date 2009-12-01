@@ -1,33 +1,34 @@
 <?php
 
-namespace Spiral\Framework\Persistence\ORM;
+namespace spiral\framework\persistence\orm\meta;
 
-require_once('PHPUnit/Framework.php');
+use \spiral\framework\persistence\TestCase;
 
 /**
- * Meta object test
+ * Default meta object test
  * 
- * This is a generic test for all MetaObject implementations
- * 
- * @author		Frédéric Sureau <frederic.sureau@gmail.com>
- * @copyright	Frédéric Sureau 2009
- * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
+ * @author		Frédéric Sureau <fred@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
-abstract class MetaObjectTestAbstract extends \PHPUnit_Framework_TestCase
+class DefaultMetaObjectTest extends TestCase
 {
-	/**
-	 * Meta object to test
-	 * 
-	 * @var	MetaObject
-	 */
 	protected $_metaObject = null;
+	
+	/**
+	 * Sets up the testing environment
+	 */
+	public function setUp()
+	{
+		$this->_metaObject = new DefaultMetaObject();
+	}
 	
 	/**
 	 * Test if the class is correctly keeped
 	 */
 	public function testClass()
 	{
-		$classToSet = 'Test';
+		$classToSet = '\full\class\name\Test';
 		
 		$this->_metaObject->setClass($classToSet);
 		$class = $this->_metaObject->getClass();

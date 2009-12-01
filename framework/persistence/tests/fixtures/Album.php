@@ -1,13 +1,13 @@
 <?php
 
-namespace Spiral\Framework\Persistence\Fixtures;
+namespace spiral\framework\persistence\fixtures;
 
 /**
  * Represent an album
  * 
- * @author		Frédéric Sureau <frederic.sureau@gmail.com>
- * @copyright	Frédéric Sureau 2009
- * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
+ * @author		Frédéric Sureau <fred@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
 class Album
 {
