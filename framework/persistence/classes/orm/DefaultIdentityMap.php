@@ -28,7 +28,7 @@ class DefaultIdentityMap implements IdentityMap
 	 */
 	public function containsObject($object)
 	{
-		return array_search($object, $this->_objects, TRUE) === TRUE;
+		return array_search($object, $this->_objects, TRUE) !== FALSE;
 	}
 	
 	/**
