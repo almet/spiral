@@ -11,8 +11,6 @@
 # License		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
 ###############################################
 
-#php ../framework/bootstrap/resources/scripts/tests.php --colors ../framework/
-
 usage()
 {
 	cat << EOF
