@@ -226,7 +226,10 @@ class AbstractUnitOfWorkTest extends TestCase
 		$objects = $this->_unitOfWork->exposedObjects();
 		$this->assertEquals(sizeof($objects), 2);
 		
+		ob_start();
 		$this->_unitOfWork->rollback();
+		$output = ob_get_clean();
+		$this->assertEquals($output, '');
 		
 		$status = $this->_unitOfWork->exposedObjectsStatus();
 		$this->assertEquals($status, array());

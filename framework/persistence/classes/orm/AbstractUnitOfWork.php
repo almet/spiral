@@ -111,7 +111,7 @@ abstract class AbstractUnitOfWork implements UnitOfWork
 				break;
 		}
 		
-		$this->_setStatus($oid, $object, $newStatus);
+		$this->_setObjectStatus($oid, $object, $newStatus);
 	}
 	
 	/**
@@ -152,7 +152,7 @@ abstract class AbstractUnitOfWork implements UnitOfWork
 				break;
 		}
 		
-		$this->_setStatus($oid, $object, $newStatus);
+		$this->_setObjectStatus($oid, $object, $newStatus);
 	}
 	
 	/**
@@ -188,7 +188,7 @@ abstract class AbstractUnitOfWork implements UnitOfWork
 				break;
 		}
 		
-		$this->_setStatus($oid, $object, $newStatus);
+		$this->_setObjectStatus($oid, $object, $newStatus);
 	}
 	
 	/**
@@ -202,7 +202,7 @@ abstract class AbstractUnitOfWork implements UnitOfWork
 	 */
 	public function clean($oid, $object)
 	{
-		$this->_setStatus($oid, $object, self::_STATUS_CLEAN);
+		$this->_setObjectStatus($oid, $object, self::_STATUS_CLEAN);
 	}
 	
 	/**
@@ -232,7 +232,7 @@ abstract class AbstractUnitOfWork implements UnitOfWork
 	 * @param	string	$status		New status
 	 * @return	void
 	 */
-	private function _setStatus($oid, $object, $status)
+	private function _setObjectStatus($oid, $object, $status)
 	{
 		$this->_previousObjectsStatus[$oid] = $this->_getObjectStatus($oid, $object);
 		

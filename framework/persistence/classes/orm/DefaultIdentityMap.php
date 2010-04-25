@@ -12,7 +12,7 @@ namespace spiral\framework\persistence\orm;
 class DefaultIdentityMap implements IdentityMap
 {
 	/**
-	 * Array of keeped objects
+	 * Array of kept objects
 	 * 
 	 * Keys are OIDs and values are objects.
 	 * 

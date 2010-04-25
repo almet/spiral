@@ -8,6 +8,9 @@ namespace spiral\framework\persistence\orm\meta;
  * Provide protected methods to create blank in-memory objects and meta objects.
  * Also provide basics methods to convert simple values.
  * 
+ * @todo		Encapsulation via inheritance is bad !
+ * 				This abstract class should be replaced by an ObjectCreator or something like that...
+ * 
  * @author		Frédéric Sureau <fred@spiral-project.org>
  * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
  * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>

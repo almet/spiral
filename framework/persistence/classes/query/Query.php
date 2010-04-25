@@ -1,6 +1,6 @@
 <?php
 
-namespace Spiral\Framework\Persistence;
+namespace spiral\framework\persistence\query;
 
 /**
  * Query
@@ -9,19 +9,34 @@ namespace Spiral\Framework\Persistence;
  * 
  * There are different solutions to create a new query :
  * 
- * - Use the {@link Repository::createQuery()} method to create a new empty query.
- *   The query is then a {@link FluentQuery}.
- * - ... 
- * @todo	Comment about query creation
+ * - Use the {@link ObjectRepository::createQuery()} method.
+ * - Use a special factory that will help the creation (for example, you can imagine creating a query 
+ * 		from SQL-like string or from XPath syntax or LinQ or whatever)
+ * - Direct creation is not advisable because of inversion of control
  * 
- * You can add criteria to the query using FluentQuery methods. Read this doc, it's quite intuitive !
+ * Example of use :
+ * <code> 
+ *	$query = $repository->createQuery('\\namespace\\to\\Artist');
+ *	
+ *	$criteria = $query->logicalAnd( $query->equals('firstName', 'James'),
+ *									$query->logicalOr( $query->greaterThan('age', 20),
+ *														$query->lowerThan('age', 50) ) );
+ *	
+ *	$query->match( $criteria );
+ *
+ *	$query->setRange(0, 25);
+ *	
+ *	$query->setOrder(array('name'=>Query::ASCENDING, 'age'=>Query::DESCENDING));
+ *
+ *	$objects = $repository->findByQuery( $query );	
+ * </code>
  * 
- * @see			Repository::find()
- * @see			Repository::createQuery()
+ * @see			ObjectRepository::findByQuery()
+ * @see			ObjectRepository::createQuery()
  * 
- * @author		Frédéric Sureau <frederic.sureau@gmail.com>
- * @copyright	Frédéric Sureau 2009
- * @license		http://www.gnu.org/licenses/gpl.html GNU General Public License V3
+ * @author		Frédéric Sureau <fred@spiral-project.org>
+ * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
+ * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
 interface Query
 {
@@ -30,39 +45,41 @@ interface Query
 	 * 
 	 * @var	int
 	 */
-	const ORDER_ASC = 1;
+	const ASCENDING = 1;
 	
 	/**
 	 * Descending order
 	 * 
 	 * @var	int
 	 */
-	const ORDER_DESC = 2;
+	const DESCENDING = 2;
 	
 	/**
-	 * @todo	Comment this method
+	 * Define the class of objects that are targeted by the query
+	 * 
+	 * @param	string	$class	Class of queried objects
 	 */
 	public function setClass($class);
 	
 	/**
-	 * Set the range of the results
+	 * Define the range of the results
 	 * 
-	 * This method is a shortcut to define both the first result and the maximum number of results.
+	 * This method is a shortcut to define both the offset and the limit of results in one time.
 	 * 
 	 * @see		Query::setOffset()
 	 * @see		Query::setLimit()
 	 * 
-	 * @param	int		$firstResult		First result index
-	 * @param	int		$maximumResults		Maximum number of results
+	 * @param	int		$offset		First result index
+	 * @param	int		$length		Maximum number of results
 	 * 
-	 * @return	Query	Return the current instance (fluent interface)
+	 * @return	void
 	 */
-	public function setRange($firstResult, $maximumResults);
+	public function setRange($offset, $length);
 	
 	/**
-	 * Set the first result
+	 * Define the first result index value (offset)
 	 * 
-	 * Define the index from which results will be returned.
+	 * Define the first index from which results will be returned.
 	 * 
 	 * For example, if 10 objects are matching the query, if first result is 7, only the 3 last objects 
 	 * will be returned.
@@ -72,19 +89,19 @@ interface Query
 	 * @see		Query::setRange()
 	 * @see		Query::setLimit()
 	 * 
-	 * @param	int		$firstResult		First result index
+	 * @param	int		$offset		First result index
 	 * 
-	 * @return	Query	Return the current instance (fluent interface)
+	 * @return	void
 	 */
-	public function setFirstResult($firstResult);
+	public function setOffset($offset);
 	
 	/**
-	 * Set the maximum results length
+	 * Define the maximum number of results that will be returned.
 	 * 
-	 * Define the number of results that will be returned.
-	 * 
-	 * For example, if 10 objects are matching the query, if maximum reuslts is 7, only the 7 first 
+	 * For example, if 10 objects are matching the query, if limit is 7, only the 7 first 
 	 * objects will be returned.
+	 * 
+	 * If the limit value is greater than the number of results, all the results will be returned.
 	 * 
 	 * If null, all results will be returned.
 	 * 
@@ -93,61 +110,58 @@ interface Query
 	 * @see		Query::setRange()
 	 * @see		Query::setOffset()
 	 * 
-	 * @param	int		$maximumResults		Maximum number of results
+	 * @param	int		$limit		Maximum number of results
 	 * 
-	 * @return	Query	Return the current instance (fluent interface)
+	 * @return	void
 	 */
-	public function setMaximumResults($maximumResults);
+	public function setLimit($limit);
 	
 	/**
 	 * Set the rules for sorting objects
 	 * 
 	 * An array of the attributes associated to their ordering value.
 	 * 
+	 * Keys of the array are attribute names and values are order mode (Query::ASCENDING or Query::DESCENDING)
+	 * 
 	 * Example :
 	 * <code>
-	 * $order = array('name'=>ORDER_ASC, 'age'=>ORDER_DESC);
+	 * $order = array('name'=>Query::ASCENDING, 'age'=>Query::DESCENDING);
 	 * 
 	 * $query->setOrder($order);
 	 * // Will sort objects by name from A to Z, then by age from the older to the younger
 	 * </code>
 	 * 
-	 * @see		Query::setRange()
-	 * @see		Query::setOffset()
+	 * @param	array		$order		Array of parameters with ordering mode
 	 * 
-	 * @param	int		$limit		Limit
-	 * 
-	 * @return	Query	Return the current instance (fluent interface)
+	 * @return	void
 	 */
-	public function setOrder($order);
+	public function setOrder(array $order);
 	
 	/**
-	 * Add a constraint to the query
+	 * Define criteria that will be respected to filter results
 	 * 
-	 * @param	Constraint	$constraint		The constraint the query must match
-	 * 
-	 * @return	Query	Return the current instance (fluent interface)
-	 */
-	public function matching(Constraint $constraint);
-	
-	/**
-	 * Create a "with OID" criterion
-	 * 
-	 * Define that an object must have a certain OID.
-	 * 
-	 * Example :
+	 * Example of use:
 	 * <code>
-	 * $query->withOID($oid);
-	 * // Will find the artist whose OID is specified
-	 * // Equivalent to $repository->findByOID($oid);
+	 *	$criteria = $query->logicalAnd( $query->equals('firstName', 'James'),
+	 *									$query->logicalOr( $query->greaterThan('age', 20),
+	 *														$query->lowerThan('age', 50) ) );
+	 *	
+	 *	$query->match( $criteria );
 	 * </code>
 	 * 
-	 * @param	string	$attribute		Attribute you want to match the value
-	 * @param	mixed	$value			Value
+	 * More information on criteria definition should be given in the {@link Criteria} documentation.
 	 * 
-	 * @return	Criterion	A "with OID" criterion
+	 * You could notice that since {@link Criterion} extends {@link Criteria}, a simple {@link Criterion}
+	 * can be used instead of {@link Criteria}.
+	 * 
+	 * @see		Criteria
+	 * @see		Criterion
+	 * 
+	 * @param	Criteria	$criteria		Criteria that the query must match
+	 * 
+	 * @return	void
 	 */
-	public function withOID($oid);
+	public function match(Criteria $criteria);
 	
 	/**
 	 * Create a criterion of equality
@@ -157,14 +171,14 @@ interface Query
 	 * Example :
 	 * <code>
 	 * $query->setClass('Artist');
-	 * $query->matching( $query->equals('name', 'James Brown') );
+	 * $query->match( $query->equals('name', 'James Brown') );
 	 * // Will find all artists whose name are James Brown
 	 * </code>
 	 * 
 	 * Attributes can be chained like this :
 	 * <code>
 	 * $query->setClass('Album');
-	 * $query->matching( $query->equals('artist->name', 'James Brown') );
+	 * $query->match( $query->equals('artist->name', 'James Brown') );
 	 * // Will find all albums from the artist named James Brown
 	 * </code>
 	 * 
@@ -185,7 +199,7 @@ interface Query
 	 * Example :
 	 * <code>
 	 * $query->setClass('Artist');
-	 * $query->matching( $query->equals('name', 'James %') );
+	 * $query->match( $query->equals('name', 'James %') );
 	 * // Will find all artists whose name starts with James
 	 * </code>
 	 * 
@@ -204,7 +218,7 @@ interface Query
 	 * Example :
 	 * <code>
 	 * $query->setClass('Artist');
-	 * $query->matching( $query->lowerThan('age', 50) );
+	 * $query->match( $query->lowerThan('age', 50) );
 	 * // Will find all artists that are strictly younger than 50
 	 * </code>
 	 * 
@@ -223,7 +237,7 @@ interface Query
 	 * Example :
 	 * <code>
 	 * $query->setClass('Artist');
-	 * $query->matching( $query->lowerThanOrEqual('age', 50) );
+	 * $query->match( $query->lowerThanOrEqual('age', 50) );
 	 * // Will find all artists aged of 50 or younger
 	 * </code>
 	 * 
@@ -242,7 +256,7 @@ interface Query
 	 * Example :
 	 * <code>
 	 * $query->setClass('Artist');
-	 * $query->matching( $query->greaterThan('age', 50) );
+	 * $query->match( $query->greaterThan('age', 50) );
 	 * // Will find all the artists strictly older than 50
 	 * </code>
 	 * 
@@ -261,7 +275,7 @@ interface Query
 	 * Example :
 	 * <code>
 	 * $query->setClass('Artist');
-	 * $query->matching( $query->greaterThanOrEqual('age', 50) );
+	 * $query->match( $query->greaterThanOrEqual('age', 50) );
 	 * // Will find all the artists aged of 50 or older
 	 * </code>
 	 * 
@@ -278,14 +292,17 @@ interface Query
 	 * Example :
 	 * <code>
 	 * $query->setClass('Artist');
-	 * $query->matching( $query->logicalOr( $query->greaterThan('age', 50),
+	 * $query->match( $query->logicalOr( $query->greaterThan('age', 50),
 	 * 										$query->lowerThan('age', 20) ) );
 	 * // Will find all the artists older than 50 or younger than 20
 	 * </code>
 	 * 
-	 * @param	Constraint	...		Constraint instances to group in an OR logic
+	 * @see		Criteria
+	 * @see		Criterion
 	 * 
-	 * @return	Criteria	A criteria grouping criterion with an OR logic
+	 * @param	Criteria	...		Criteria instances to group in an OR logic
+	 * 
+	 * @return	Criteria	Criteria grouping other criteria with an OR logic
 	 */
 	public function logicalOr();
 	
@@ -295,14 +312,17 @@ interface Query
 	 * Example :
 	 * <code>
 	 * $query->setClass('Artist');
-	 * $query->matching( $query->logicalAnd( $query->greaterThan('age', 20),
+	 * $query->match( $query->logicalAnd( $query->greaterThan('age', 20),
 	 * 										$query->lowerThan('age', 50) ) );
 	 * // Will find all the artists whose age is between 20 and 50
 	 * </code>
 	 * 
-	 * @param	Constraint	...		Constraint instances to group in an AND logic
+	 * @see		Criteria
+	 * @see		Criterion
 	 * 
-	 * @return	Criteria	A criteria grouping criterion with an AND logic
+	 * @param	Criteria	...		Criteria instances to group in an AND logic
+	 * 
+	 * @return	Criteria	Criteria grouping other criteria with an AND logic
 	 */
 	public function logicalAnd();
 }

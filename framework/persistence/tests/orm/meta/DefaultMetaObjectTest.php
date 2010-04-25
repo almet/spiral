@@ -24,7 +24,7 @@ class DefaultMetaObjectTest extends TestCase
 	}
 	
 	/**
-	 * Test if the class is correctly keeped
+	 * Test if the class is correctly kept
 	 */
 	public function testClass()
 	{
@@ -37,7 +37,7 @@ class DefaultMetaObjectTest extends TestCase
 	}
 	
 	/**
-	 * Test if attributes are correctly keeped
+	 * Test if attributes are correctly kept
 	 */
 	public function testAttributes()
 	{

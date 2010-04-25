@@ -7,7 +7,7 @@ namespace spiral\framework\persistence\orm\meta;
  * 
  * The meta object converter is the component responsible of transformation from in-memory 
  * instance to meta object representation.
- * It is also responsible of the instanciation from meta object to in-memory object.
+ * It is also responsible of the instantiation from meta object to in-memory object.
  * 
  * All attributes of the meta object representation need to have atomic values.
  * 

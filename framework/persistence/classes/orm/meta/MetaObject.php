@@ -37,7 +37,7 @@ interface MetaObject
 	public function getAttributes();
 	
 	/**
-	 * Return the instanciation class
+	 * Return the instantiation class
 	 * 
 	 * @return	string	Full name of the class with namespace
 	 */
@@ -54,7 +54,7 @@ interface MetaObject
 	public function setAttributes(array $attributes);
 	
 	/**
-	 * Define the instanciation class
+	 * Define the instantiation class
 	 * 
 	 * @param	string	Full name of the class with namespace
 	 * @return	void

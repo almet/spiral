@@ -9,8 +9,8 @@ namespace spiral\framework\persistence\orm;
  * OIDs must be scalar PHP values and be unique.
  * 
  * Common implementations could be:
- * 	- use the hash of the object
- * 	- ask the storage engine for a unique ID
+ * 	- use the hash of the object (the bad one)
+ * 	- ask the storage engine for a unique ID (the good one)
  * 
  * @author		Frédéric Sureau <fred@spiral-project.org>
  * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>

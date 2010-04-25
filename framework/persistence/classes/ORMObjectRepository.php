@@ -65,7 +65,7 @@ class ORMObjectRepository implements ObjectRepository
 	 * 
 	 * If the repository does not contain the object yet, the object is made persistent and
 	 * the OID associated to this object by the repository is returned.
-	 * If the object is already registred in the repository, return the existing OID for this object.
+	 * If the object is already registered in the repository, return the existing OID for this object.
 	 * 
 	 * FIXME The object will not be registered as dirty if it has changed.
 	 * 
@@ -95,6 +95,9 @@ class ORMObjectRepository implements ObjectRepository
 	 * 
 	 * The object will be removed from the repository and will not be persistent anymore.
 	 * If the object does not exists in the repository, nothing is done.
+	 * 
+	 * The object must have been loaded in the identity map (means via the {@link ObjectRepository}) before
+	 * or it will not be removed.
 	 * 
 	 * @param	object	$object		The object to remove
 	 * @return	void
