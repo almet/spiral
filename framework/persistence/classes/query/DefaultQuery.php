@@ -3,56 +3,64 @@
 namespace spiral\framework\persistence\query;
 
 /**
- * Query
- * 
- * A query is the way to find objects by criteria in a repository.
- * 
- * There are different solutions to create a new query :
- * 
- * - Use the {@link ObjectRepository::createQuery()} method.
- * - Use a special factory that will help the creation (for example, you can imagine creating a query 
- * 		from SQL-like string or from XPath syntax or LinQ or whatever)
- * - Direct creation is not advisable because of inversion of control
- * 
- * Example of use :
- * <code> 
- *	$query = $repository->createQuery('\\namespace\\to\\Artist');
- *	
- *	$criteria = $query->logicalAnd( $query->equals('firstName', 'James'),
- *									$query->logicalOr( $query->greaterThan('age', 20),
- *														$query->lowerThan('age', 50) ) );
- *	
- *	$query->match( $criteria );
- *
- *	$query->setRange(0, 25);
- *	
- *	$query->setOrder(array('name'=>Query::ASCENDING, 'age'=>Query::DESCENDING));
- *
- *	$objects = $repository->findByQuery( $query );	
- * </code>
- * 
- * @see			ObjectRepository::findByQuery()
- * @see			ObjectRepository::createQuery()
+ * Default implementation of a Query
  * 
  * @author		Frédéric Sureau <fred@spiral-project.org>
  * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
  * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
-interface Query
+class DefaultQuery implements Query
 {
 	/**
-	 * Ascending order
+	 * Class of objects targeted
 	 * 
-	 * @var	int
+	 * Must contain the full name of the class including namespaces
+	 * 
+	 * @var	string
 	 */
-	const ASCENDING = 1;
+	private $_class = NULL;
 	
 	/**
-	 * Descending order
+	 * Offset
 	 * 
 	 * @var	int
 	 */
-	const DESCENDING = 2;
+	private $_offset = 0;
+	
+	/**
+	 * Limit
+	 * 
+	 * @var	int
+	 */
+	private $_limit = NULL;
+	
+	/**
+	 * Order
+	 * 
+	 * @var	array
+	 */
+	private $_order = array();
+	
+	/**
+	 * Criteria
+	 * 
+	 * @var	Criteria
+	 */
+	private $_criteria = NULL;
+	
+	/**
+	 * Criteria factory
+	 * 
+	 * @var	CriteriaFactory
+	 */
+	private $_criteriaFactory = NULL;
+	
+	/**
+	 * Criterion factory
+	 * 
+	 * @var	CriterionFactory
+	 */
+	private $_criterionFactory = NULL;
 	
 	/**
 	 * Define the class of objects that are targeted by the query
@@ -61,14 +69,20 @@ interface Query
 	 * 
 	 * @return	void
 	 */
-	public function setClass($class);
+	public function setClass($class)
+	{
+		$this->_class = $class;
+	}
 	
 	/**
 	 * Return the class of objects that are targeted by the query
 	 * 
 	 * @return	string	Class of queried objects
 	 */
-	public function getClass();
+	public function getClass()
+	{
+		return $this->_class;
+	}
 	
 	/**
 	 * Define the range of the results
@@ -83,7 +97,11 @@ interface Query
 	 * 
 	 * @return	void
 	 */
-	public function setRange($offset, $limit);
+	public function setRange($offset, $limit)
+	{
+		$this->setOffset($offset);
+		$this->setLimit($limit);
+	}
 	
 	/**
 	 * Define the first result index value (offset)
@@ -102,7 +120,10 @@ interface Query
 	 * 
 	 * @return	void
 	 */
-	public function setOffset($offset);
+	public function setOffset($offset)
+	{
+		$this->_offset = $offset;
+	}
 	
 	/**
 	 * Return the first result index value (offset)
@@ -119,7 +140,10 @@ interface Query
 	 * 
 	 * @return	int		First result index
 	 */
-	public function getOffset();
+	public function getOffset()
+	{
+		return $this->_offset;
+	}
 	
 	/**
 	 * Define the maximum number of results that will be returned.
@@ -140,7 +164,10 @@ interface Query
 	 * 
 	 * @return	void
 	 */
-	public function setLimit($limit);
+	public function setLimit($limit)
+	{
+		$this->_limit = $limit;
+	}
 	
 	/**
 	 * Return the maximum number of results that will be returned.
@@ -159,7 +186,10 @@ interface Query
 	 * 
 	 * @param	int		Maximum number of results
 	 */
-	public function getLimit();
+	public function getLimit()
+	{
+		return $this->_limit;
+	}
 	
 	/**
 	 * Set the rules for sorting objects
@@ -180,7 +210,10 @@ interface Query
 	 * 
 	 * @return	void
 	 */
-	public function setOrder(array $order);
+	public function setOrder(array $order)
+	{
+		$this->_order = $order;
+	}
 	
 	/**
 	 * Return the rules for sorting objects
@@ -199,7 +232,10 @@ interface Query
 	 * 
 	 * @return	array		Array of parameters with ordering mode
 	 */
-	public function getOrder();
+	public function getOrder()
+	{
+		return $this->_order;
+	}
 	
 	/**
 	 * Define criteria that will be respected to filter results
@@ -225,7 +261,10 @@ interface Query
 	 * 
 	 * @return	void
 	 */
-	public function match(Criteria $criteria);
+	public function match(Criteria $criteria)
+	{
+		$this->_criteria = $criteria;
+	}
 	
 	/**
 	 * Return criteria that will be respected to filter results
@@ -249,7 +288,10 @@ interface Query
 	 * 
 	 * @return	Criteria	Criteria that the query must match
 	 */
-	public function getCriteria();
+	public function getCriteria()
+	{
+		return $this->_criteria;
+	}
 	
 	/**
 	 * Create a criterion of equality
@@ -275,7 +317,10 @@ interface Query
 	 * 
 	 * @return	Criterion	An equality criterion
 	 */
-	public function equals($attribute, $value);
+	public function equals($attribute, $value)
+	{
+		$this->_criterionFactory->createCriterion(Criterion::EQUAL, $attribute, $value);
+	}
 	
 	/**
 	 * Create a "like" criterion
@@ -296,7 +341,10 @@ interface Query
 	 * 
 	 * @return	Criterion	A "like" criterion
 	 */
-	public function like($attribute, $value);
+	public function like($attribute, $value)
+	{
+		$this->_criterionFactory->createCriterion(Criterion::LIKE, $attribute, $value);
+	}
 	
 	/**
 	 * Create a "lower than" criterion
@@ -315,7 +363,10 @@ interface Query
 	 * 
 	 * @return	Criterion	A "lower than" criterion
 	 */
-	public function lowerThan($attribute, $value);
+	public function lowerThan($attribute, $value)
+	{
+		$this->_criterionFactory->createCriterion(Criterion::LOWER_THAN, $attribute, $value);
+	}
 	
 	/**
 	 * Create a "lower than or equal" criterion
@@ -334,7 +385,10 @@ interface Query
 	 * 
 	 * @return	Criterion	A "lower than or equal" criterion
 	 */
-	public function lowerThanOrEqual($attribute, $value);
+	public function lowerThanOrEqual($attribute, $value)
+	{
+		$this->_criterionFactory->createCriterion(Criterion::LOWER_THAN_OR_EQUAL, $attribute, $value);
+	}
 	
 	/**
 	 * Create a "greater than" criterion
@@ -353,7 +407,10 @@ interface Query
 	 * 
 	 * @return	Criterion	A "greater than" criterion
 	 */
-	public function greaterThan($attribute, $value);
+	public function greaterThan($attribute, $value)
+	{
+		$this->_criterionFactory->createCriterion(Criterion::GREATER_THAN, $attribute, $value);
+	}
 	
 	/**
 	 * Create a "greater than or equal" criterion
@@ -372,7 +429,10 @@ interface Query
 	 * 
 	 * @return	Criterion	A "greater than or equal" criterion
 	 */
-	public function greaterThanOrEqual($attribute, $value);
+	public function greaterThanOrEqual($attribute, $value)
+	{
+		$this->_criterionFactory->createCriterion(Criterion::GREATER_THAN_OR_EQUAL, $attribute, $value);
+	}
 	
 	/**
 	 * Group criteria with OR logic
@@ -392,7 +452,10 @@ interface Query
 	 * 
 	 * @return	Criteria	Criteria grouping other criteria with an OR logic
 	 */
-	public function logicalOr();
+	public function logicalOr()
+	{
+		$this->_criteriaFactory->createCriteria(Criteria::LOGICAL_OR, func_get_args());
+	}
 	
 	/**
 	 * Group criteria with AND logic
@@ -412,5 +475,32 @@ interface Query
 	 * 
 	 * @return	Criteria	Criteria grouping other criteria with an AND logic
 	 */
-	public function logicalAnd();
+	public function logicalAnd()
+	{
+		$this->_criteriaFactory->createCriteria(Criteria::LOGICAL_AND, func_get_args());
+	}
+	
+	/**
+	 * Define the criteria factory to use to create criteria
+	 * 
+	 * @param	CriteriaFactory		$criteriaFactory		Criteria factory
+	 * 
+	 * @return	void
+	 */
+	public function setCriteriaFactory(CriteriaFactory $criteriaFactory)
+	{
+		$this->_criteriaFactory = $criteriaFactory;
+	}
+	
+	/**
+	 * Define the criterion factory to use to create a criterion
+	 * 
+	 * @param	CriterionFactory		$criterionFactory		Criterion factory
+	 * 
+	 * @return	void
+	 */
+	public function setCriterionFactory(CriterionFactory $criterionFactory)
+	{
+		$this->_criterionFactory = $criterionFactory;
+	}
 }

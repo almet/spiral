@@ -3,48 +3,31 @@
 namespace spiral\framework\persistence\query;
 
 /**
- * Criteria
- * 
- * Criteria is a group of other Criteria with a logical relation between them.
- *  
- * Example of use :
- * <code> 
- *	$query = $repository->createQuery('\\namespace\\to\\Artist');
- *	
- *	$criteria = $query->logicalAnd( $query->equals('firstName', 'James'),
- *									$query->logicalOr( $query->greaterThan('age', 20),
- *														$query->lowerThan('age', 50) ) );
- *	
- *	$query->match( $criteria );
- * </code>
- * 
- * You should notice that {@link Criterion} extends Criteria, so you can either use one or 
- * the other as a Criteria.
- * 
- * Possible logical relations between Criteria are AND or OR.
- * 
- * @see			Query::logicalAnd()
- * @see			Query::logicalOr()
+ * Default implementation of Criteria
  * 
  * @author		Frédéric Sureau <fred@spiral-project.org>
  * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
  * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html>
  */
-interface Criteria
+class DefaultCriteria implements Criteria
 {
 	/**
-	 * Logical AND
+	 * Operator
+	 * 
+	 * One of the declared in Criteria interface
 	 * 
 	 * @var	int
 	 */
-	const LOGICAL_AND = 1;
+	private $_operator = NULL;
 	
 	/**
-	 * Logical OR
+	 * Criteria array
 	 * 
-	 * @var	int
+	 * List of all criteria to group with the operator
+	 * 
+	 * @var	array
 	 */
-	const LOGICAL_OR = 2;
+	private $_criteriaArray = array();
 	
 	/**
 	 * Define the logical operator to use
@@ -55,7 +38,10 @@ interface Criteria
 	 * 
 	 * @return	void
 	 */
-	public function setCriteriaOperator($operator);
+	public function setCriteriaOperator($operator)
+	{
+		$this->_operator = $operator;
+	}
 	
 	/**
 	 * Return the logical operator to use
@@ -64,7 +50,10 @@ interface Criteria
 	 * 
 	 * @return	int		Logical operator to use
 	 */
-	public function getCriteriaOperator();
+	public function getCriteriaOperator()
+	{
+		return $this->_operator;
+	}
 	
 	/**
 	 * Define the array of criteria to group
@@ -76,7 +65,10 @@ interface Criteria
 	 * 
 	 * @return	void
 	 */
-	public function setCriteriaArray(array $criteriaArray);
+	public function setCriteriaArray(array $criteriaArray)
+	{
+		$this->_criteriaArray = $criteriaArray;
+	}
 	
 	/**
 	 * Return the array of criteria to group
@@ -86,5 +78,8 @@ interface Criteria
 	 * 
 	 * @return	array		Array of criteria
 	 */
-	public function getCriteriaArray();
+	public function getCriteriaArray()
+	{
+		return $this->_criteriaArray;
+	}
 }
