@@ -3,16 +3,13 @@
 namespace spiral\framework\persistence\orm\backend\sql;
 
 /**
- * SQL dialect
- * 
- * A SQL dialect is responsible of generating SQL query strings from high level persistence structures
- * like {@link MetaObject} or {@link Query} that are abstracted from the storage engine.
+ * MySQL dialect
  * 
  * @author		Frédéric Sureau <fred@spiral-project.org>
  * @copyright	2009 Spiral-project.org <http://www.spiral-project.org>
  * @license		GNU General Public License <http://www.gnu.org/licenses/gpl.html
  */
-interface SQLDialect
+class MySQLDialect implements SQLDialect
 {
 	/**
 	 * Prepare a DELETE query from a SQL row
@@ -24,7 +21,10 @@ interface SQLDialect
 	 * @param	SQLRow		$sqlRow		SQL row
 	 * @return	string		Built DELETE query
 	 */
-	public function prepareDeleteQuery(SQLRow $sqlRow);
+	public function prepareDeleteQuery(SQLRow $sqlRow)
+	{
+		$query = 'DELETE FROM ';
+	}
 	
 	/**
 	 * Prepare values for the prepared DELETE query

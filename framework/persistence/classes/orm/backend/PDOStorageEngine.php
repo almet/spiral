@@ -40,7 +40,12 @@ class PDOStorageEngine implements StorageEngine
 	 */
 	public function delete(MetaObject $metaObject)
 	{
+		$query = $this->_sqlDialect->prepareDeleteQuery($metaObject);
+		$values = $this->_sqlDialect->prepareDeleteValues($metaObject);
 		
+		$statement = $this->_pdo->prepare($query);
+		
+		$statement->execute($values);
 	}
 	
 	/**
@@ -51,7 +56,12 @@ class PDOStorageEngine implements StorageEngine
 	 */
 	public function insert(MetaObject $metaObject)
 	{
+		$query = $this->_sqlDialect->prepareInsertQuery($metaObject);
+		$values = $this->_sqlDialect->prepareInsertValues($metaObject);
 		
+		$statement = $this->_pdo->prepare($query);
+		
+		$statement->execute($values);
 	}
 	
 	/**
@@ -62,7 +72,12 @@ class PDOStorageEngine implements StorageEngine
 	 */
 	public function update(MetaObject $metaObject)
 	{
+		$query = $this->_sqlDialect->prepareUpdateQuery($metaObject);
+		$values = $this->_sqlDialect->prepareUpdateValues($metaObject);
 		
+		$statement = $this->_pdo->prepare($query);
+		
+		$statement->execute($values);
 	}
 	
 	/**
@@ -75,7 +90,14 @@ class PDOStorageEngine implements StorageEngine
 	 */
 	public function select(Query $query)
 	{
+		$query = $this->_sqlDialect->prepareSelectQuery($query);
+		$values = $this->_sqlDialect->prepareSelectValues($query);
 		
+		$statement = $this->_pdo->prepare($query);
+		
+		$statement->execute($values);
+		
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
 	/**
