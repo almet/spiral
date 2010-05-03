@@ -42,8 +42,8 @@ class DefaultCriterionFactoryTest extends TestCase
 		$attribute = $criterion->getAttribute();
 		$value = $criterion->getValue();
 		
-		$this->assertEqual($expectedOperator, $operator);
-		$this->assertEqual($expectedAttribute, $attribute);
-		$this->assertEqual($expectedValue, $value);
+		$this->assertEquals($expectedOperator, $operator);
+		$this->assertEquals($expectedAttribute, $attribute);
+		$this->assertEquals($expectedValue, $value);
 	}
 }

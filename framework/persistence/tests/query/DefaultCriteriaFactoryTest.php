@@ -40,7 +40,7 @@ class DefaultCriteriaFactoryTest extends TestCase
 		$operator = $criteria->getCriteriaOperator();
 		$criteriaArray = $criteria->getCriteriaArray();
 		
-		$this->assertEqual($expectedOperator, $operator);
-		$this->assertEqual($expectedCriteriaArray, $criteriaArray);
+		$this->assertEquals($expectedOperator, $operator);
+		$this->assertEquals($expectedCriteriaArray, $criteriaArray);
 	}
 }

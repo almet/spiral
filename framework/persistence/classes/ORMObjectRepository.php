@@ -2,7 +2,6 @@
 
 namespace spiral\framework\persistence;
 
-use \spiral\framework\persistence\orm\backend\StorageEngine;
 use \spiral\framework\persistence\orm\meta\MetaConverter;
 use \spiral\framework\persistence\orm\UnitOfWork;
 use \spiral\framework\persistence\orm\IdentityMap;
@@ -52,6 +51,13 @@ class ORMObjectRepository implements ObjectRepository
 	 * @var	IdentityMap
 	 */
 	private $_identityMap = null;
+	
+	/**
+	 * OID generator
+	 * 
+	 * @var	OIDGenerator
+	 */
+	private $_oidGenerator = null;
 	
 	/**
 	 * Unit of work
@@ -142,5 +148,38 @@ class ORMObjectRepository implements ObjectRepository
 	public function findByQuery(Query $query)
 	{
 		// TODO Search in the storage engine
+	}
+	
+	/**
+	 * Define the identity map to use
+	 * 
+	 * @param	IdentityMap		$identityMap		Identity map to use
+	 * @return	void
+	 */
+	public function setIdentityMap(IdentityMap $identityMap)
+	{
+		$this->_identityMap = $identityMap;
+	}
+	
+	/**
+	 * Define the OID generator to use
+	 * 
+	 * @param	OIDGenerator		$oidGenerator		OID generator to use
+	 * @return	void
+	 */
+	public function setOIDGenerator(OIDGenerator  $oidGenerator)
+	{
+		$this->_oidGenerator = $oidGenerator;
+	}
+	
+	/**
+	 * Define the unit of work to use
+	 * 
+	 * @param	UnitOfWork		$unitOfWork		Unit of work to use
+	 * @return	void
+	 */
+	public function setUnitOfWork(UnitOfWork $unitOfWork)
+	{
+		$this->_unitOfWork = $unitOfWork;
 	}
 }

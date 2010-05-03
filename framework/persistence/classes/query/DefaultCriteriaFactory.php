@@ -14,17 +14,17 @@ class DefaultCriteriaFactory implements CriteriaFactory
 	/**
 	 * Create criteria from other criteria with the given operator
 	 * 
-	 * @param	int			$operator	Logical operator to use
-	 * @param	array		$criteria	Criteria to group
+	 * @param	int			$operator			Logical operator to use
+	 * @param	array		$criteriaArray		Array of criteria to group
 	 * 
 	 * @return	Criteria	Criteria of other criteria created
 	 */
-	public function createCriteria($operator, array $criteria)
+	public function createCriteria($operator, array $criteriaArray)
 	{
 		$criteria = new DefaultCriteria();
 		
 		$criteria->setCriteriaOperator($operator);
-		$criteria->setCriteriaArray($criteria);
+		$criteria->setCriteriaArray($criteriaArray);
 		
 		return $criteria;
 	}

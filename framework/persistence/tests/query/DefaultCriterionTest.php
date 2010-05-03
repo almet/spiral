@@ -30,13 +30,13 @@ class DefaultCriterionTest extends TestCase
 	 */
 	public function testCriteriaOperatorDefinition()
 	{
-		$this->_criteria->setCriteriaOperator(Criteria::LOGICAL_AND);
-		$operator = $this->_criteria->getCriteriaOperator();
+		$this->_criterion->setCriteriaOperator(Criteria::LOGICAL_AND);
+		$operator = $this->_criterion->getCriteriaOperator();
 		
 		$this->assertEquals(NULL, $operator);
 		
-		$this->_criteria->setCriteriaOperator(Criteria::LOGICAL_OR);
-		$operator = $this->_criteria->getCriteriaOperator();
+		$this->_criterion->setCriteriaOperator(Criteria::LOGICAL_OR);
+		$operator = $this->_criterion->getCriteriaOperator();
 		
 		$this->assertEquals(NULL, $operator);
 	}
@@ -46,8 +46,8 @@ class DefaultCriterionTest extends TestCase
 	 */
 	public function testCriteriaArrayDefinition()
 	{
-		$this->_criteria->setCriteriaArray(array());
-		$criteriaArray = $this->_criteria->getCriteriaArray();
+		$this->_criterion->setCriteriaArray(array());
+		$criteriaArray = $this->_criterion->getCriteriaArray();
 		
 		$this->assertEquals(NULL, $criteriaArray);
 	}
@@ -57,33 +57,33 @@ class DefaultCriterionTest extends TestCase
 	 */
 	public function testCriterionOperatorDefinition()
 	{
-		$this->_criteria->setCriterionOperator(Criterion::EQUAL);
-		$operator = $this->_criteria->getCriteriaOperator();
+		$this->_criterion->setCriterionOperator(Criterion::EQUAL);
+		$operator = $this->_criterion->getCriterionOperator();
 		
 		$this->assertEquals(Criterion::EQUAL, $operator);
 		
-		$this->_criteria->setCriterionOperator(Criterion::GREATER_THAN);
-		$operator = $this->_criteria->getCriteriaOperator();
+		$this->_criterion->setCriterionOperator(Criterion::GREATER_THAN);
+		$operator = $this->_criterion->getCriterionOperator();
 		
 		$this->assertEquals(Criterion::GREATER_THAN, $operator);
 		
-		$this->_criteria->setCriterionOperator(Criterion::GREATER_THAN_OR_EQUAL);
-		$operator = $this->_criteria->getCriteriaOperator();
+		$this->_criterion->setCriterionOperator(Criterion::GREATER_THAN_OR_EQUAL);
+		$operator = $this->_criterion->getCriterionOperator();
 		
 		$this->assertEquals(Criterion::GREATER_THAN_OR_EQUAL, $operator);
 		
-		$this->_criteria->setCriterionOperator(Criterion::LIKE);
-		$operator = $this->_criteria->getCriteriaOperator();
+		$this->_criterion->setCriterionOperator(Criterion::LIKE);
+		$operator = $this->_criterion->getCriterionOperator();
 		
 		$this->assertEquals(Criterion::LIKE, $operator);
 		
-		$this->_criteria->setCriterionOperator(Criterion::LOWER_THAN);
-		$operator = $this->_criteria->getCriteriaOperator();
+		$this->_criterion->setCriterionOperator(Criterion::LOWER_THAN);
+		$operator = $this->_criterion->getCriterionOperator();
 		
 		$this->assertEquals(Criterion::LOWER_THAN, $operator);
 		
-		$this->_criteria->setCriterionOperator(Criterion::LOWER_THAN_OR_EQUAL);
-		$operator = $this->_criteria->getCriteriaOperator();
+		$this->_criterion->setCriterionOperator(Criterion::LOWER_THAN_OR_EQUAL);
+		$operator = $this->_criterion->getCriterionOperator();
 		
 		$this->assertEquals(Criterion::LOWER_THAN_OR_EQUAL, $operator);
 	}
@@ -95,8 +95,8 @@ class DefaultCriterionTest extends TestCase
 	{
 		$expectedAttribute = 'test';
 		
-		$this->_criteria->setAttribute($expectedAttribute);
-		$attribute = $this->_criteria->getAttribute();
+		$this->_criterion->setAttribute($expectedAttribute);
+		$attribute = $this->_criterion->getAttribute();
 		
 		$this->assertEquals($expectedAttribute, $attribute);
 	}
@@ -108,8 +108,8 @@ class DefaultCriterionTest extends TestCase
 	{
 		$expectedValue = 'test of Value';
 		
-		$this->_criteria->setCriteriaArray($expectedValue);
-		$value = $this->_criteria->getCriteriaArray();
+		$this->_criterion->setValue($expectedValue);
+		$value = $this->_criterion->getValue();
 		
 		$this->assertEquals($expectedValue, $value);
 	}

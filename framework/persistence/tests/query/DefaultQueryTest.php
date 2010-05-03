@@ -235,7 +235,9 @@ class DefaultQueryTest extends TestCase
 	public function testAndCriteriaCreation()
 	{
 		$operator = Criteria::LOGICAL_AND;
-		$criteriaArray = array(new DefaultCriterion(), new DefaultCriterion());
+		$criteria1 = new DefaultCriterion();
+		$criteria2 = new DefaultCriterion();
+		$criteriaArray = array($criteria1, $criteria2);
 		
 		$criteriaFactory = $this->getMock('\\spiral\\framework\\persistence\\query\\CriteriaFactory');
 		$criteriaFactory->expects($this->once())
@@ -245,7 +247,7 @@ class DefaultQueryTest extends TestCase
 		
 		$this->_query->setCriteriaFactory($criteriaFactory);
 								
-		$this->_query->logicalAnd($criteriaArray);
+		$this->_query->logicalAnd($criteria1, $criteria2);
 	}
 	
 	/**
@@ -254,7 +256,9 @@ class DefaultQueryTest extends TestCase
 	public function testOrCriteriaCreation()
 	{
 		$operator = Criteria::LOGICAL_OR;
-		$criteriaArray = array(new DefaultCriterion(), new DefaultCriterion());
+		$criteria1 = new DefaultCriterion();
+		$criteria2 = new DefaultCriterion();
+		$criteriaArray = array($criteria1, $criteria2);
 		
 		$criteriaFactory = $this->getMock('\\spiral\\framework\\persistence\\query\\CriteriaFactory');
 		$criteriaFactory->expects($this->once())
@@ -264,6 +268,6 @@ class DefaultQueryTest extends TestCase
 		
 		$this->_query->setCriteriaFactory($criteriaFactory);
 		
-		$this->_query->logicalOr($criteriaArray);
+		$this->_query->logicalOr($criteria1, $criteria2);
 	}
 }

@@ -54,7 +54,7 @@ class DefaultCriteriaTest extends TestCase
 		
 		$expectedCriteriaArray = array($criteria1, $criteria2, $criteria3, $criteria4, $criteria5);
 		
-		$this->_criteria->setCriteriaArray($this->_criteriaArray);
+		$this->_criteria->setCriteriaArray($expectedCriteriaArray);
 		$criteriaArray = $this->_criteria->getCriteriaArray();
 		
 		$this->assertEquals($expectedCriteriaArray, $criteriaArray);

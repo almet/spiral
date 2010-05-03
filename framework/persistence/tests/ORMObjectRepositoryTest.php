@@ -3,6 +3,7 @@
 namespace spiral\framework\persistence;
 
 use \spiral\framework\persistence\TestCase;
+use \spiral\framework\persistence\orm\AbstractUnitOfWork;
 
 /**
  * ORM object repository test
@@ -15,9 +16,10 @@ class ORMObjectRepositoryTest extends TestCase
 {
 	protected $_objectRepository = null;
 	protected $_oidGenerator = null;
-	protected $_storageEngine = null;
 	protected $_unitOfWork = null;
 	protected $_identityMap = null;
+	protected $_object1 = null;
+	protected $_object2 = null;
 	
 	/**
 	 * Sets up the testing environment
@@ -28,16 +30,16 @@ class ORMObjectRepositoryTest extends TestCase
 		
 		$this->_oidGenerator = $this->getMock('\spiral\framework\persistence\orm\OIDGenerator');
 		
-		$this->_storageEngine = $this->getMock('\spiral\framework\persistence\orm\backend\StorageEngine');
-		
 		$this->_unitOfWork = $this->getMock('\spiral\framework\persistence\orm\UnitOfWork');
 		
 		$this->_identityMap = $this->getMock('\spiral\framework\persistence\orm\IdentityMap');
 		
 		$this->_objectRepository->setOIDGenerator($this->_oidGenerator);
-		$this->_objectRepository->setStorageEngine($this->_storageEngine);
 		$this->_objectRepository->setUnitOfWork($this->_unitOfWork);
 		$this->_objectRepository->setIdentityMap($this->_identityMap);
+		
+		$this->_object1 = new \stdClass();
+		$this->_object2 = new \stdClass();
 	}
 
 	/**
@@ -45,15 +47,17 @@ class ORMObjectRepositoryTest extends TestCase
 	 */
 	public function testNewObjects()
 	{
-		$this->_unitOfWork->add(1, $this->_object1);
-		$this->_unitOfWork->add(2, $this->_object2);
+		//TODO : Create the test
+		/*$this->_storageEngine->expects($this->at(0))
+			->method('add')
+			->with($this->equalTo($this->_object1));
+			
+		$this->_storageEngine->expects($this->at(1))
+			->method('add')
+			->with($this->equalTo($this->_object2));
 		
-		$expectedStatus = array(1=>AbstractUnitOfWork::_STATUS_NEW,
-								2=>AbstractUnitOfWork::_STATUS_NEW);
-		
-		$status = $this->_unitOfWork->exposedObjectsStatus();
-		
-		$this->assertEquals($expectedStatus, $status);
+		$this->add($this->_object1);
+		$this->add($this->_object2);*/
 	}
 	
 }
